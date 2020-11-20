@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yishang.xiaozhen.mapper.EnterpriseInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yishang.xiaozhen.entity.EnterpriseInfo">
+        <id column="id" property="id" />
+        <result column="order" property="orderNum" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="enterprise_mobile" property="enterpriseMobile" />
+        <result column="enterprise_qr" property="enterpriseQr" />
+        <result column="enterprise_web" property="enterpriseWeb" />
+        <result column="enterprise_logo" property="enterpriseLogo" />
+        <result column="enterprise_enter_address" property="enterpriseEnterAddress" />
+        <result column="enterprise_detail" property="enterpriseDetail" />
+        <result column="street_type" property="streetType" />
+        <result column="status" property="isStatus" />
+        <result column="org_id" property="orgId" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>

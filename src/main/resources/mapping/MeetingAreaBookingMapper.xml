@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yishang.xiaozhen.mapper.MeetingAreaBookingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yishang.xiaozhen.entity.MeetingAreaBooking">
+        <id column="id" property="id" />
+        <result column="meeting_area_id" property="meetingAreaId" />
+        <result column="booking_person" property="bookingPerson" />
+        <result column="mobile" property="mobile" />
+        <result column="remark_info" property="remarkInfo" />
+        <result column="booking_start_time" property="bookingStartTime" />
+        <result column="booking_end_time" property="bookingEndTime" />
+        <result column="receive_address" property="receiveAddress" />
+        <result column="join_people" property="joinPeople" />
+        <result column="meeting_table" property="meetingTable" />
+        <result column="meeting_type" property="meetingType" />
+        <result column="meeting_goods" property="meetingGoods" />
+        <result column="approval_status" property="approvalStatus" />
+        <result column="approval_by" property="approvalBy" />
+        <result column="approval_time" property="approvalTime" />
+        <result column="approval_remark" property="approvalRemark" />
+        <result column="open_id" property="openId" />
+        <result column="org_id" property="orgId" />
+        <result column="status" property="isStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="create_by" property="createBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_by" property="updateBy" />
+    </resultMap>
+
+</mapper>

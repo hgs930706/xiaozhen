@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yishang.xiaozhen.mapper.MeetingAreaMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yishang.xiaozhen.entity.MeetingArea">
+        <id column="id" property="id" />
+        <result column="order" property="orderNum" />
+        <result column="meeting_name" property="meetingName" />
+        <result column="booking_start_time" property="bookingStartTime" />
+        <result column="booing_end_time" property="booingEndTime" />
+        <result column="meeting_address" property="meetingAddress" />
+        <result column="meeting_dateil" property="meetingDateil" />
+        <result column="meeting_capacity" property="meetingCapacity" />
+        <result column="meeting_remark" property="meetingRemark" />
+        <result column="meeting_image" property="meetingImage" />
+        <result column="meeting_table" property="meetingTable" />
+        <result column="meeting_type" property="meetingType" />
+        <result column="meeting_goods" property="meetingGoods" />
+        <result column="org_id" property="orgId" />
+        <result column="status" property="isStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="create_by" property="createBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_by" property="updateBy" />
+    </resultMap>
+
+</mapper>
