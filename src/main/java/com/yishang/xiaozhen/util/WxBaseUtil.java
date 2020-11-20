@@ -25,6 +25,7 @@ public class WxBaseUtil {
     //http请求方式: POST
     private static final String TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
 
+
     /**
      * 获取accessToken
      * @return

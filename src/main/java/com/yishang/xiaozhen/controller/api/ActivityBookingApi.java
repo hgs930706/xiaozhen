@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.controller.api;
 
 
+import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ActivityBooking;
 import com.yishang.xiaozhen.service.ActivityBookingServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
@@ -32,6 +33,7 @@ public class ActivityBookingApi {
     @PostMapping("/insert")
     public ResultUtil insert(ActivityBooking object, MultipartFile[] files){
 
+        object.setOpenId(JwtTokenUtil.currentUserName());
         ResultUtil result = activityBookingServiceImpl.insert(object, files);
 
         return result;

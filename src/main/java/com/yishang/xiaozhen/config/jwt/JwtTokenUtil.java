@@ -18,13 +18,13 @@ public class JwtTokenUtil {
     private static final String ROLE_CLAIMS = "rol";
 
     //jwt 服务器秘钥
-    private static final String SECRET = "jwtsecretdemo";
+    private static final String SECRET = "yishangxiaozhen";
 
     //发行人，持票人
-    private static final String ISS = "echisan";
+    private static final String ISS = "fanren";
 
     // 过期时间是3600秒，既是1个小时
-    private static final long EXPIRATION = 300L;
+    private static final long EXPIRATION = 3600L;
 
     // 选择了记住我之后的过期时间为7天
     private static final long EXPIRATION_REMEMBER = 604800L;
@@ -79,25 +79,11 @@ public class JwtTokenUtil {
         return claims;
     }
 
-    public static void main(String[] args) {
-
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJodWdhb3N1Iiwia" +
-                "XNzIjoiZWNoaXNhbiIsImV4cCI6MTYwNTI1ODY0MSwiaWF0IjoxNjA" +
-                "1MjU4MzQxLCJyb2wiOlsiUk9MRV9PTkUiLCJST0xFX1R" +
-                "XTyJdfQ.huXs2VK-FH3q-qTxt65uKn2rw43mpdK24xwnoL8gGKjx" +
-                "GNt5_mmXLTj6l5Vr1dYz-ARwJcwe2kBxPXWQ_bGYcA";
-
-//        System.out.println(getUsername(token));
-        System.out.println(isExpiration(token));
-//        System.out.println((getTokenBody(token).getExpiration().getTime() - System.currentTimeMillis()) > 5 * 1000);
-
-    }
-
-    public static String getUserName(){
+    public static String currentUserName(){
         if(SecurityContextHolder.getContext() == null) {
-            return "暂时没登录，所以没有用户！";
+            return "";
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return "测试用户";
+        return (String) authentication.getPrincipal();
     }
 }

@@ -1,5 +1,7 @@
 package com.yishang.xiaozhen.config.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
@@ -35,22 +38,31 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
         // 如果请求头中有token，则进行解析，并且设置认证信息
-        SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
+        String token = tokenHeader.replace(JwtTokenUtil.TOKEN_PREFIX, "");
+        try{
+            String username = JwtTokenUtil.getUsername(token);
+            List<String> list = JwtTokenUtil.getUserRole(token);
+            List<GrantedAuthority> roles = new ArrayList<>();
+            for (String role : list) {
+                roles.add(new SimpleGrantedAuthority(role));
+            }
+            if (username != null){
+                // 这里从token中获取用户信息并放入上下文
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(username,null,roles)
+                );
+            }
+        }catch (ExpiredJwtException e){
+            log.error("jwt已过期。");
+        }catch (Exception e){
+            log.error("jwt解析异常。");
+        }
         super.doFilterInternal(request, response, chain);
     }
 
-    // 这里从token中获取用户信息并新建一个token
+
     private Authentication getAuthentication(String tokenHeader) {
-        String token = tokenHeader.replace(JwtTokenUtil.TOKEN_PREFIX, "");
-        String username = JwtTokenUtil.getUsername(token);
-        List<String> list = JwtTokenUtil.getUserRole(token);
-        List<GrantedAuthority> roles = new ArrayList<>();
-        for (String role : list) {
-            roles.add(new SimpleGrantedAuthority(role));
-        }
-        if (username != null){
-            return new UsernamePasswordAuthenticationToken(username,null,roles);
-        }
+
         return null;
     }
 }

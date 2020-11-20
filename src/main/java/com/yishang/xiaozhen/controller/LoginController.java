@@ -1,4 +1,4 @@
-package com.yishang.xiaozhen.controller.test;
+package com.yishang.xiaozhen.controller;
 
 import com.yishang.xiaozhen.entity.AdminUser;
 import com.yishang.xiaozhen.mapper.AdminUserMapper;
