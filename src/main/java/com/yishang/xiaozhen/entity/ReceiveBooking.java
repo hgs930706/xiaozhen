@@ -110,6 +110,9 @@ public class ReceiveBooking extends Model<ReceiveBooking> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @TableField(exist = false)
+    private String msgType = "receiveType";
+
     @Override
     protected Serializable pkVal() {
         return this.id;

@@ -134,6 +134,8 @@ public class MeetingAreaBooking extends Model<MeetingAreaBooking> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @TableField(exist = false)
+    private String msgType = "meetingType";
 
     @Override
     protected Serializable pkVal() {

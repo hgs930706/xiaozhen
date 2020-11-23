@@ -1,7 +1,7 @@
 package com.yishang.xiaozhen.enums;
 
 
-public enum GoodStatusEnum {
+public enum MsgTypeEnum {
 
     OTHER_MSG(0,"其它"),
     ACTIVITY_MSG(1,"活动消息"),
@@ -11,13 +11,13 @@ public enum GoodStatusEnum {
     private int code;
     private String msg;
 
-    GoodStatusEnum(int code, String msg) {
+    MsgTypeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
     public static String getStr(int order_status) {
-        for (GoodStatusEnum value : GoodStatusEnum.values()) {
+        for (MsgTypeEnum value : MsgTypeEnum.values()) {
             if (value.getCode() == order_status) {
                 return value.getMsg();
             }
