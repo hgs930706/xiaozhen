@@ -1,9 +1,11 @@
 package com.yishang.xiaozhen.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yishang.xiaozhen.entity.AdminUser;
 import com.yishang.xiaozhen.mapper.AdminUserMapper;
 import com.yishang.xiaozhen.util.ImageUploadUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,16 +21,31 @@ import java.util.Map;
  * @since 2020-11-16
  */
 @Service
+@Slf4j
 public class AdminUserServiceImpl {
 
     @Autowired
     private AdminUserMapper adminUserMapper;
 
+    @Autowired
+    private UserRoleServiceImpl userRoleServiceImpl;
+
     public ResultUtil insert(AdminUser object, MultipartFile file) {
+        QueryWrapper<AdminUser> query = new QueryWrapper<>();
+        query.eq("username", object.getUsername()).eq("is_status", 1);
+        Integer count = adminUserMapper.selectCount(query);
+        if (count > 0) {
+            log.info("用户名已存在。");
+            return ResultUtil.error("用户名已存在。");
+        }
         String s = ImageUploadUtil.uploadImage(file);
         object.setUserImage(s);
+        // todo 保存的时候密码加密
         adminUserMapper.insert(object);
-        // todo 维护角色关系
+        // todo 维护用户和角色关系
+        // 多个角色，勾选几个新增几个
+        userRoleServiceImpl.insert(object.getId(),"");
+
         return ResultUtil.success();
     }
 
@@ -46,7 +63,7 @@ public class AdminUserServiceImpl {
         String s = ImageUploadUtil.uploadImage(file);
         object.setUserImage(s);
         adminUserMapper.updateById(object);
-        // todo 维护角色关系，删除原有角色，在新增角色
+        // todo 维护用户和角色关系，删除原有角色，在新增角色
         return ResultUtil.success();
     }
 

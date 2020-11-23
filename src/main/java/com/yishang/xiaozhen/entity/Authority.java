@@ -24,9 +24,10 @@ import java.time.LocalDateTime;
 @TableName("u_authority")
 public class Authority extends Model<Authority> {
 
-    @TableId(type = IdType.UUID)
+
     private static final long serialVersionUID = 1L;
 
+    @TableId(type = IdType.UUID)
     private String id;
 
     /**

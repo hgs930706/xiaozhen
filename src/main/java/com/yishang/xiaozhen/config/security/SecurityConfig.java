@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/wx/callBack").permitAll()
                 .antMatchers("/api/**").hasAuthority("ROLE_WX")//微信相关接口放心
 //                .antMatchers("/meetingArea/**").authenticated()
-                .antMatchers("/test/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()//其它接口只需要验证，不需要权限
 //                .and()
 //                .logout().logoutSuccessUrl("/admin/login2")
