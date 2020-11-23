@@ -38,6 +38,8 @@ public class WxLoginApi {
 
     //如果用户同意授权，页面将跳转至此地址
     private static final String BACK_URL = "http://27816r3s27.wicp.vip/api/wx/callBack";
+    // 也可以直接回调到前端
+//    private static final String BACK_URL = "http://27816r3s27.wicp.vip:32056/login";
 
     //第一步：用户同意授权，获取code
     private static final String INDEX = "https://open.weixin.qq.com/connect/oauth2/authorize" +
@@ -104,12 +106,16 @@ public class WxLoginApi {
         //默认微信用户权限
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_WX");
-        String token = JwtTokenUtil.createToken(openId, roles, false);
+        String token = JwtTokenUtil.createToken(openId, roles, true);
         // 这里就可以配置，跳转路径，例如成功获取用户信息之后，我们跳转到我们自己的首页
-        response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
-        response.sendRedirect("http://news.baidu.com/");
-
+        response.sendRedirect("http://192.168.31.28:3001/#/home/business?token="+ JwtTokenUtil.TOKEN_PREFIX + token);
         log.info("微信客户端token：{}", token);
+    }
+
+    @GetMapping("/test")
+    public void test(HttpServletRequest request,HttpServletResponse response){
+        System.out.println(request.getAttribute("token"));
+        System.out.println(request.getParameter("token"));
     }
 
     private void saveWxUser(String infoJson) {
