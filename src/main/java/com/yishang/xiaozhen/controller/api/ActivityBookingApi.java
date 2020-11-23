@@ -4,10 +4,13 @@ package com.yishang.xiaozhen.controller.api;
 import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ActivityBooking;
 import com.yishang.xiaozhen.service.ActivityBookingServiceImpl;
+import com.yishang.xiaozhen.service.ActivityServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -24,6 +27,22 @@ public class ActivityBookingApi {
 
     @Autowired
     private ActivityBookingServiceImpl activityBookingServiceImpl;
+
+    @Autowired
+    private ActivityServiceImpl activityServiceImpl;
+
+    /**
+     *  活动详情
+     * @param id
+     * @return
+     */
+    @GetMapping("/detail")
+    public ResultUtil detail(@RequestParam(name = "id") String id){
+        ResultUtil detail = activityServiceImpl.detail(id);
+
+
+        return detail;
+    }
 
     /**
      * 活动预约
@@ -44,25 +63,14 @@ public class ActivityBookingApi {
      * @return
      */
     @GetMapping("/list")
-    public String list(){
+    public Map list(Integer page,Integer size){
         //根据最新的活动，排序
-
-        return null;
+        Map<String, Object> list = activityServiceImpl.list(page, size);
+        return list;
     }
 
 
-    /**
-     *  活动详情
-     * @param id
-     * @return
-     */
-    @GetMapping("/detail")
-    public String detail(@RequestParam(name = "id") String id){
 
-
-
-        return null;
-    }
 
 
 
@@ -71,10 +79,10 @@ public class ActivityBookingApi {
      * @return
      */
     @GetMapping("/banner")
-    public String banner(){
+    public ResultUtil banner(){
+        ResultUtil banner = activityServiceImpl.banner();
 
-
-        return null;
+        return banner;
     }
 
 

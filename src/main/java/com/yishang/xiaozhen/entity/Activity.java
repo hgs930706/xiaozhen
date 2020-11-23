@@ -65,6 +65,10 @@ public class Activity extends Model<Activity> {
     private String activityImage;
 
     /**
+     * 活动备注
+     */
+    private String activityRemark;
+    /**
      * 机构
      */
     private String orgId;

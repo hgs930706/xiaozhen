@@ -25,4 +25,4 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
-</mapper>
+

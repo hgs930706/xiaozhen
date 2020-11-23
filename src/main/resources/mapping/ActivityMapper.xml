@@ -11,6 +11,7 @@
         <result column="activity_address" property="activityAddress" />
         <result column="activity_detail" property="activityDetail" />
         <result column="activity_image" property="activityImage" />
+        <result column="activity_remark" property="activityRemark" />
         <result column="org_id" property="orgId" />
         <result column="status" property="isStatus" />
         <result column="create_by" property="createBy" />
@@ -19,4 +20,10 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <select id="banner" resultType="java.lang.String">
+        select activity_image from ys_activity
+        order by start_time desc
+    </select>
+
 </mapper>
+

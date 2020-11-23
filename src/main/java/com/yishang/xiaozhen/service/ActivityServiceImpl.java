@@ -1,5 +1,6 @@
 package com.yishang.xiaozhen.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -63,11 +63,31 @@ public class ActivityServiceImpl{
     public Map<String,Object> list(Integer page,Integer size,String activityName,Integer isStatus
             ,String startTime,String endTime) {
         // todo 这个返回的数据，要自定义返回了，因为要统计场次，活动多个场次的起始时间
-        IPage<Activity> ipage = new Page<>(0, 2);
+        IPage<Activity> ipage = new Page<>(page, size);
 
         QueryWrapper<Activity> query = new QueryWrapper<>();
         query.eq("activity_name", activityName);
-        query.eq("is_status", isStatus);
+        query.eq("is_status", 1);
+
+        ipage = activityMapper.selectPage(ipage, query);
+        Map<String,Object> map = new HashMap();
+        map.put("list",ipage.getRecords());
+        map.put("total",ipage.getTotal());
+        return map;
+    }
+
+    /**
+     * 微信端默认展示两个活动
+     * @param page
+     * @param size
+     * @return
+     */
+    public Map<String,Object> list(Integer page,Integer size) {
+        IPage<Activity> ipage = new Page<>(page, size);
+
+        QueryWrapper<Activity> query = new QueryWrapper<>();
+        query.eq("is_status", 1);
+        query.orderByDesc("start_time");
 
         ipage = activityMapper.selectPage(ipage, query);
         Map<String,Object> map = new HashMap();
@@ -77,10 +97,25 @@ public class ActivityServiceImpl{
     }
 
 
-    public Object detail(String id) {
+    public ResultUtil detail(String id) {
         Activity activity = activityMapper.selectById(id);
-        Object details = activityCountServiceImpl.details(id);
-        return details;
+        List<ActivityCount> details = activityCountServiceImpl.details(id);
+        Optional<ActivityCount> min = details.stream().min(Comparator.comparing(ActivityCount::getActivityCountStartTime));
+        Optional<ActivityCount> max = details.stream().max(Comparator.comparing(ActivityCount::getActivityCountEndTime));
+
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("activityName",activity.getActivityName());
+        jsonObject.put("activityImage",activity.getActivityImage());
+        min.ifPresent(m ->jsonObject.put("activityStartTime",m.getActivityCountStartTime()));
+        max.ifPresent(m -> jsonObject.put("activityEndTime",m.getActivityCountEndTime()));
+        jsonObject.put("activityCount",details.size());
+        jsonObject.put("activityRemark",activity.getActivityRemark());
+        jsonObject.put("activityAddress",activity.getActivityAddress());
+        jsonObject.put("activityDetail",activity.getActivityDetail());
+
+
+        return ResultUtil.success(jsonObject);
     }
 
 
@@ -93,5 +128,11 @@ public class ActivityServiceImpl{
 
     public Integer delete(String id) {
         return null;
+    }
+
+    public ResultUtil banner(){
+        List<String> banner = activityMapper.banner();
+
+        return ResultUtil.success(banner);
     }
 }

@@ -34,7 +34,7 @@ public class ActivityCountServiceImpl{
     }
 
 
-    public Object details(String activityId) {
+    public List<ActivityCount> details(String activityId) {
         QueryWrapper<ActivityCount> query = new QueryWrapper();
         query.eq("activity_id",activityId);
         query.eq("is_status",1);
