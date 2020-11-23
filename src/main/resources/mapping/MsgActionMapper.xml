@@ -16,7 +16,7 @@
 
         <result column="approval_status" property="approvalStatus" />
         <result column="booking_person" property="bookingPerson" />
-        <result column="mobile" property="mobile" />
+        <result column="name" property="name" />
         <result column="booking_time" property="bookingTime" />
         <result column="receive_address" property="receiveAddress" />
         <result column="send_status" property="sendStatus" />

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * <p>
  *  消息日志表 微信端
@@ -29,11 +31,9 @@ public class MsgActionApi {
      * @return
      */
     @GetMapping("/msgs")
-    public String msgs(){
-
-
-
-        return null;
+    public Map msgs(@RequestParam(name = "openId") String openId,Integer page,Integer size){
+        Map<String, Object> list = msgActionServiceImpl.list(page, size, openId);
+        return list;
     }
 
     @GetMapping("/detail")

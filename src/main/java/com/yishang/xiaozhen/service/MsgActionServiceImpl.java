@@ -47,6 +47,19 @@ public class MsgActionServiceImpl{
         return map;
     }
 
+    public Map<String,Object> list(Integer page,Integer size,String openId) {
+        IPage<MsgAction> ipage = new Page<>(page,size);
+        QueryWrapper<MsgAction> query = new QueryWrapper<>();
+        query.ge("open_id",openId);
+        query.eq("is_status", 1);
+        ipage = msgActionMapper.selectPage(ipage, query);
+
+        Map<String,Object> map = new HashMap();
+        map.put("list",ipage.getRecords());
+        map.put("total",ipage.getTotal());
+        return map;
+    }
+
 
     public Object detail(String id) {
         return null;

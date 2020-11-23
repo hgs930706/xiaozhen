@@ -87,7 +87,7 @@ public class PushMsgListener {
             saveMsgAction(result, booking.getOpenId(),
                     booking.getApprovalStatus(), 1,
                     booking.getApprovalRemark(), booking.getBookingPerson(),
-                    booking.getMobile(), activityCount.getActivityCountStartTime()
+                    activity.getActivityName(), activityCount.getActivityCountStartTime()
                     , activity.getActivityAddress());
         } catch (Exception e) {
             log.error("活动审批消息，发生异常：{}", e);
@@ -116,7 +116,7 @@ public class PushMsgListener {
             saveMsgAction(result, booking.getOpenId(),
                     booking.getApprovalStatus(), 2,
                     booking.getApprovalRemark(), booking.getBookingName(),
-                    booking.getMobile(), booking.getBookingTime()
+                    booking.getBookingName(), booking.getBookingTime()
                     , "地址就是小镇地址");
         } catch (Exception e) {
             log.error("接待预约审批消息，发生异常：{}", e);
@@ -145,7 +145,7 @@ public class PushMsgListener {
             saveMsgAction(result, booking.getOpenId(),
                     booking.getApprovalStatus(), 3,
                     booking.getApprovalRemark(), booking.getBookingPerson(),
-                    booking.getMobile(), booking.getBookingStartTime()
+                    meetingArea.getMeetingName(), booking.getBookingStartTime()
                     , meetingArea.getMeetingAddress());
         } catch (Exception e) {
             log.error("会议场地审批消息，发生异常：{}", e);
@@ -304,7 +304,7 @@ public class PushMsgListener {
     private void saveMsgAction(String result, String openId,
                                Integer approvalStatus, Integer msgType,
                                String msgContent, String bookingPerson,
-                               String mobile, LocalDateTime bookingTime,
+                               String name, LocalDateTime bookingTime,
                                String receiveAddress) {
         //保存我的消息
         MsgAction msgAction = new MsgAction();
@@ -314,7 +314,7 @@ public class PushMsgListener {
         msgAction.setMsgType(msgType);
         msgAction.setMsgContent(msgContent);
         msgAction.setBookingPerson(bookingPerson);
-        msgAction.setMobile(mobile);
+        msgAction.setName(name);
         msgAction.setBookingTime(bookingTime);
         msgAction.setReceiveAddress(receiveAddress);
         JSONObject jsonObject = JSONObject.parseObject(result);

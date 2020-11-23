@@ -31,6 +31,7 @@ public class MsgAction extends Model<MsgAction> {
 
 
     /**
+     * 消息类型
      * 1活动消息、2接待预约消息、3会议场地预约消息、0其它
      */
     private Integer msgType;
@@ -51,9 +52,9 @@ public class MsgAction extends Model<MsgAction> {
     private String bookingPerson;
 
     /**
-     * 联系电话
+     * 类型名称
      */
-    private String mobile;
+    private String name;
 
     /**
      * 预约时间
