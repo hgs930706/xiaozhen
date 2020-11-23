@@ -39,6 +39,7 @@ public class EnterpriseInfoApi {
         QueryWrapper<EnterpriseInfo> query = new QueryWrapper<>();
         query.eq("street_type", streetType);
         query.eq("is_status", 1);
+        query.orderByDesc("order_num");
         List<EnterpriseInfo> enterpriseInfos = enterpriseInfoMapper.selectList(query);
 
         return ResultUtil.success(enterpriseInfos);

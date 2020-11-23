@@ -7,9 +7,11 @@ import com.yishang.xiaozhen.entity.ApprovalAction;
 import com.yishang.xiaozhen.entity.MeetingAreaBooking;
 import com.yishang.xiaozhen.event.MeetingAreaBookingEvent;
 import com.yishang.xiaozhen.mapper.MeetingAreaBookingMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,14 +57,18 @@ public class MeetingAreaBookingServiceImpl{
         return integer;
     }
 
-    public Integer insert(MeetingAreaBooking object) {
+    public ResultUtil insert(MeetingAreaBooking object) {
+        String meetingAreaId = object.getMeetingAreaId();
+        if(StringUtils.isEmpty(meetingAreaId)){
+            return ResultUtil.error("会议场地id不能为空");
+        }
         meetingAreaBookingMapper.insert(object);
-        return null;
+        return ResultUtil.success();
     }
 
 
     public Map<String,Object> list(Integer page,Integer size,String meetingName, String bookingStartTime, String bookingEndTime, Integer isStatus) {
-        IPage<MeetingAreaBooking> ipage = new Page<>(0, 10);
+        IPage<MeetingAreaBooking> ipage = new Page<>(page,size);
         QueryWrapper<MeetingAreaBooking> query = new QueryWrapper<>();
 //        query.eq("booking_time", bookingTime);
 //        query.eq("create_time", createTime);
