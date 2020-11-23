@@ -25,6 +25,7 @@ public class ReceiveBookingApi {
     @Autowired
     private ReceiveBookingServiceImpl receiveBookingServiceImpl;
 
+
     /**
      *
      * @param object 接待预约实体
