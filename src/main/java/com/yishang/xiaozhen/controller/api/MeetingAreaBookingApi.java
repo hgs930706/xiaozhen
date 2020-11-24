@@ -53,6 +53,11 @@ public class MeetingAreaBookingApi {
         return detail;
     }
 
+    /**
+     * 根据当前的会议，获得下拉框的值，物品，桌型，会议类型
+     * @param id
+     * @return
+     */
     @GetMapping("/select")
     public ResultUtil select(@RequestParam(name = "id") String id){
         ResultUtil detail = meetingAreaServiceImpl.select(id);

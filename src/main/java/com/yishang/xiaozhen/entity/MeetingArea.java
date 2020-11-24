@@ -41,14 +41,14 @@ public class MeetingArea extends Model<MeetingArea> {
     private String meetingName;
 
     /**
-     * 可预约开始时间
+     * 预约会议场地开始时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime bookingStartTime;
 
     /**
-     * 可预约结束时间
+     * 预约会议场地结束时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

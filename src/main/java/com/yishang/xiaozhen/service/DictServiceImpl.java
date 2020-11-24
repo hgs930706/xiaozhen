@@ -3,6 +3,7 @@ package com.yishang.xiaozhen.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yishang.xiaozhen.constant.DictConstant;
 import com.yishang.xiaozhen.entity.Dict;
 import com.yishang.xiaozhen.mapper.DictMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,7 @@ import java.util.Map;
 @Service
 public class DictServiceImpl{
 
-    // 字典表地图配置
-    private static final String MAP_TYPE = "map_type";
+
 
     @Autowired
     private DictMapper dictMapper;
@@ -33,16 +33,13 @@ public class DictServiceImpl{
         IPage<Dict> page = new Page<>(0, 10);
         QueryWrapper<Dict> query = new QueryWrapper<>();
 
-        query.eq("type", MAP_TYPE);
+        query.eq("type", DictConstant.MAP_TYPE);
         query.eq("is_status", 1);
 
         page = dictMapper.selectPage(page, query);
 
         List<Dict> records = page.getRecords();
         long total = page.getTotal();
-        long current = page.getCurrent();
-        long pages = page.getPages();
-        long size = page.getSize();
 
         System.out.println(page);
         Map<String,Object> map = new HashMap();

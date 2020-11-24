@@ -41,6 +41,11 @@ public class MeetingAreaBooking extends Model<MeetingAreaBooking> {
     private String bookingPerson;
 
     /**
+     * 预约单位
+     */
+    private String bookingUnit;
+
+    /**
      * 联系电话
      */
     private String mobile;
@@ -88,6 +93,11 @@ public class MeetingAreaBooking extends Model<MeetingAreaBooking> {
      * 会议物品(矿泉水、茶杯、咖啡、纸笔、指示牌、投影、LED屏、音响设备、其它设备)
      */
     private String meetingGoods;
+
+    /**
+     *填写预约时候的备注
+     */
+    private String remark;
 
     /**
      * 预约状态(0待审批，1审批通过，2审批拒绝)

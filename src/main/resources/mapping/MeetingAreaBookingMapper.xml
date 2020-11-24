@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="meeting_area_id" property="meetingAreaId" />
         <result column="booking_person" property="bookingPerson" />
+        <result column="booking_unit" property="bookingUnit" />
         <result column="mobile" property="mobile" />
         <result column="remark_info" property="remarkInfo" />
         <result column="booking_start_time" property="bookingStartTime" />
@@ -16,6 +17,7 @@
         <result column="meeting_table" property="meetingTable" />
         <result column="meeting_type" property="meetingType" />
         <result column="meeting_goods" property="meetingGoods" />
+        <result column="remark" property="remark" />
         <result column="approval_status" property="approvalStatus" />
         <result column="approval_by" property="approvalBy" />
         <result column="approval_time" property="approvalTime" />
