@@ -1,21 +1,42 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/doubleElection?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/yishang?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: 123456
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
+      # 池中最大连接数，包括闲置和使用中的连接
       maximum-pool-size: 12
+      # 等待来自池的连接的最大毫秒数
       connection-timeout: 60000
+      # 池中维护的最小空闲连接数
       minimum-idle: 10
+      # 连接允许在池中闲置的最长时间
       idle-timeout: 500000
+      # 池中连接最长生命周期
       max-lifetime: 540000
   servlet:
     enabled: true
     multipart:
+      # 单个文件大小
       max-file-size: 10MB
-      max-request-size: 200MB
+      # 总文件大小
+      max-request-size: 30MB
+
   #spring配置静态资源路径
   resources:
     static-locations: classpath:/static/
+
+template-id:
+  activity-success-msg: sRWDJwhqvqe1TM1HyidjyJxQ20YzyZG0snNN_CszHvU
+  activity-fail-msg: 8IPrZpnqBvfo6M1B_hGND38AbeYOnkuPaLRfFfCxozE
+  receive-success-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
+  receive-fail-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
+  meeting-success-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
+  meeting-fail-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
+
+
+
+
+

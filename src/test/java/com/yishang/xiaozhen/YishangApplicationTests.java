@@ -1,10 +1,6 @@
 package com.yishang.xiaozhen;
 
-import com.yishang.xiaozhen.entity.AdminUser;
-import com.yishang.xiaozhen.mapper.AdminUserMapper;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -12,29 +8,29 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 class YishangApplicationTests {
 
-	@Autowired
-	private AdminUserMapper adminMapper;
-
-	@Test
-	void contextLoads() {
-		System.out.println("122121");
-	}
-
-	@Test
-	public void addUser(){
-		AdminUser user = new AdminUser();
-		user.setRealName("测试");
-		int insert = adminMapper.insert(user);
-		System.out.println(insert);
-	}
-
-	@Test
-	public void update(){
-		AdminUser user = new AdminUser();
-		user.setId("bcb15cbf044b5793b04d4ed08b2c9cd3");
-		int i = adminMapper.updateById(user);
-		System.out.println(i);
-	}
+//	@Autowired
+//	private AdminUserMapper adminMapper;
+//
+//	@Test
+//	void contextLoads() {
+//		System.out.println("122121");
+//	}
+//
+//	@Test
+//	public void addUser(){
+//		AdminUser user = new AdminUser();
+//		user.setRealName("测试");
+//		int insert = adminMapper.insert(user);
+//		System.out.println(insert);
+//	}
+//
+//	@Test
+//	public void update(){
+//		AdminUser user = new AdminUser();
+//		user.setId("bcb15cbf044b5793b04d4ed08b2c9cd3");
+//		int i = adminMapper.updateById(user);
+//		System.out.println(i);
+//	}
 
 
 }

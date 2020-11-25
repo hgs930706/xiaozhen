@@ -119,6 +119,20 @@ public class ActivityServiceImpl{
     }
 
 
+    public ResultUtil detail2(String id) {
+        Activity activity = activityMapper.selectById(id);
+        List<ActivityCount> details = activityCountServiceImpl.details(id);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("activityName",activity.getActivityName());
+        jsonObject.put("activityImage",activity.getActivityImage());
+        jsonObject.put("activityRemark",activity.getActivityRemark());
+        jsonObject.put("activityAddress",activity.getActivityAddress());
+        jsonObject.put("activityDetail",activity.getActivityDetail());
+        jsonObject.put("countDetails",details);
+        return ResultUtil.success(jsonObject);
+    }
+
+
     public ResultUtil update(Activity object, MultipartFile file) {
         String imageUrl = ImageUploadUtil.uploadImage(file);
         object.setActivityImage(imageUrl);

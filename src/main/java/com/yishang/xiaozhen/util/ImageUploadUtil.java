@@ -12,29 +12,30 @@ import java.util.UUID;
 public class ImageUploadUtil {
 
     public static String uploadImage(MultipartFile file) {
-        if (file.isEmpty()) {
+        if (file != null) {
+            //文件名
+            String fileName = file.getOriginalFilename();
+            // 后缀名
+            String suffixName = fileName.substring(fileName.lastIndexOf("."));
+            // 新文件名
+            fileName = UUID.randomUUID() + suffixName;
+            // 上传后的路径
+            String filePath = "D:\\image_xz\\";
+            File dest = new File(filePath + fileName);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            try {
+                file.transferTo(dest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(filePath + fileName);
+
+            return filePath + fileName;
+        }else{
             return "";
         }
-        //文件名
-        String fileName = file.getOriginalFilename();
-        // 后缀名
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        // 新文件名
-        fileName = UUID.randomUUID() + suffixName;
-        // 上传后的路径
-        String filePath = "D:\\image_xz\\";
-        File dest = new File(filePath + fileName);
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
-        try {
-            file.transferTo(dest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(filePath + fileName);
-
-        return filePath + fileName;
     }
 
     private void uploadImage(MultipartFile file, HttpServletRequest request){

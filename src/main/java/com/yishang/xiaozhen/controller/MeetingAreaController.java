@@ -47,7 +47,7 @@ public class MeetingAreaController {
     @PostMapping("/insert")
     public ResultUtil insert(MeetingArea meetingArea, MultipartFile file){
         ResultUtil result = meetingAreaServiceImpl.insert(meetingArea,file);
-        return ResultUtil.success(result);
+        return result;
     }
 
     @PostMapping("/update")

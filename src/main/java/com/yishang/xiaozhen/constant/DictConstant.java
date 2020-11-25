@@ -10,4 +10,7 @@ public class DictConstant {
 
     //街区配置
     public static final String TOWNLET_STREET_TYPE = "townlet_street_type";
+
+    //参观预约简介
+    public static final String TOWNLET_VISIT = "townlet_visit";
 }
