@@ -24,11 +24,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         QueryWrapper<AdminUser> query = new QueryWrapper<>();
         query.eq("username", username);
         AdminUser user = adminUserMapper.selectOne(query);
+        if(user == null){
+            throw new UsernameNotFoundException("用户不存在。");
+        }
         //获取的权限集合
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_ONE");
         roles.add("ROLE_TWO");
-//        user.setRoles(roles);
+        user.setRoles(roles);
         return new JwtUser(user);
     }
 }

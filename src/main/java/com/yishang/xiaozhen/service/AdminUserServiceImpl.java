@@ -24,6 +24,7 @@ import java.util.Map;
 @Slf4j
 public class AdminUserServiceImpl {
 
+
     @Autowired
     private AdminUserMapper adminUserMapper;
 
@@ -34,13 +35,8 @@ public class AdminUserServiceImpl {
         QueryWrapper<AdminUser> query = new QueryWrapper<>();
         query.eq("username", object.getUsername()).eq("is_status", 1);
         Integer count = adminUserMapper.selectCount(query);
-        if (count > 0) {
-            log.info("用户名已存在。");
-            return ResultUtil.error("用户名已存在。");
-        }
-        String s = ImageUploadUtil.uploadImage(file);
-        object.setUserImage(s);
-        // todo 保存的时候密码加密
+        if (count > 0) {return ResultUtil.error("用户名已存在。");}
+        object.setUserImage(ImageUploadUtil.uploadImage(file));
         adminUserMapper.insert(object);
         // todo 维护用户和角色关系
         // 多个角色，勾选几个新增几个
@@ -60,9 +56,10 @@ public class AdminUserServiceImpl {
 
 
     public ResultUtil update(AdminUser object, MultipartFile file) {
-        String s = ImageUploadUtil.uploadImage(file);
-        object.setUserImage(s);
+//        String s = ImageUploadUtil.uploadImage(file);
+//        object.setUserImage(s);
         adminUserMapper.updateById(object);
+
         // todo 维护用户和角色关系，删除原有角色，在新增角色
         return ResultUtil.success();
     }
