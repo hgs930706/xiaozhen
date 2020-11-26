@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yishang.xiaozhen.mapper.IndexMapper">
+
+
+    <select id="userSum" resultType="java.lang.Integer">
+        SELECT COUNT(1) count from u_admin_user where is_status =1
+    </select>
+
+    <select id="todayNewlyAddedUser" resultType="java.lang.Integer">
+        SELECT COUNT(1) count from u_admin_user
+        where is_status =1
+        <![CDATA[
+        and create_time > #{todayStart}
+        ]]>
+    </select>
+
+    <select id="weekActivityReceiveCounts" resultType="java.lang.Integer">
+
+        SELECT COUNT(1) count from ys_activity_booking where is_status =1 and approval_status = 1
+        <![CDATA[
+        and create_time > #{weekLocalDateTime}
+        ]]>
+    </select>
+
+    <select id="weekReceReceiveCounts" resultType="java.lang.Integer">
+        SELECT COUNT(1) count from ys_receive_booking where is_status =1 and approval_status = 1
+        <![CDATA[
+        and create_time > #{weekLocalDateTime}
+        ]]>
+    </select>
+
+    <select id="weekMeetReceiveCounts" resultType="java.lang.Integer">
+        SELECT COUNT(1) count from ys_meeting_area_booking where is_status =1 and approval_status = 1
+        <![CDATA[
+        and create_time > #{weekLocalDateTime}
+        ]]>
+    </select>
+
+    <select id="activityWaitBooking" resultType="java.lang.Integer">
+     SELECT COUNT(1) count from ys_activity_booking where is_status =1 and approval_status = 0
+    </select>
+    <select id="receWaitBooking" resultType="java.lang.Integer">
+        SELECT COUNT(1) count from ys_receive_booking where is_status =1 and approval_status = 0
+    </select>
+    <select id="meetingWaitBooking" resultType="java.lang.Integer">
+        SELECT COUNT(1) count from ys_meeting_area_booking where is_status =1 and approval_status = 0
+    </select>
+
+
+
+
+
+
+</mapper>
