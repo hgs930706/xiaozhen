@@ -1,8 +1,11 @@
 package com.yishang.xiaozhen.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yishang.xiaozhen.entity.ActivityBookingImage;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,7 +27,9 @@ public class ActivityBookingDTO {
 
     private Integer bookingCount;
 
-    private String createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime;
 
     private Integer approvalStatus;
 

@@ -71,7 +71,7 @@ public class ActivityBookingController {
     @GetMapping("/detail")
     public ResultUtil detail(@RequestParam(name = "id") String id){
 
-        return null;
+        return activityBookingServiceImpl.detail(id);
     }
 
 

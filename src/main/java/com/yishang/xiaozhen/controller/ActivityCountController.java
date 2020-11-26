@@ -6,8 +6,6 @@ import com.yishang.xiaozhen.service.ActivityCountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 /**
  * <p>
  * 活动场次表 前端控制器
@@ -25,10 +23,6 @@ public class ActivityCountController {
 
     @PostMapping("/insert")
     public String insert(@RequestBody ActivityCount object){
-        object.setCount(3);
-        object.setActivityCountStartTime(LocalDateTime.now());
-        object.setActivityCountEndTime(LocalDateTime.now());
-        object.setActivityId("de444bad893a79f9137b2ccc581fbfd2");
         Integer insert = activityCountServiceImpl.insert(object);
         return null;
     }

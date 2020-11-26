@@ -1,6 +1,8 @@
 package com.yishang.xiaozhen.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yishang.xiaozhen.entity.Activity;
 import com.yishang.xiaozhen.entity.ActivityBooking;
 import com.yishang.xiaozhen.entity.ActivityBookingImage;
 import com.yishang.xiaozhen.entity.ApprovalAction;
@@ -8,6 +10,7 @@ import com.yishang.xiaozhen.entity.dto.ActivityBookingDTO;
 import com.yishang.xiaozhen.event.ActivityBookingEvent;
 import com.yishang.xiaozhen.mapper.ActivityBookingImageMapper;
 import com.yishang.xiaozhen.mapper.ActivityBookingMapper;
+import com.yishang.xiaozhen.mapper.ActivityMapper;
 import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ImageUploadUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
@@ -34,6 +37,8 @@ import java.util.Map;
 @Service
 public class ActivityBookingServiceImpl {
 
+    @Autowired
+    private ActivityMapper activityMapper;
     @Autowired
     private ActivityBookingMapper activityBookingMapper;
 
@@ -118,8 +123,30 @@ public class ActivityBookingServiceImpl {
         return map;
     }
 
-    public Object detail(String id) {
-        return null;
+    public ResultUtil detail(String id) {
+        //预约
+        ActivityBooking activityBooking = activityBookingMapper.selectById(id);
+
+        //预约图片
+        QueryWrapper<ActivityBookingImage>  query = new  QueryWrapper<>();
+        query.eq("activity_booking_id",id);
+        List<ActivityBookingImage> activityBookingImages = activityBookingImageMapper.selectList(query);
+
+        //活动名称
+        Activity activity = activityMapper.selectById(activityBooking.getActivityId());
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("activityName",activity.getActivityName());
+        jsonObject.put("images",activityBookingImages);
+        jsonObject.put("openId",activityBooking.getOpenId());
+        jsonObject.put("bookingUnit",activityBooking.getBookingUnit());
+        jsonObject.put("bookingPerson",activityBooking.getBookingPerson());
+        jsonObject.put("mobile",activityBooking.getMobile());
+        jsonObject.put("joinPeople",activityBooking.getJoinPeople());
+        jsonObject.put("bookingCount",activityBooking.getBookingCount());
+        jsonObject.put("createTime",activityBooking.getCreateTime());
+
+        return ResultUtil.success(jsonObject);
     }
 
     public Integer update(ActivityBooking meetingArea) {
