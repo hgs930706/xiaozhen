@@ -28,13 +28,13 @@ public class ActivityBookingController {
      *
      * @param activityName 活动名称
      * @param createTime 提交活动报名时间
-     * @param isStatus
+     * @param approvalStatus
      * @return
      */
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size,String activityName, String createTime, Integer isStatus){
+    public ResultUtil list(Integer page,Integer size,String activityName, String createTime, Integer approvalStatus){
 
-        Map<String, Object> list = activityBookingServiceImpl.list(page,size,activityName, createTime, isStatus);
+        Map<String, Object> list = activityBookingServiceImpl.list(page,size,activityName, createTime, approvalStatus);
         return ResultUtil.success(list);
     }
 

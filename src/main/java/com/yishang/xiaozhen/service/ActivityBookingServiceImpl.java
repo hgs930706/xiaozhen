@@ -1,22 +1,26 @@
 package com.yishang.xiaozhen.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.ActivityBooking;
 import com.yishang.xiaozhen.entity.ActivityBookingImage;
 import com.yishang.xiaozhen.entity.ApprovalAction;
+import com.yishang.xiaozhen.entity.dto.ActivityBookingDTO;
 import com.yishang.xiaozhen.event.ActivityBookingEvent;
+import com.yishang.xiaozhen.mapper.ActivityBookingImageMapper;
 import com.yishang.xiaozhen.mapper.ActivityBookingMapper;
+import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ImageUploadUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +48,9 @@ public class ActivityBookingServiceImpl {
 
     @Autowired
     private ActivityBookingImageServiceImpl activityBookingImageServiceImpl;
+
+    @Autowired
+    private ActivityBookingImageMapper activityBookingImageMapper;
 
     @Transactional
     public Integer approval(String id, String approvalRemark, Integer approvalStatus) {
@@ -85,18 +92,29 @@ public class ActivityBookingServiceImpl {
     }
 
 
-    public Map<String, Object> list(Integer page, Integer size, String activityName, String createTime, Integer isStatus) {
-        IPage<ActivityBooking> ipage = new Page<>(0, 10);
-        QueryWrapper<ActivityBooking> query = new QueryWrapper<>();
-//        query.eq("booking_time", bookingTime);
-//        query.eq("create_time", createTime);
-        query.eq("is_status", 1);
-
-        ipage = activityBookingMapper.selectPage(ipage, query);
+    public Map<String, Object> list(Integer page, Integer size, String activityName, String createTime, Integer approvalStatus) {
+        LocalDateTime createDate = null;
+        if(!StringUtils.isEmpty(createTime)){
+            createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
+        }
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+        List<ActivityBookingDTO> activityBookingDTOS = activityBookingMapper.selectPage((page - 1) * size, size, activityName, createDate, approvalStatus);
+        // 可以优化为，批量查询
+        for (ActivityBookingDTO dto : activityBookingDTOS) {
+            QueryWrapper<ActivityBookingImage>  query = new  QueryWrapper<>();
+            query.eq("activity_booking_id",dto.getId());
+            List<ActivityBookingImage> activityBookingImages = activityBookingImageMapper.selectList(query);
+            dto.setImages(activityBookingImages);
+        }
 
         Map<String, Object> map = new HashMap();
-        map.put("list", ipage.getRecords());
-        map.put("total", ipage.getTotal());
+        map.put("list", activityBookingDTOS);
+        map.put("total", activityBookingMapper.selectCount(activityName, createDate, approvalStatus));
         return map;
     }
 

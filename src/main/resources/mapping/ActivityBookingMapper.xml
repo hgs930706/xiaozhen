@@ -25,5 +25,56 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
+    <sql id="Base_Column_List">
+
+    </sql>
+
+
+    <select id="selectPage" resultType="com.yishang.xiaozhen.entity.dto.ActivityBookingDTO">
+        select
+            a.activity_name activityName,
+            b.id,
+            b.open_id openId,
+            b.booking_unit bookingUnit,
+            b.booking_person bookingPerson,
+            b.mobile,
+            b.join_people joinPeople,
+            b.booking_count bookingCount,
+            b.create_time createTime,
+            b.approval_status approvalStatus
+        from ys_activity a
+        INNER JOIN ys_activity_booking b
+        ON a.id = b.activity_id
+        where a.is_status = 1
+        <if test="activityName != null and activityName != ''">
+            and a.activity_name like CONCAT ('%',#{activityName},'%')
+        </if>
+        <if test="approvalStatus != null and approvalStatus != ''">
+            and b.approval_status = #{approvalStatus}
+        </if>
+        <if test="createTime != null">
+            and b.create_time > #{createTime}
+        </if>
+        ORDER BY b.create_time DESC
+        LIMIT #{page},#{size}
+
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select
+           count(1) count
+        from ys_activity a
+        INNER JOIN ys_activity_booking b
+        ON a.id = b.activity_id
+        where a.is_status = 1
+        <if test="activityName != null and activityName != ''">
+            and a.activity_name like CONCAT ('%',#{activityName},'%')
+        </if>
+        <if test="approvalStatus != null and approvalStatus != ''">
+            and b.approval_status = #{approvalStatus}
+        </if>
+        <if test="createTime != null">
+            and b.create_time > #{createTime}
+        </if>
+    </select>
 
 </mapper>

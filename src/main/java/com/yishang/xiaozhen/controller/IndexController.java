@@ -39,7 +39,7 @@ public class IndexController {
 
 
     /**
-     * 全部、预约待处理
+     * 全部、预约待处理,返回的百分比
      * @return
      */
     @GetMapping("/waitHandleBooking")
