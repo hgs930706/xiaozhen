@@ -14,7 +14,7 @@ import com.yishang.xiaozhen.service.MsgActionServiceImpl;
 import com.yishang.xiaozhen.util.HttpClientUtil;
 import com.yishang.xiaozhen.util.TemplateData;
 import com.yishang.xiaozhen.util.WechatTemplate;
-import com.yishang.xiaozhen.util.WxBaseUtil;
+import com.yishang.xiaozhen.config.WxBaseConfig;
 import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class PushMsgListener {
-
 
     @Resource(name = "taskExecutor")
     private ThreadPoolTaskExecutor taskExecutor;
@@ -83,7 +82,7 @@ public class PushMsgListener {
             } else if (booking.getApprovalStatus() == 2) {
                 successMsg = sendActivityBookingFail(booking, activity, activityCount);
             }
-            String result = HttpClientUtil.post(WxBaseUtil.getTemplateURL(), successMsg, HttpClientUtil.DEFAULT_ENCODING);
+            String result = HttpClientUtil.post(WxBaseConfig.getTemplateURL(), successMsg, HttpClientUtil.DEFAULT_ENCODING);
             saveMsgAction(result, booking.getOpenId(),
                     booking.getApprovalStatus(), 1,
                     booking.getApprovalRemark(), booking.getBookingPerson(),
@@ -110,7 +109,7 @@ public class PushMsgListener {
             } else if (booking.getApprovalStatus() == 2) {
                 successMsg = sendReceiveBookingFail(booking);
             }
-            String result = HttpClientUtil.post(WxBaseUtil.getTemplateURL(), successMsg, HttpClientUtil.DEFAULT_ENCODING);
+            String result = HttpClientUtil.post(WxBaseConfig.getTemplateURL(), successMsg, HttpClientUtil.DEFAULT_ENCODING);
 
             //记录消息日志
             saveMsgAction(result, booking.getOpenId(),
@@ -140,7 +139,7 @@ public class PushMsgListener {
             } else if (booking.getApprovalStatus() == 2) {
                 successMsg = sendMeetingAreaBookingFail(booking, meetingArea);
             }
-            String result = HttpClientUtil.post(WxBaseUtil.getTemplateURL(), successMsg, HttpClientUtil.DEFAULT_ENCODING);
+            String result = HttpClientUtil.post(WxBaseConfig.getTemplateURL(), successMsg, HttpClientUtil.DEFAULT_ENCODING);
             //记录消息日志
             saveMsgAction(result, booking.getOpenId(),
                     booking.getApprovalStatus(), 3,

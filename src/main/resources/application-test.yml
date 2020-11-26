@@ -28,6 +28,10 @@ spring:
   resources:
     static-locations: classpath:/static/
 
+wx:
+  app-id: wx3d9b64b22ab377cf
+  app-secret: 819f315a68bb826b8337cf6faeb9d80b
+
 template-id:
    activity-success-msg: sRWDJwhqvqe1TM1HyidjyJxQ20YzyZG0snNN_CszHvU
    activity-fail-msg: 8IPrZpnqBvfo6M1B_hGND38AbeYOnkuPaLRfFfCxozE
@@ -35,6 +39,7 @@ template-id:
    receive-fail-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
    meeting-success-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
    meeting-fail-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
+
 
 
 

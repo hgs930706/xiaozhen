@@ -1,8 +1,9 @@
-package com.yishang.xiaozhen.util;
+package com.yishang.xiaozhen.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yishang.xiaozhen.entity.wx.AccessToken;
+import com.yishang.xiaozhen.util.HttpClientUtil;
 
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -12,7 +13,8 @@ import java.util.Arrays;
 /**
  * 对接微信的基本配置
  */
-public class WxBaseUtil {
+
+public class WxBaseConfig {
 
     //测试公众号
     private static final String APPID = "wx3d9b64b22ab377cf";

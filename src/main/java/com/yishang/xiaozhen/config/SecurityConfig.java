@@ -1,4 +1,4 @@
-package com.yishang.xiaozhen.config.security;
+package com.yishang.xiaozhen.config;
 
 
 import com.yishang.xiaozhen.config.jwt.JWTAuthenticationFilter;

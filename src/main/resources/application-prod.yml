@@ -28,6 +28,10 @@ spring:
   resources:
     static-locations: classpath:/static/
 
+wx:
+  app-id: wx5f8846d229ab65ea
+  app-secret: e53f76a97f11fed5d6d7b9bc30e18ed7
+
 template-id:
   activity-success-msg: sRWDJwhqvqe1TM1HyidjyJxQ20YzyZG0snNN_CszHvU
   activity-fail-msg: 8IPrZpnqBvfo6M1B_hGND38AbeYOnkuPaLRfFfCxozE

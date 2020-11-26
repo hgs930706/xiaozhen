@@ -7,7 +7,7 @@ import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.WxUser;
 import com.yishang.xiaozhen.mapper.WxUserMapper;
 import com.yishang.xiaozhen.util.HttpClientUtil;
-import com.yishang.xiaozhen.util.WxBaseUtil;
+import com.yishang.xiaozhen.config.WxBaseConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +43,7 @@ public class WxLoginApi {
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException {
 
-        response.sendRedirect(WxBaseUtil.getWebUrl());
+        response.sendRedirect(WxBaseConfig.getWebUrl());
     }
 
     /**
@@ -57,13 +57,13 @@ public class WxLoginApi {
     public String callBack(HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         String code = request.getParameter("code");
-        String json = HttpClientUtil.get(WxBaseUtil.getCode(code));
+        String json = HttpClientUtil.get(WxBaseConfig.getCode(code));
 
         JSONObject obj = JSON.parseObject(json);
         String accessToken = obj.getString("access_token");
         String openId = obj.getString("openid");
 
-        String infoJson = HttpClientUtil.get( WxBaseUtil.getBaseUserInfo(accessToken,openId));
+        String infoJson = HttpClientUtil.get(WxBaseConfig.getBaseUserInfo(accessToken,openId));
         log.info("从微信获取的用户信息：{}", infoJson);
 
         //保存微信端授权用户
@@ -129,7 +129,7 @@ public class WxLoginApi {
         PrintWriter out = null;
         try {
             out = resp.getWriter();
-            if (WxBaseUtil.checkSignature(signature, timestamp, nonce)) {
+            if (WxBaseConfig.checkSignature(signature, timestamp, nonce)) {
                 out.print(echostr);
                 System.out.println("微信接入成功！");
             }
