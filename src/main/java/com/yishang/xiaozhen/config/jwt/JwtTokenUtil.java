@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.config.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +67,11 @@ public class JwtTokenUtil {
 
     // 是否已过期
     public static boolean isExpiration(String token){
-        return getTokenBody(token).getExpiration().before(new Date());
-//        ExpiredJwtException
+        try {
+            return getTokenBody(token).getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 
     private static Claims getTokenBody(String token){
@@ -75,7 +79,6 @@ public class JwtTokenUtil {
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token)
                 .getBody();
-        log.info("jwt解析的内容：{}",claims);
         return claims;
     }
 

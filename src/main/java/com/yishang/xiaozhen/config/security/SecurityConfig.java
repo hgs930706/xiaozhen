@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 不需要session
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/user/**").permitAll()
                 .antMatchers("/api/wx/login").permitAll()
                 .antMatchers("/api/wx/callBack").permitAll()
                 .antMatchers("/api/**").hasAuthority("ROLE_WX")//微信相关接口放心

@@ -51,9 +51,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // g查看源代码会发现调用etPrincipal()方法会返回一个实现了`UserDetails`接口的对象
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
-//        boolean isRemember = rememberMe.get() == 1;
-
-        System.out.println("jwtUser:" + jwtUser.toString());
         List<String> roles = new ArrayList();
         // 因为在JwtUser中存了权限信息，可以直接获取，由于只有一个角色就这么干了
         Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
