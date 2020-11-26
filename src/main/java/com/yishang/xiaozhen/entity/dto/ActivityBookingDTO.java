@@ -32,6 +32,7 @@ public class ActivityBookingDTO {
     private LocalDateTime createTime;
 
     private Integer approvalStatus;
+    private String approvalStatusStr;
 
     private List<ActivityBookingImage> images;
 }

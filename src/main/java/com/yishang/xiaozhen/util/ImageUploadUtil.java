@@ -4,70 +4,67 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 public class ImageUploadUtil {
+    /**
+     * 图片文件上传
+     */
+    public static String uploadImage(MultipartFile file, HttpServletRequest request) throws Exception {
 
-    public static String uploadImage(MultipartFile file) {
-        if (file != null) {
-            //文件名
-            String fileName = file.getOriginalFilename();
-            // 后缀名
-            String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            // 新文件名
-            fileName = UUID.randomUUID() + suffixName;
-            // 上传后的路径
-            String filePath = "D:\\image_xz\\";
-            File dest = new File(filePath + fileName);
-            if (!dest.getParentFile().exists()) {
-                dest.getParentFile().mkdirs();
-            }
-            try {
-                file.transferTo(dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println(filePath + fileName);
+        String basePath = request.getScheme() + "://" + request.getServerName()
+                + ":" + request.getServerPort()+"/mimi/upload/images/";
 
-            return filePath + fileName;
-        }else{
-            return "";
+
+        String fileName = file.getOriginalFilename();//文件原始名称
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));//从最后一个.开始截取。截取fileName的后缀名
+        String newFileName = UUID.randomUUID() + suffixName; //文件新名称
+        //设置文件存储路径，可以存放在你想要指定的路径里面
+        String rootPath="D:/mimi/"+ File.separator+"upload/images/"; //上传图片存放位置
+
+        String filePath = rootPath+newFileName;
+        File newFile = new File(filePath);
+        //判断目标文件所在目录是否存在
+        if(!newFile.getParentFile().exists()){
+            //如果目标文件所在的目录不存在，则创建父目录
+            newFile.getParentFile().mkdirs();
         }
+
+        //将内存中的数据写入磁盘
+        file.transferTo(newFile);
+        //图片上传保存url
+        String imgUrl = basePath + newFileName;
+        return imgUrl;
     }
 
-    private void uploadImage(MultipartFile file, HttpServletRequest request){
+    /**
+     * 图片文件上传
+     */
+    public static String uploadImage(MultipartFile file){
+        String fileName = file.getOriginalFilename();//文件原始名称
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));//从最后一个.开始截取。截取fileName的后缀名
+        String newFileName = UUID.randomUUID() + suffixName; //文件新名称
+        //设置文件存储路径，可以存放在你想要指定的路径里面
+        String rootPath="D:/mimi/"+ File.separator+"upload/images/"; //上传图片存放位置
+
+        String filePath = rootPath+newFileName;
+        File newFile = new File(filePath);
+        //判断目标文件所在目录是否存在
+        if(!newFile.getParentFile().exists()){
+            //如果目标文件所在的目录不存在，则创建父目录
+            newFile.getParentFile().mkdirs();
+        }
+
+        //将内存中的数据写入磁盘
         try {
-            //-------把图片文件写入磁盘 start ----------------
-            File dest = new File("D://image_xz//234.png");
-            FileOutputStream fos = new FileOutputStream(dest);
-            //获取本地文件输入流
-            InputStream stream = file.getInputStream();
-            //写入目标文件
-            byte[] buffer = new byte[1024 * 1024];
-            int byteRead = 0;
-            //stream.read(buffer) 每次读到的数据存放在 buffer 数组中
-            while ((byteRead = stream.read(buffer)) != -1) {
-                //在 buffer 数组中 取出数据 写到 （输出流）磁盘上
-                fos.write(buffer, 0, byteRead);
-                fos.flush();
-            }
-            fos.close();
-            stream.close();
-            //-------把图片文件写入磁盘 end ----------------
-
-
-            //服务器图片地址
-            String baseURL = request.getScheme() + "://" + request.getServerName()
-                    + ":" + request.getServerPort()+"/mimi/upload/images/";
-            String imgUrl = baseURL+"新文件名字";
-            // http://localhost:8081/mimi/upload/images/新文件名字
-
-
-        }catch (Exception e){
-            System.out.println("");
+            file.transferTo(newFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        //图片上传保存url
+        String imgUrl =  newFileName;
+        return imgUrl;
     }
+
 }

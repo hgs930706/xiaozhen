@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -48,10 +49,10 @@ public class ActivityBookingApi {
      * @return
      */
     @PostMapping("/insert")
-    public ResultUtil insert(ActivityBooking object, MultipartFile[] files){
+    public ResultUtil insert(ActivityBooking object, MultipartFile[] files, HttpServletRequest request){
 
         object.setOpenId(JwtTokenUtil.currentUserName());
-        ResultUtil result = activityBookingServiceImpl.insert(object, files);
+        ResultUtil result = activityBookingServiceImpl.insert(object, files,request);
 
         return result;
     }

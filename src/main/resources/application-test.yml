@@ -24,10 +24,6 @@ spring:
       # 总文件大小
       max-request-size: 30MB
 
-  #spring配置静态资源路径
-  resources:
-    static-locations: classpath:/static/
-
 wx:
   app-id: wx3d9b64b22ab377cf
   app-secret: 819f315a68bb826b8337cf6faeb9d80b

@@ -18,7 +18,7 @@ public enum ApprovalStatusEnum {
     }
 
     public static String getStr(int order_status) {
-        for (MsgTypeEnum value : MsgTypeEnum.values()) {
+        for (ApprovalStatusEnum value : ApprovalStatusEnum.values()) {
             if (value.getCode() == order_status) {
                 return value.getMsg();
             }

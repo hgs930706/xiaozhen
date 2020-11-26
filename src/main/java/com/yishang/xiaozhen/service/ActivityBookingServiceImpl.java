@@ -7,6 +7,7 @@ import com.yishang.xiaozhen.entity.ActivityBooking;
 import com.yishang.xiaozhen.entity.ActivityBookingImage;
 import com.yishang.xiaozhen.entity.ApprovalAction;
 import com.yishang.xiaozhen.entity.dto.ActivityBookingDTO;
+import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
 import com.yishang.xiaozhen.event.ActivityBookingEvent;
 import com.yishang.xiaozhen.mapper.ActivityBookingImageMapper;
 import com.yishang.xiaozhen.mapper.ActivityBookingMapper;
@@ -21,7 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,11 +86,16 @@ public class ActivityBookingServiceImpl {
     }
 
     @Transactional
-    public ResultUtil insert(ActivityBooking object, MultipartFile[] files) {
+    public ResultUtil insert(ActivityBooking object, MultipartFile[] files, HttpServletRequest request) {
         activityBookingMapper.insert(object);
         if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile file : files) {
-                String imageUrl = ImageUploadUtil.uploadImage(file);
+                String imageUrl = null;
+                try {
+                    imageUrl = ImageUploadUtil.uploadImage(file,request);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 ActivityBookingImage activityBookingImage = new ActivityBookingImage();
                 activityBookingImage.setActivityBookingId(object.getId());
                 activityBookingImage.setImgeUrl(imageUrl);
@@ -94,6 +103,41 @@ public class ActivityBookingServiceImpl {
             }
         }
         return ResultUtil.success();
+    }
+
+    /**
+     * 图片文件上传
+     */
+    public Map<String, Object> uploadImage(MultipartFile file, HttpServletRequest request) throws Exception {
+        Map<String, Object> resultMap=new HashMap<String, Object>();
+
+        String basePath = request.getScheme() + "://" + request.getServerName()
+                + ":" + request.getServerPort()+"/mimi/upload/images/";
+
+        Long time = new Date().getTime();
+
+        String fileName = file.getOriginalFilename();//文件原始名称
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));//从最后一个.开始截取。截取fileName的后缀名
+        String newFileName = time+suffixName; //文件新名称
+        //设置文件存储路径，可以存放在你想要指定的路径里面
+        String rootPath="D:/mimi/"+ File.separator+"upload/images/"; //上传图片存放位置
+
+        String filePath = rootPath+newFileName;
+        File newFile = new File(filePath);
+        //判断目标文件所在目录是否存在
+        if(!newFile.getParentFile().exists()){
+            //如果目标文件所在的目录不存在，则创建父目录
+            newFile.getParentFile().mkdirs();
+        }
+
+        //将内存中的数据写入磁盘
+        file.transferTo(newFile);
+        //图片上传保存url
+        String imgUrl = basePath + newFileName;
+
+        resultMap.put("imgUrl", imgUrl);
+        resultMap.put("returnCode", 200);
+        return resultMap;
     }
 
 
@@ -105,6 +149,7 @@ public class ActivityBookingServiceImpl {
         List<ActivityBookingDTO> activityBookingDTOS = activityBookingMapper.selectPage((page - 1) * size, size, activityName, createDate, approvalStatus);
         // 可以优化为，批量查询
         for (ActivityBookingDTO dto : activityBookingDTOS) {
+            dto.setApprovalStatusStr(ApprovalStatusEnum.getStr(dto.getApprovalStatus()));
             QueryWrapper<ActivityBookingImage>  query = new  QueryWrapper<>();
             query.eq("activity_booking_id",dto.getId());
             List<ActivityBookingImage> activityBookingImages = activityBookingImageMapper.selectList(query);
