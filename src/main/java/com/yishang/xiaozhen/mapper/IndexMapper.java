@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface IndexMapper {
@@ -27,5 +29,8 @@ public interface IndexMapper {
     Integer  receWaitBooking();
     Integer  meetingWaitBooking();
 
-
+    // 图表
+    List<Map<String,String>> chartActivity();
+    List<Map<String,String>> chartRece();
+    List<Map<String,String>> chartMeeting();
 }

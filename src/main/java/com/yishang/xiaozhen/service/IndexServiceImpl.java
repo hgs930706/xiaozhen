@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -127,8 +129,41 @@ public class IndexServiceImpl {
      * @return
      */
     public ResultUtil bookingWeekCount(){
+        List<Map<String, String>> activitMap = indexMapper.chartActivity();
+        List<Integer> activitCount = new ArrayList<>();
+        List<String> activitDays = new ArrayList<>();
+        for (Map<String, String> map : activitMap) {
+            String count = String.valueOf(map.get("count"));
+            String days = map.get("days");
+            activitCount.add(Integer.parseInt(count));
+            activitDays.add(days);
+        }
 
-
-        return null;
+        List<Map<String, String>> receMap = indexMapper.chartRece();
+        List<Integer> receCount = new ArrayList<>();
+        List<String> receDays = new ArrayList<>();
+        for (Map<String, String> map : receMap) {
+            String count = String.valueOf(map.get("count"));
+            String days = map.get("days");
+            receCount.add(Integer.parseInt(count));
+            receDays.add(days);
+        }
+        List<Map<String, String>> meetingMap = indexMapper.chartMeeting();
+        List<Integer> meetingCount = new ArrayList<>();
+        List<String> meetingDays = new ArrayList<>();
+        for (Map<String, String> map : meetingMap) {
+            String count = String.valueOf(map.get("count"));
+            String days = map.get("days");
+            meetingCount.add(Integer.parseInt(count));
+            meetingDays.add(days);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("activitCount",activitCount);
+        map.put("activitDays",activitDays);
+        map.put("receCount",receCount);
+        map.put("receDays",receDays);
+        map.put("meetingCount",meetingCount);
+        map.put("meetingDays",meetingDays);
+        return ResultUtil.success(map);
     }
 }

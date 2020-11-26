@@ -48,6 +48,45 @@
     </select>
 
 
+    <select id="chartActivity" resultType="java.util.Map">
+        SELECT
+        DATE_FORMAT(create_time, '%Y-%m-%d' ) days,
+        count(*) count
+        FROM
+        ( SELECT create_time FROM ys_activity_booking
+        <![CDATA[
+        WHERE is_status =1 and DATE_SUB( CURDATE( ), INTERVAL 7 DAY ) <= date( create_time) ) as day
+        ]]>
+        GROUP BY
+        days
+        ORDER BY create_time
+    </select>
+    <select id="chartRece" resultType="java.util.Map">
+        SELECT
+        DATE_FORMAT(create_time, '%Y-%m-%d' ) days,
+        count(*) count
+        FROM
+        ( SELECT create_time FROM ys_receive_booking
+        <![CDATA[
+        WHERE is_status =1 and DATE_SUB( CURDATE( ), INTERVAL 7 DAY ) <= date( create_time) ) as day
+        ]]>
+        GROUP BY
+        days
+        ORDER BY create_time
+    </select>
+    <select id="chartMeeting" resultType="java.util.Map">
+        SELECT
+        DATE_FORMAT(create_time, '%Y-%m-%d' ) days,
+        count(*) count
+        FROM
+        ( SELECT create_time FROM ys_meeting_area_booking
+        <![CDATA[
+        WHERE is_status =1 and DATE_SUB( CURDATE( ), INTERVAL 7 DAY ) <= date( create_time) ) as day
+        ]]>
+        GROUP BY
+        days
+        ORDER BY create_time
+    </select>
 
 
 

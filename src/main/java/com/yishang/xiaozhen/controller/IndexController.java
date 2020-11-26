@@ -56,7 +56,7 @@ public class IndexController {
     public ResultUtil bookingWeekCount(){
 
 
-        return null;
+        return indexServiceImpl.bookingWeekCount();
     }
 
 
