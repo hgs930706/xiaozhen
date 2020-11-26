@@ -3,12 +3,10 @@ package com.yishang.xiaozhen.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yishang.xiaozhen.service.ReceiveBookingServiceImpl;
-import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -30,14 +28,18 @@ public class ReceiveBookingController {
      *
      * @param bookingTime 预约时间
      * @param createTime 提交预约时间
-     * @param isStatus
+     * @param approvalStatus
      * @return
      */
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size,String bookingTime, String createTime, Integer isStatus){
-        LocalDateTime bookingDate = LocalDateTime.parse(bookingTime, DateUtil.dateFormatter3);
-        System.out.println(bookingDate);
-        Map<String, Object> list = receiveBookingServiceImpl.list(page,size,bookingDate, createTime, isStatus);
+    public ResultUtil list(@RequestParam("page") Integer page,@RequestParam("size") Integer size,String bookingTime, String createTime, Integer approvalStatus){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+        Map<String, Object> list = receiveBookingServiceImpl.list(page,size,bookingTime, createTime, approvalStatus);
         return ResultUtil.success(list);
     }
 
@@ -70,9 +72,9 @@ public class ReceiveBookingController {
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
 
-        return null;
+        return receiveBookingServiceImpl.detail(id);
     }
 
 }

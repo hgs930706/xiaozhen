@@ -37,7 +37,7 @@ public class ActivityBookingApi {
      * @return
      */
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
         ResultUtil detail = activityServiceImpl.detail(id);
         return detail;
     }
@@ -62,6 +62,12 @@ public class ActivityBookingApi {
      */
     @GetMapping("/list")
     public ResultUtil list(Integer page,Integer size){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
         //根据最新的活动，排序
         Map<String, Object> list = activityServiceImpl.list(page, size);
         return ResultUtil.success(list);

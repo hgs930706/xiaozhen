@@ -42,7 +42,7 @@ public class AdminUserController {
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam(name = "id") String id){
+    public String detail(@RequestParam("id") String id){
 
         return null;
     }
@@ -72,9 +72,9 @@ public class AdminUserController {
      * @return
      */
     @PostMapping("/reset")
-    public ResultUtil reset(@RequestParam(name = "oldPassword") String oldPassword
-            ,@RequestParam(name = "newPassword")String newPassword
-            ,@RequestParam(name = "confirmPassword") String confirmPassword){
+    public ResultUtil reset(@RequestParam("oldPassword") String oldPassword
+            ,@RequestParam("newPassword")String newPassword
+            ,@RequestParam("confirmPassword") String confirmPassword){
 
         String username = JwtTokenUtil.currentUserName();
         QueryWrapper<AdminUser> query = new QueryWrapper<>();

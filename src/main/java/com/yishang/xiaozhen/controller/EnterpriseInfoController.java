@@ -28,12 +28,18 @@ public class EnterpriseInfoController {
 
     @GetMapping("/list")
     public ResultUtil list(Integer page,Integer size,String enterpriseName,Integer streetType){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
         Map<String, Object> list = enterpriseInfoServiceImpl.list(page,size,enterpriseName, streetType);
         return ResultUtil.success(list);
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam(name = "id") String id){
+    public String detail(@RequestParam("id") String id){
 
         return null;
     }

@@ -35,7 +35,7 @@ public class ActivityController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
         ResultUtil detail = activityServiceImpl.detail2(id);
         return detail;
     }

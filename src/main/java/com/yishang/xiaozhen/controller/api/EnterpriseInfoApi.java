@@ -35,7 +35,7 @@ public class EnterpriseInfoApi {
      * @return 返回当前街区类型，所有企业
      */
     @GetMapping("/list")
-    public ResultUtil list(@RequestParam(name = "streetType") Integer streetType){
+    public ResultUtil list(@RequestParam("streetType") Integer streetType){
         QueryWrapper<EnterpriseInfo> query = new QueryWrapper<>();
         query.eq("street_type", streetType);
         query.eq("is_status", 1);
@@ -52,7 +52,7 @@ public class EnterpriseInfoApi {
      * @return
      */
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
 
         EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(id);
 

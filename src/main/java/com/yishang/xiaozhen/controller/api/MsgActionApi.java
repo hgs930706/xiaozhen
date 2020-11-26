@@ -31,13 +31,13 @@ public class MsgActionApi {
      * @return
      */
     @GetMapping("/msgs")
-    public Map msgs(@RequestParam(name = "openId") String openId,Integer page,Integer size){
+    public Map msgs(@RequestParam("openId") String openId,Integer page,Integer size){
         Map<String, Object> list = msgActionServiceImpl.list(page, size, openId);
         return list;
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam(name = "id") String id){
+    public String detail(@RequestParam("id") String id){
 
         return null;
     }

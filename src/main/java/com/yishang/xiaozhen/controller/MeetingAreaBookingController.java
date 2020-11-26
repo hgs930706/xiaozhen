@@ -34,7 +34,12 @@ public class MeetingAreaBookingController {
      */
     @GetMapping("/list")
     public ResultUtil list(Integer page,Integer size,String meetingName, String bookingStartTime, String bookingEndTime, Integer isStatus){
-
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
         Map<String, Object> list = meetingAreaBookingServiceImpl.list(page,size,meetingName, bookingStartTime, bookingEndTime, isStatus);
         return ResultUtil.success(list);
     }
@@ -58,7 +63,7 @@ public class MeetingAreaBookingController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
         Object detail = meetingAreaBookingServiceImpl.detail(id);
         return ResultUtil.success(detail);
     }

@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.util;
 
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
@@ -13,8 +14,24 @@ public class DateUtil {
     public static final DateTimeFormatter dateFormatter6 = DateTimeFormatter.ofPattern("MM月dd日");
 
 
+    public static String getDateTimeAsString(LocalDateTime localDateTime) {
+        if(localDateTime == null){
+            return "";
+        }
+        return localDateTime.format(dateFormatter3);
+    }
+
+    public static String getDateTimeAsString(LocalDateTime localDateTime, String format) {
+        if(localDateTime == null){
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return localDateTime.format(formatter);
+    }
+
     /**
-     *  正则：手机号（简单）, 1字头＋10位数字即可.
+     * 正则：手机号（简单）, 1字头＋10位数字即可.
+     *
      * @param in
      * @return
      */

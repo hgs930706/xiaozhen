@@ -48,7 +48,7 @@ public class MeetingAreaBookingApi {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
         ResultUtil detail = meetingAreaServiceImpl.detail(id);
         return detail;
     }
@@ -59,7 +59,7 @@ public class MeetingAreaBookingApi {
      * @return
      */
     @GetMapping("/select")
-    public ResultUtil select(@RequestParam(name = "id") String id){
+    public ResultUtil select(@RequestParam("id") String id){
         ResultUtil detail = meetingAreaServiceImpl.select(id);
         return detail;
     }

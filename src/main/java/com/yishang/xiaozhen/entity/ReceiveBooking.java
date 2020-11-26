@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -117,6 +118,9 @@ public class ReceiveBooking extends Model<ReceiveBooking> {
 
     @TableField(exist = false)
     private String msgType = "receiveType";
+
+    @TableField(exist = false)
+    private List<ReceiveBookingImage> images;
 
     @Override
     protected Serializable pkVal() {

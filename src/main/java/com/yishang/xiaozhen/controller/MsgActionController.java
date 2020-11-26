@@ -29,13 +29,19 @@ public class MsgActionController {
 
     @GetMapping("/list")
     public ResultUtil list(Integer page,Integer size,String nickname,Integer sendStatus,String createTime){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
         LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
         Map<String, Object> list = msgActionServiceImpl.list(page,size,nickname, sendStatus,createDate);
         return ResultUtil.success(list);
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam(name = "id") String id){
+    public String detail(@RequestParam("id") String id){
 
         return null;
     }

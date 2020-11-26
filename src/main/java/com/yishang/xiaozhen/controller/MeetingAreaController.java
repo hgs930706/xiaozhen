@@ -38,7 +38,7 @@ public class MeetingAreaController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
         meetingAreaServiceImpl.detail(id);
         return ResultUtil.success();
     }

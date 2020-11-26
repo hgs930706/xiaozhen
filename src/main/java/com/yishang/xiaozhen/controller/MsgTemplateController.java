@@ -35,7 +35,7 @@ public class MsgTemplateController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
         msgTemplateServiceImpl.detail(id);
         return null;
     }

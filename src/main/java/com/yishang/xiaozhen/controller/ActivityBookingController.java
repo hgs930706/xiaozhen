@@ -32,8 +32,13 @@ public class ActivityBookingController {
      * @return
      */
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size,String activityName, String createTime, Integer approvalStatus){
-
+    public ResultUtil list(@RequestParam("page") Integer page,@RequestParam("size")Integer size,String activityName, String createTime, Integer approvalStatus){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
         Map<String, Object> list = activityBookingServiceImpl.list(page,size,activityName, createTime, approvalStatus);
         return ResultUtil.success(list);
     }
@@ -69,7 +74,7 @@ public class ActivityBookingController {
 
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam(name = "id") String id){
+    public ResultUtil detail(@RequestParam("id") String id){
 
         return activityBookingServiceImpl.detail(id);
     }

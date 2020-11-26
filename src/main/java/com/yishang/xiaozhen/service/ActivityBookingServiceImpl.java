@@ -102,12 +102,6 @@ public class ActivityBookingServiceImpl {
         if(!StringUtils.isEmpty(createTime)){
             createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
         }
-        if (null == page || page <= 0) {
-            page = 1;
-        }
-        if (null == size || size <= 0) {
-            size = 10;
-        }
         List<ActivityBookingDTO> activityBookingDTOS = activityBookingMapper.selectPage((page - 1) * size, size, activityName, createDate, approvalStatus);
         // 可以优化为，批量查询
         for (ActivityBookingDTO dto : activityBookingDTOS) {
