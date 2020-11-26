@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -32,50 +31,19 @@ import java.util.List;
 @RequestMapping("/api/wx")
 public class WxLoginApi {
 
-    //测试公众号
-    private static final String AppID = "wx3d9b64b22ab377cf";
-    private static final String AppSecret = "819f315a68bb826b8337cf6faeb9d80b";
-
-    //如果用户同意授权，页面将跳转至此地址
-    private static final String BACK_URL = "http://27816r3s27.wicp.vip/api/wx/callBack";
-    // 也可以直接回调到前端
-//    private static final String BACK_URL = "http://27816r3s27.wicp.vip:32056/login";
-
-    //第一步：用户同意授权，获取code
-    private static final String INDEX = "https://open.weixin.qq.com/connect/oauth2/authorize" +
-            "?appid=APPID" +
-            "&redirect_uri=BACK_URL" +
-            "&response_type=code" +
-            "&scope=snsapi_userinfo" +
-            "&state=STATE#wechat_redirect";
-
-    //第二步：通过code换取网页授权access_token
-    private static final String INDEX2 = "https://api.weixin.qq.com/sns/oauth2/access_token" +
-            "?appid=APPID" +
-            "&secret=SECRET" +
-            "&code=CODE" +
-            "&grant_type=authorization_code";
-
-    //第四步：拉取用户信息(需scope为 snsapi_userinfo)
-    private static final String INDEX3 = "https://api.weixin.qq.com/sns/userinfo" +
-            "?access_token=ACCESS_TOKEN" +
-            "&openid=OPENID&lang=zh_CN";
-
     @Autowired
     private WxUserMapper wxUserMapper;
 
     /**
      * 第一步：C端直接调用此接口，引导用户同意授权，获取code
      *
-     * @param request
      * @param response
      * @throws IOException
      */
     @GetMapping("/login")
-    public void login(HttpServletRequest request,
-                      HttpServletResponse response) throws IOException {
-        String url = INDEX.replace("APPID", AppID).replace("BACK_URL", URLEncoder.encode(BACK_URL));
-        response.sendRedirect(url);
+    public void login(HttpServletResponse response) throws IOException {
+
+        response.sendRedirect(WxBaseUtil.getWebUrl());
     }
 
     /**
@@ -86,18 +54,16 @@ public class WxLoginApi {
      * @throws IOException
      */
     @GetMapping("/callBack")
-    public void callBack(HttpServletRequest request,
+    public String callBack(HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         String code = request.getParameter("code");
-        String url = INDEX2.replace("APPID", AppID).replace("SECRET", AppSecret).replace("CODE", code);
-        String json = HttpClientUtil.get(url);
+        String json = HttpClientUtil.get(WxBaseUtil.getCode(code));
 
         JSONObject obj = JSON.parseObject(json);
-        String openId = obj.getString("openid");
         String accessToken = obj.getString("access_token");
+        String openId = obj.getString("openid");
 
-        String infoUrl = INDEX3.replace("ACCESS_TOKEN",accessToken).replace("OPENID",openId);
-        String infoJson = HttpClientUtil.get(infoUrl);
+        String infoJson = HttpClientUtil.get( WxBaseUtil.getBaseUserInfo(accessToken,openId));
         log.info("从微信获取的用户信息：{}", infoJson);
 
         //保存微信端授权用户
@@ -108,8 +74,9 @@ public class WxLoginApi {
         roles.add("ROLE_WX");
         String token = JwtTokenUtil.createToken(openId, roles, true);
         // 这里就可以配置，跳转路径，例如成功获取用户信息之后，我们跳转到我们自己的首页
-        response.sendRedirect("http://192.168.31.28:3001/#/home/business?token="+ JwtTokenUtil.TOKEN_PREFIX + token);
+//        response.sendRedirect("http://192.168.31.28:3001/#/home/business?token="+ JwtTokenUtil.TOKEN_PREFIX + token);
         log.info("微信客户端token：{}", token);
+        return "网页授权成功";
     }
 
     @GetMapping("/test")
