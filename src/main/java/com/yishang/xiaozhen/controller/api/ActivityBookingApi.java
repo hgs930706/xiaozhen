@@ -3,7 +3,9 @@ package com.yishang.xiaozhen.controller.api;
 
 import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ActivityBooking;
+import com.yishang.xiaozhen.entity.ActivityCount;
 import com.yishang.xiaozhen.service.ActivityBookingServiceImpl;
+import com.yishang.xiaozhen.service.ActivityCountServiceImpl;
 import com.yishang.xiaozhen.service.ActivityServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +34,9 @@ public class ActivityBookingApi {
     @Autowired
     private ActivityServiceImpl activityServiceImpl;
 
+    @Autowired
+    private ActivityCountServiceImpl activityCountServiceImpl;
+
     /**
      *  活动详情
      * @param id
@@ -40,6 +46,17 @@ public class ActivityBookingApi {
     public ResultUtil detail(@RequestParam("id") String id){
         ResultUtil detail = activityServiceImpl.detail(id);
         return detail;
+    }
+
+    /**
+     *  获取活动预约的时候，场次下拉框，带出每个场次的起始时间
+     * @param id
+     * @return
+     */
+    @GetMapping("/selectCount")
+    public ResultUtil selectCount(@RequestParam("id") String id){
+        List<ActivityCount> details = activityCountServiceImpl.details(id);
+        return ResultUtil.success(details);
     }
 
     /**
@@ -66,7 +83,7 @@ public class ActivityBookingApi {
             page = 1;
         }
         if (null == size || size <= 0) {
-            size = 10;
+            size = 5;
         }
         //根据最新的活动，排序
         return activityServiceImpl.list(page, size);

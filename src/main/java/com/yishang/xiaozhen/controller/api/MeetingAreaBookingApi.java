@@ -45,7 +45,7 @@ public class MeetingAreaBookingApi {
             page = 1;
         }
         if (null == size || size <= 0) {
-            size = 10;
+            size = 5;
         }
         return  meetingAreaServiceImpl.list(page,size);
     }
