@@ -10,6 +10,7 @@ import com.yishang.xiaozhen.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,16 +36,17 @@ public class AdminUserServiceImpl {
     @Autowired
     private UserRoleServiceImpl userRoleServiceImpl;
 
+    @Transactional
     public ResultUtil insert(AdminUser object, MultipartFile file, HttpServletRequest request) {
         QueryWrapper<AdminUser> query = new QueryWrapper<>();
         query.eq("username", object.getUsername()).eq("is_status", 1);
         Integer count = adminUserMapper.selectCount(query);
         if (count > 0) {return ResultUtil.error("用户名已存在。");}
+
         object.setUserImage(ImageUploadUtil.uploadImage(file, request));
         adminUserMapper.insert(object);
-        // todo 维护用户和角色关系
-        // 多个角色，勾选几个新增几个
-        userRoleServiceImpl.insert(object.getId(),"");
+        //用户角色
+        userRoleServiceImpl.insert(object.getId(),object.getRoles());
 
         return ResultUtil.success();
     }

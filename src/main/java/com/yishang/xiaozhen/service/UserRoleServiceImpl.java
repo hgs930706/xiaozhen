@@ -2,9 +2,11 @@ package com.yishang.xiaozhen.service;
 
 import com.yishang.xiaozhen.entity.UserRole;
 import com.yishang.xiaozhen.mapper.UserRoleMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,11 +23,13 @@ public class UserRoleServiceImpl{
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    public Integer insert(String userId,String roleId) {
-        UserRole object = new UserRole();
-        object.setUserId(userId);
-        object.setRoleId(roleId);
-        return null;
+    public ResultUtil insert(String userId, List<String> roleIds) {
+        for (String roleId : roleIds) {
+            UserRole object = new UserRole();
+            object.setUserId(userId);
+            object.setRoleId(roleId);
+        }
+        return ResultUtil.success();
     }
 
     public Integer insert(Object object) {
