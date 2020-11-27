@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 接待预约表 微信端
@@ -32,8 +34,8 @@ public class ReceiveBookingApi {
      * @return
      */
     @PostMapping("/insert")
-    public ResultUtil insert(ReceiveBooking object, MultipartFile[] files){
-        ResultUtil result = receiveBookingServiceImpl.insert(object, files);
+    public ResultUtil insert(ReceiveBooking object, MultipartFile[] files, HttpServletRequest request){
+        ResultUtil result = receiveBookingServiceImpl.insert(object, files,request);
         return result;
     }
 }

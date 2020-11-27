@@ -90,12 +90,7 @@ public class ActivityBookingServiceImpl {
         activityBookingMapper.insert(object);
         if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile file : files) {
-                String imageUrl = null;
-                try {
-                    imageUrl = ImageUploadUtil.uploadImage(file,request);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                String imageUrl = ImageUploadUtil.uploadImage(file,request);
                 ActivityBookingImage activityBookingImage = new ActivityBookingImage();
                 activityBookingImage.setActivityBookingId(object.getId());
                 activityBookingImage.setImgeUrl(imageUrl);

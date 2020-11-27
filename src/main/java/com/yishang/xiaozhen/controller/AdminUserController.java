@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 管理用户信息 前端控制器
@@ -49,7 +51,7 @@ public class AdminUserController {
 
 
     @PostMapping("/insert")
-    public ResultUtil insert(AdminUser object, MultipartFile file){
+    public ResultUtil insert(AdminUser object, MultipartFile file, HttpServletRequest request){
         if(StringUtils.isEmpty(object.getPassword()) || StringUtils.isEmpty(object.getUsername())){
             return ResultUtil.error("用户名或密码不能为空");
         }
@@ -60,7 +62,7 @@ public class AdminUserController {
             return ResultUtil.error("密码长度不符合要求，请重新输入！");
         }
         object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
-        ResultUtil result = adminUserServiceImpl.insert(object,file);
+        ResultUtil result = adminUserServiceImpl.insert(object,file,request);
         return result;
     }
 
@@ -111,7 +113,7 @@ public class AdminUserController {
      * @return
      */
     @PostMapping("/update")
-    public ResultUtil update(AdminUser object, MultipartFile file){
+    public ResultUtil update(AdminUser object, MultipartFile file, HttpServletRequest request){
         if(StringUtils.isEmpty(object.getId())){
             return ResultUtil.error("id不能为空!");
         }

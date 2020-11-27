@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +29,9 @@ public class EnterpriseInfoServiceImpl{
     @Autowired
     private EnterpriseInfoMapper enterpriseInfoMapper;
 
-    public ResultUtil insert(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr) {
-        String imageUrl = ImageUploadUtil.uploadImage(file);
-        String imageUrlQr = ImageUploadUtil.uploadImage(fileQr);
+    public ResultUtil insert(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr, HttpServletRequest request) {
+        String imageUrl = ImageUploadUtil.uploadImage(file, request);
+        String imageUrlQr = ImageUploadUtil.uploadImage(fileQr, request);
         object.setEnterpriseLogo(imageUrl);
         object.setEnterpriseQr(imageUrlQr);
         enterpriseInfoMapper.insert(object);
@@ -58,9 +59,9 @@ public class EnterpriseInfoServiceImpl{
     }
 
 
-    public ResultUtil update(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr) {
-        String imageUrl = ImageUploadUtil.uploadImage(file);
-        String imageUrlQr = ImageUploadUtil.uploadImage(fileQr);
+    public ResultUtil update(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr, HttpServletRequest request) {
+        String imageUrl = ImageUploadUtil.uploadImage(file, request);
+        String imageUrlQr = ImageUploadUtil.uploadImage(fileQr, request);
         object.setEnterpriseLogo(imageUrl);
         object.setEnterpriseQr(imageUrlQr);
         enterpriseInfoMapper.updateById(object);

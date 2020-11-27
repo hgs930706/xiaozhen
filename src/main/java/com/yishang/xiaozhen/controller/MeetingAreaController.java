@@ -9,6 +9,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 会议场地表 前端控制器
@@ -45,17 +47,17 @@ public class MeetingAreaController {
 
 
     @PostMapping("/insert")
-    public ResultUtil insert(MeetingArea meetingArea, MultipartFile file){
-        ResultUtil result = meetingAreaServiceImpl.insert(meetingArea,file);
+    public ResultUtil insert(MeetingArea meetingArea, MultipartFile file, HttpServletRequest request){
+        ResultUtil result = meetingAreaServiceImpl.insert(meetingArea,file,request);
         return result;
     }
 
     @PostMapping("/update")
-    public ResultUtil update(MeetingArea object, MultipartFile file){
+    public ResultUtil update(MeetingArea object, MultipartFile file, HttpServletRequest request){
         if(StringUtils.isEmpty(object.getId())){
             return ResultUtil.error("id不能为空!");
         }
-        meetingAreaServiceImpl.update(object,file);
+        meetingAreaServiceImpl.update(object,file,request);
         return null;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 活动表 前端控制器
@@ -42,18 +44,18 @@ public class ActivityController {
 
 
     @PostMapping("/insert")
-    public ResultUtil insert(Activity object, MultipartFile file){
+    public ResultUtil insert(Activity object, MultipartFile file, HttpServletRequest request){
 
-        ResultUtil result = activityServiceImpl.insert(object, file);
+        ResultUtil result = activityServiceImpl.insert(object, file,request);
         return result;
     }
 
     @PostMapping("/update")
-    public ResultUtil update(Activity object, MultipartFile file){
+    public ResultUtil update(Activity object, MultipartFile file, HttpServletRequest request){
         if(StringUtils.isEmpty(object.getId())){
             return ResultUtil.error("id不能为空!");
         }
-        ResultUtil result = activityServiceImpl.update(object, file);
+        ResultUtil result = activityServiceImpl.update(object, file,request);
         return result;
     }
 }

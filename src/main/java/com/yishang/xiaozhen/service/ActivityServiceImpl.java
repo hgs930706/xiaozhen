@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -35,8 +36,8 @@ public class ActivityServiceImpl{
     private ActivityCountServiceImpl activityCountServiceImpl;
 
     @Transactional
-    public ResultUtil insert(Activity object,MultipartFile file) {
-        String imageUrl = ImageUploadUtil.uploadImage(file);
+    public ResultUtil insert(Activity object,MultipartFile file, HttpServletRequest request) {
+        String imageUrl = ImageUploadUtil.uploadImage(file, request);
         //新增活动
         object.setActivityImage(imageUrl);
         activityMapper.insert(object);
@@ -133,8 +134,8 @@ public class ActivityServiceImpl{
     }
 
 
-    public ResultUtil update(Activity object, MultipartFile file) {
-        String imageUrl = ImageUploadUtil.uploadImage(file);
+    public ResultUtil update(Activity object, MultipartFile file, HttpServletRequest request) {
+        String imageUrl = ImageUploadUtil.uploadImage(file, request);
         object.setActivityImage(imageUrl);
         int i = activityMapper.updateById(object);
         return ResultUtil.success(i);

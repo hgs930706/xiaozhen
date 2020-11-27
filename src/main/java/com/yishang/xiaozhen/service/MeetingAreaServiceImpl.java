@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,15 +31,15 @@ public class MeetingAreaServiceImpl{
     @Autowired
     private MeetingAreaMapper meetingAreaMapper;
 
-    public ResultUtil insert(MeetingArea object, MultipartFile file) {
-        String imageUrl = ImageUploadUtil.uploadImage(file);
+    public ResultUtil insert(MeetingArea object, MultipartFile file, HttpServletRequest request) {
+        String imageUrl = ImageUploadUtil.uploadImage(file, request);
         object.setMeetingImage(imageUrl);
         int insert = meetingAreaMapper.insert(object);
         return ResultUtil.success(insert);
     }
 
-    public ResultUtil update(MeetingArea object, MultipartFile file) {
-        String imageUrl = ImageUploadUtil.uploadImage(file);
+    public ResultUtil update(MeetingArea object, MultipartFile file, HttpServletRequest request) {
+        String imageUrl = ImageUploadUtil.uploadImage(file, request);
         object.setMeetingImage(imageUrl);
         meetingAreaMapper.updateById(object);
         return ResultUtil.success();

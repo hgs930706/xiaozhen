@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -53,11 +54,11 @@ public class EnterpriseInfoController {
      * @return
      */
     @PostMapping("/insert")
-    public ResultUtil insert(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr){
+    public ResultUtil insert(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr, HttpServletRequest request){
         if(object.getStreetType() == null){
             return ResultUtil.error("街道必填项。");
         }
-        ResultUtil result = enterpriseInfoServiceImpl.insert(object, file, fileQr);
+        ResultUtil result = enterpriseInfoServiceImpl.insert(object, file, fileQr,request);
 
         return result;
     }
@@ -71,14 +72,14 @@ public class EnterpriseInfoController {
      * @return
      */
     @PostMapping("/update")
-    public ResultUtil update(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr){
+    public ResultUtil update(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr, HttpServletRequest request){
         if(StringUtils.isEmpty(object.getId())){
             return ResultUtil.error("id不能为空!");
         }
         if(object.getStreetType() == null){
             return ResultUtil.error("街道必填项。");
         }
-        ResultUtil result = enterpriseInfoServiceImpl.update(object, file, fileQr);
+        ResultUtil result = enterpriseInfoServiceImpl.update(object, file, fileQr,request);
         return result;
     }
 

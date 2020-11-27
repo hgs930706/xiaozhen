@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +52,11 @@ public class ReceiveBookingServiceImpl{
     @Autowired
     private ReceiveBookingImageMapper receiveBookingImageMapper;
 
-    public ResultUtil insert(ReceiveBooking object, MultipartFile[] files) {
+    public ResultUtil insert(ReceiveBooking object, MultipartFile[] files, HttpServletRequest request) {
         receiveBookingMapper.insert(object);
         if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile file : files) {
-                String imageUrl = ImageUploadUtil.uploadImage(file);
+                String imageUrl = ImageUploadUtil.uploadImage(file, request);
                 ReceiveBookingImage receiveBookingImage = new ReceiveBookingImage();
                 receiveBookingImage.setReceiveBookingId(object.getId());
                 receiveBookingImage.setImageUrl(imageUrl);
