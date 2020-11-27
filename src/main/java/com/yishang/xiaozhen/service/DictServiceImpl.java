@@ -1,15 +1,13 @@
 package com.yishang.xiaozhen.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.constant.DictConstant;
 import com.yishang.xiaozhen.entity.Dict;
 import com.yishang.xiaozhen.mapper.DictMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,23 +27,17 @@ public class DictServiceImpl{
     @Autowired
     private DictMapper dictMapper;
 
-    public Map<String,Object> maps() {
-        IPage<Dict> page = new Page<>(0, 10);
+    public ResultUtil maps() {
+
         QueryWrapper<Dict> query = new QueryWrapper<>();
 
         query.eq("type", DictConstant.MAP_TYPE);
         query.eq("is_status", 1);
 
-        page = dictMapper.selectPage(page, query);
+        List<Dict> dicts = dictMapper.selectList(query);
 
-        List<Dict> records = page.getRecords();
-        long total = page.getTotal();
 
-        System.out.println(page);
-        Map<String,Object> map = new HashMap();
-        map.put("list",records);
-        map.put("total",total);
-        return map;
+        return ResultUtil.success(dicts);
     }
 
     public Integer insert(Object object) {

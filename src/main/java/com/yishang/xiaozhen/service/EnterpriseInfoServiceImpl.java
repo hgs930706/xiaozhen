@@ -39,18 +39,18 @@ public class EnterpriseInfoServiceImpl{
     }
 
 
-    public Map<String,Object> list(Integer page,Integer size,String enterpriseName,Integer streetType) {
+    public ResultUtil list(Integer page,Integer size,String enterpriseName,Integer streetType) {
         IPage<EnterpriseInfo> ipage = new Page<>(page, size);
         QueryWrapper<EnterpriseInfo> query = new QueryWrapper<>();
-        query.like("enterprise_name", enterpriseName);
-        query.eq("street_type", streetType);
+//        query.like("enterprise_name", enterpriseName);
+//        query.eq("street_type", streetType);
         query.eq("is_status", 1);
 
         ipage = enterpriseInfoMapper.selectPage(ipage, query);
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());
         map.put("total",ipage.getTotal());
-        return map;
+        return ResultUtil.success(map);
     }
 
 

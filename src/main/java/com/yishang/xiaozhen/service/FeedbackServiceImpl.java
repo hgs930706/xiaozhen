@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.Feedback;
 import com.yishang.xiaozhen.mapper.FeedbackMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,19 +31,20 @@ public class FeedbackServiceImpl{
     }
 
 
-    public Map<String,Object> list(Integer page,Integer size,LocalDateTime createDate,String nickname) {
-        IPage<Feedback> ipage = new Page<>(0, 10);
+    public ResultUtil list(Integer page, Integer size, String createTime, String nickname) {
+        IPage<Feedback> ipage = new Page<>(page, size);
         QueryWrapper<Feedback> query = new QueryWrapper<>();
-        query.ge("create_time", createDate);
-        query.like("create_by", nickname);
-        query.eq("is_status", 1);
+//        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
+//        query.ge("create_time", createDate);
+//        query.like("create_by", nickname);
+//        query.eq("is_status", 1);
 
         ipage = feedbackMapper.selectPage(ipage, query);
 
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());
         map.put("total",ipage.getTotal());
-        return map;
+        return ResultUtil.success(map);
     }
 
 

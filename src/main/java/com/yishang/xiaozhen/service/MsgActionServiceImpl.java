@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.MsgAction;
 import com.yishang.xiaozhen.mapper.MsgActionMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,19 +32,20 @@ public class MsgActionServiceImpl{
     }
 
 
-    public Map<String,Object> list(Integer page,Integer size,String nickname, Integer sendStatus, LocalDateTime createDate) {
+    public ResultUtil list(Integer page, Integer size, String nickname, Integer sendStatus, String createTime) {
         IPage<MsgAction> ipage = new Page<>(0, 10);
         QueryWrapper<MsgAction> query = new QueryWrapper<>();
-        query.ge("create_time",createDate);
-        query.like("nickname", nickname);
-        query.eq("send_status", sendStatus);
-        query.eq("is_status", 1);
+//        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
+//        query.ge("create_time",createDate);
+//        query.like("nickname", nickname);
+//        query.eq("send_status", sendStatus);
+//        query.eq("is_status", 1);
         ipage = msgActionMapper.selectPage(ipage, query);
 
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());
         map.put("total",ipage.getTotal());
-        return map;
+        return ResultUtil.success(map);
     }
 
     public Map<String,Object> list(Integer page,Integer size,String openId) {

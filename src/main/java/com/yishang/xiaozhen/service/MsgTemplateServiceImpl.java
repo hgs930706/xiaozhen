@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.MsgTemplate;
 import com.yishang.xiaozhen.mapper.MsgTemplateMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,26 +48,22 @@ public class MsgTemplateServiceImpl {
     }
 
 
-    public Map<String,Object> list(String templateName, LocalDateTime createDate) {
-        IPage<MsgTemplate> page = new Page<>(0, 10);
+    public ResultUtil list(Integer page,Integer size,String templateName, String createTime) {
+        IPage<MsgTemplate> ipage = new Page<>(page, size);
         QueryWrapper<MsgTemplate> query = new QueryWrapper<>();
-        query.like("template_name", templateName);
-        query.ge("create_time", createDate);
+//        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
+//        query.like("template_name", templateName);
+//        query.ge("create_time", createDate);
         query.eq("is_status", 1);
+        ipage = msgTemplateMapper.selectPage(ipage, query);
 
-        page = msgTemplateMapper.selectPage(page, query);
+        List<MsgTemplate> records = ipage.getRecords();
+        long total = ipage.getTotal();
 
-        List<MsgTemplate> records = page.getRecords();
-        long total = page.getTotal();
-        long current = page.getCurrent();
-        long pages = page.getPages();
-        long size = page.getSize();
-
-        System.out.println(page);
         Map<String,Object> map = new HashMap();
         map.put("list",records);
         map.put("total",total);
-        return map;
+        return ResultUtil.success(map);
     }
 
 

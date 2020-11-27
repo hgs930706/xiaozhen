@@ -38,9 +38,14 @@ public class AdminUserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/list")
-    public String list(){
-
-        return null;
+    public ResultUtil list(Integer page,Integer size){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+        return adminUserServiceImpl.list(page,size);
     }
 
     @GetMapping("/detail")

@@ -76,8 +76,7 @@ public class DictController {
      */
     @GetMapping("maps")
     public ResultUtil maps(){
-        Map<String, Object> maps = dictServiceImpl.maps();
-        return ResultUtil.success(maps);
+        return  dictServiceImpl.maps();
     }
 
     /**

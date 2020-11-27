@@ -3,14 +3,10 @@ package com.yishang.xiaozhen.controller;
 
 import com.yishang.xiaozhen.entity.MsgTemplate;
 import com.yishang.xiaozhen.service.MsgTemplateServiceImpl;
-import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * <p>
@@ -28,10 +24,14 @@ public class MsgTemplateController {
     private MsgTemplateServiceImpl msgTemplateServiceImpl;
 
     @GetMapping("/list")
-    public ResultUtil list(String templateName, String createTime){
-        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-        Map<String, Object> list = msgTemplateServiceImpl.list(templateName,createDate);
-        return ResultUtil.success(list);
+    public ResultUtil list(@RequestParam("page") Integer page,@RequestParam("size")Integer size,String templateName, String createTime){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+        return  msgTemplateServiceImpl.list(page,size,templateName,createTime);
     }
 
     @GetMapping("/detail")

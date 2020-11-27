@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * <p>
@@ -35,8 +34,7 @@ public class EnterpriseInfoController {
         if (null == size || size <= 0) {
             size = 10;
         }
-        Map<String, Object> list = enterpriseInfoServiceImpl.list(page,size,enterpriseName, streetType);
-        return ResultUtil.success(list);
+        return enterpriseInfoServiceImpl.list(page,size,enterpriseName, streetType);
     }
 
     @GetMapping("/detail")

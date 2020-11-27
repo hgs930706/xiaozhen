@@ -10,7 +10,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * <p>
@@ -35,9 +34,8 @@ public class MsgActionController {
         if (null == size || size <= 0) {
             size = 10;
         }
-        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-        Map<String, Object> list = msgActionServiceImpl.list(page,size,nickname, sendStatus,createDate);
-        return ResultUtil.success(list);
+
+        return msgActionServiceImpl.list(page,size,nickname, sendStatus,createTime);
     }
 
     @GetMapping("/detail")

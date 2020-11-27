@@ -2,14 +2,12 @@ package com.yishang.xiaozhen.controller;
 
 
 import com.yishang.xiaozhen.service.FeedbackServiceImpl;
-import com.yishang.xiaozhen.util.DateUtil;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -33,10 +31,15 @@ public class FeedbackController {
      * @return
      */
     @GetMapping("/list")
-    public String list(Integer page,Integer size,String createTime,String nickname){
-        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-        feedbackServiceImpl.list(page,size,createDate,nickname);
-        return null;
+    public ResultUtil list(Integer page, Integer size, String createTime, String nickname){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+
+        return feedbackServiceImpl.list(page,size,createTime,nickname);
     }
 
     /**
