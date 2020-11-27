@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * <p>
@@ -70,8 +69,7 @@ public class ActivityBookingApi {
             size = 10;
         }
         //根据最新的活动，排序
-        Map<String, Object> list = activityServiceImpl.list(page, size);
-        return ResultUtil.success(list);
+        return activityServiceImpl.list(page, size);
     }
 
 

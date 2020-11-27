@@ -8,8 +8,6 @@ import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 /**
  * <p>
  * 会议场地预约表 微信端
@@ -42,9 +40,14 @@ public class MeetingAreaBookingApi {
 
 
     @GetMapping("/list")
-    public Map<String,Object> list(Integer page,Integer size){
-        Map<String,Object> map = meetingAreaServiceImpl.list(page,size);
-        return map;
+    public ResultUtil list(Integer page,Integer size){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+        return  meetingAreaServiceImpl.list(page,size);
     }
 
     @GetMapping("/detail")

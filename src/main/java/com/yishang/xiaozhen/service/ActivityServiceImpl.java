@@ -61,20 +61,20 @@ public class ActivityServiceImpl{
      * @param endTime
      * @return
      */
-    public Map<String,Object> list(Integer page,Integer size,String activityName,Integer isStatus
+    public ResultUtil list(Integer page,Integer size,String activityName,Integer isStatus
             ,String startTime,String endTime) {
         // todo 这个返回的数据，要自定义返回了，因为要统计场次，活动多个场次的起始时间
         IPage<Activity> ipage = new Page<>(page, size);
 
         QueryWrapper<Activity> query = new QueryWrapper<>();
-        query.eq("activity_name", activityName);
-        query.eq("is_status", 1);
-
+//        query.eq("activity_name", activityName);
+//        query.eq("is_status", 1);
+        query.orderByDesc("is_status");
         ipage = activityMapper.selectPage(ipage, query);
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());
         map.put("total",ipage.getTotal());
-        return map;
+        return ResultUtil.success(map);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ActivityServiceImpl{
      * @param size
      * @return
      */
-    public Map<String,Object> list(Integer page,Integer size) {
+    public ResultUtil list(Integer page,Integer size) {
         IPage<Activity> ipage = new Page<>(page, size);
 
         QueryWrapper<Activity> query = new QueryWrapper<>();
@@ -94,10 +94,15 @@ public class ActivityServiceImpl{
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());
         map.put("total",ipage.getTotal());
-        return map;
+        return ResultUtil.success(map);
     }
 
 
+    /**
+     * 用户端
+     * @param id
+     * @return
+     */
     public ResultUtil detail(String id) {
         Activity activity = activityMapper.selectById(id);
         List<ActivityCount> details = activityCountServiceImpl.details(id);

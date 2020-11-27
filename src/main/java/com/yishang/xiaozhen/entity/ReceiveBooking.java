@@ -73,6 +73,8 @@ public class ReceiveBooking extends Model<ReceiveBooking> {
      * 预约状态(0待审批，1审批通过，2审批拒绝)
      */
     private Integer approvalStatus;
+    @TableField(exist = false)
+    private String approvalStatusStr;
 
     /**
      * 审批人

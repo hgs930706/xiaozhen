@@ -8,6 +8,7 @@ import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ApprovalAction;
 import com.yishang.xiaozhen.entity.ReceiveBooking;
 import com.yishang.xiaozhen.entity.ReceiveBookingImage;
+import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
 import com.yishang.xiaozhen.event.ReceiveBookingEvent;
 import com.yishang.xiaozhen.mapper.ReceiveBookingImageMapper;
 import com.yishang.xiaozhen.mapper.ReceiveBookingMapper;
@@ -88,6 +89,7 @@ public class ReceiveBookingServiceImpl{
         List<ReceiveBooking> records = ipage.getRecords();
         // 拿到预约多个图片
         for (ReceiveBooking record : records) {
+            record.setApprovalStatusStr(ApprovalStatusEnum.getStr(record.getApprovalStatus()));
             QueryWrapper<ReceiveBookingImage> query2 = new  QueryWrapper<>();
             query2.eq("receive_booking_id",record.getId());
             List<ReceiveBookingImage> activityBookingImages = receiveBookingImageMapper.selectList(query2);

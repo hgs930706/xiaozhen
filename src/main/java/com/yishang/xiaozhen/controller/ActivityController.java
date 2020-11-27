@@ -28,12 +28,18 @@ public class ActivityController {
 
 
     @GetMapping("/list")
-    public String list(Integer page,Integer size,String activityName
+    public ResultUtil list(Integer page,Integer size,String activityName
             ,Integer isStatus
             ,String startTime
             ,String endTime){
-        activityServiceImpl.list(page,size,activityName,isStatus,startTime,endTime);
-        return null;
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+
+        return  activityServiceImpl.list(page,size,activityName,isStatus,startTime,endTime);
     }
 
     @GetMapping("/detail")

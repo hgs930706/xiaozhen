@@ -30,13 +30,18 @@ public class MeetingAreaController {
     /**
      *
      * @param meetingName 会议室名字
-     * @param isStatus 会议室状态
      * @return
      */
     @GetMapping("/list")
-    public String list(Integer page,Integer size,String meetingName,Integer isStatus){
-        meetingAreaServiceImpl.list(page,size,meetingName,isStatus);
-        return null;
+    public ResultUtil list(Integer page,Integer size,String meetingName){
+        if (null == page || page <= 0) {
+            page = 1;
+        }
+        if (null == size || size <= 0) {
+            size = 10;
+        }
+
+        return  meetingAreaServiceImpl.list(page,size,meetingName);
     }
 
     @GetMapping("/detail")
