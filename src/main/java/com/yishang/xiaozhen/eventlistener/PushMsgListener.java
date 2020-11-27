@@ -202,10 +202,10 @@ public class PushMsgListener {
         m.put("first", new TemplateData(MsgSendConstant.RECEIVE_SUCCESS_FIRST));
         //名称
         m.put("keyword1", new TemplateData("参观预约"));
-        //时间
-        m.put("keyword2", new TemplateData(booking.getBookingTime() + ""));
         //地点
-        m.put("keyword3", new TemplateData("艺尚小镇"));
+        m.put("keyword2", new TemplateData("艺尚小镇"));
+        //时间
+        m.put("keyword3", new TemplateData(booking.getBookingTime() + ""));
         //预约人
         m.put("keyword4", new TemplateData(booking.getBookingName()));
         //备注
@@ -244,10 +244,10 @@ public class PushMsgListener {
         m.put("first", new TemplateData(MsgSendConstant.MEETING_SUCCESS_FIRST));
         //名称
         m.put("keyword1", new TemplateData(meetingArea.getMeetingName()));
-        //时间
-        m.put("keyword2", new TemplateData(booking.getBookingStartTime() + "-" + booking.getBookingEndTime()));
         //地点
-        m.put("keyword3", new TemplateData(meetingArea.getMeetingAddress()));
+        m.put("keyword2", new TemplateData(meetingArea.getMeetingAddress()));
+        //时间
+        m.put("keyword3", new TemplateData(booking.getBookingStartTime() + "-" + booking.getBookingEndTime()));
         //预约人
         m.put("keyword4", new TemplateData(booking.getBookingPerson()));
         //备注
