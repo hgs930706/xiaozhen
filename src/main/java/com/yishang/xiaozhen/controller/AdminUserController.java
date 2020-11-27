@@ -72,6 +72,23 @@ public class AdminUserController {
     }
 
     /**
+     * 管理员，修改用户
+     * @param object
+     * @param file
+     * @return
+     */
+    @PostMapping("/update")
+    public ResultUtil update(AdminUser object, MultipartFile file, HttpServletRequest request){
+        if(StringUtils.isEmpty(object.getId())){
+            return ResultUtil.error("id不能为空!");
+        }
+        //重置密码
+        object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
+        ResultUtil result = adminUserServiceImpl.update(object, file);
+        return result;
+    }
+
+    /**
      * 重置密码
      * @param oldPassword
      * @param newPassword
@@ -110,21 +127,4 @@ public class AdminUserController {
         }
     }
 
-
-    /**
-     * 管理员，修改用户
-     * @param object
-     * @param file
-     * @return
-     */
-    @PostMapping("/update")
-    public ResultUtil update(AdminUser object, MultipartFile file, HttpServletRequest request){
-        if(StringUtils.isEmpty(object.getId())){
-            return ResultUtil.error("id不能为空!");
-        }
-        //重置密码
-        object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
-        ResultUtil result = adminUserServiceImpl.update(object, file);
-        return result;
-    }
 }

@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.AdminUser;
+import com.yishang.xiaozhen.entity.UserRole;
 import com.yishang.xiaozhen.mapper.AdminUserMapper;
+import com.yishang.xiaozhen.mapper.UserRoleMapper;
 import com.yishang.xiaozhen.util.ImageUploadUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,9 @@ public class AdminUserServiceImpl {
 
     @Autowired
     private UserRoleServiceImpl userRoleServiceImpl;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Transactional
     public ResultUtil insert(AdminUser object, MultipartFile file, HttpServletRequest request) {
@@ -72,12 +77,17 @@ public class AdminUserServiceImpl {
     }
 
 
+    @Transactional
     public ResultUtil update(AdminUser object, MultipartFile file) {
 //        String s = ImageUploadUtil.uploadImage(file);
 //        object.setUserImage(s);
         adminUserMapper.updateById(object);
-
-        // todo 维护用户和角色关系，删除原有角色，在新增角色
+        // 删除原有角色，在新增角色
+        QueryWrapper<UserRole> query = new QueryWrapper<>();
+        query.eq("user_id",object.getId());
+        userRoleMapper.delete(query);
+        // 新增用户角色
+        userRoleServiceImpl.insert(object.getId(),object.getRoles());
         return ResultUtil.success();
     }
 
