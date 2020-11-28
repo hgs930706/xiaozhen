@@ -69,10 +69,6 @@ public class MeetingAreaBooking extends Model<MeetingAreaBooking> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime bookingEndTime;
 
-    /**
-     * 接待地址
-     */
-    private String receiveAddress;
 
     /**
      * 参会人数
@@ -146,8 +142,8 @@ public class MeetingAreaBooking extends Model<MeetingAreaBooking> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    @TableField(exist = false)
-    private String msgType = "meetingType";
+//    @TableField(exist = false)
+//    private String msgType = "meetingType";
 
     @Override
     protected Serializable pkVal() {

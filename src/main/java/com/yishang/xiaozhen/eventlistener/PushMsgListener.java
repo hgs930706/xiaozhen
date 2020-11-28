@@ -277,29 +277,6 @@ public class PushMsgListener {
         return JSONObject.toJSONString(wechatTemplate);
     }
 
-
-    private String getTemplateId(String key) {
-        if (maps.get(key) == null) {
-            List<MsgTemplate> msgTemplates = msgTemplateMapper.selectList(null);
-            if (Collections.isEmpty(msgTemplates)) {
-                log.error("请维护模板库。");
-                return null;
-            }
-            maps = msgTemplates.stream().collect(
-                    Collectors.toMap(MsgTemplate::getTemplateName, MsgTemplate::getTemplateId, (key1, key2) -> key2)
-            );
-        }
-        return maps.get(key);
-    }
-
-    private String getNickname(String openId) {
-        QueryWrapper<WxUser> query = new QueryWrapper();
-        query.eq("open_id", openId);
-        query.eq("is_status", 1);
-        WxUser wxUser = wxUserMapper.selectOne(query);
-        return wxUser.getNickname();
-    }
-
     private void saveMsgAction(String result, String openId,
                                Integer approvalStatus, Integer msgType,
                                String msgContent, String bookingPerson,
@@ -327,6 +304,29 @@ public class PushMsgListener {
         }
         msgActionServiceImpl.insert(msgAction);
     }
+
+    private String getTemplateId(String key) {
+        if (maps.get(key) == null) {
+            List<MsgTemplate> msgTemplates = msgTemplateMapper.selectList(null);
+            if (Collections.isEmpty(msgTemplates)) {
+                log.error("请维护模板库。");
+                return null;
+            }
+            maps = msgTemplates.stream().collect(
+                    Collectors.toMap(MsgTemplate::getTemplateName, MsgTemplate::getTemplateId, (key1, key2) -> key2)
+            );
+        }
+        return maps.get(key);
+    }
+
+    private String getNickname(String openId) {
+        QueryWrapper<WxUser> query = new QueryWrapper();
+        query.eq("open_id", openId);
+        query.eq("is_status", 1);
+        WxUser wxUser = wxUserMapper.selectOne(query);
+        return wxUser.getNickname();
+    }
+
 
     /**
      * 自动注入的写法

@@ -53,6 +53,7 @@ public class MsgActionServiceImpl{
         QueryWrapper<MsgAction> query = new QueryWrapper<>();
 //        query.eq("open_id",openId);
         query.eq("is_status", 1);
+        query.orderByDesc("create_time");
         ipage = msgActionMapper.selectPage(ipage, query);
 
         Map<String,Object> map = new HashMap();

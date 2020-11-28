@@ -22,7 +22,7 @@
 
     <select id="banner" resultType="java.lang.String">
         select activity_image from ys_activity
-        order by start_time desc
+        order by start_time desc limit 0,3
     </select>
 
 </mapper>

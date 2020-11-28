@@ -112,8 +112,8 @@ public class ActivityBooking extends Model<ActivityBooking> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    @TableField(exist = false)
-    private String msgType = "activityType";
+//    @TableField(exist = false)
+//    private String msgType = "activityType";
 
     @Override
     protected Serializable pkVal() {

@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class ActivityBookingDTO {
+public class
+ActivityBookingDTO {
 
     private String id;
 

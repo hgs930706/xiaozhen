@@ -104,7 +104,7 @@ public class ActivityBookingServiceImpl {
             createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
         }
         List<ActivityBookingDTO> activityBookingDTOS = activityBookingMapper.selectPage((page - 1) * size, size, activityName, createDate, approvalStatus);
-        // 可以优化为，批量查询
+        // 拿到预约多个图片,可以优化为，批量查询
         for (ActivityBookingDTO dto : activityBookingDTOS) {
             dto.setApprovalStatusStr(ApprovalStatusEnum.getStr(dto.getApprovalStatus()));
             QueryWrapper<ActivityBookingImage>  query = new  QueryWrapper<>();

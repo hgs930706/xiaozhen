@@ -118,8 +118,8 @@ public class ReceiveBooking extends Model<ReceiveBooking> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    @TableField(exist = false)
-    private String msgType = "receiveType";
+//    @TableField(exist = false)
+//    private String msgType = "receiveType";
 
     @TableField(exist = false)
     private List<ReceiveBookingImage> images;

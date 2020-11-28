@@ -12,7 +12,6 @@
         <result column="remark_info" property="remarkInfo" />
         <result column="booking_start_time" property="bookingStartTime" />
         <result column="booking_end_time" property="bookingEndTime" />
-        <result column="receive_address" property="receiveAddress" />
         <result column="join_people" property="joinPeople" />
         <result column="meeting_table" property="meetingTable" />
         <result column="meeting_type" property="meetingType" />
