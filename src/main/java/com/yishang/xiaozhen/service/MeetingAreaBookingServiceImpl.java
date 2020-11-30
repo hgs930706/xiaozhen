@@ -1,19 +1,21 @@
 package com.yishang.xiaozhen.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.ApprovalAction;
 import com.yishang.xiaozhen.entity.MeetingAreaBooking;
+import com.yishang.xiaozhen.entity.dto.MeetingAreaBookingDTO;
+import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
 import com.yishang.xiaozhen.event.MeetingAreaBookingEvent;
 import com.yishang.xiaozhen.mapper.MeetingAreaBookingMapper;
+import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ import java.util.Map;
  * @since 2020-11-16
  */
 @Service
-public class MeetingAreaBookingServiceImpl{
+public class MeetingAreaBookingServiceImpl {
 
     @Autowired
     private MeetingAreaBookingMapper meetingAreaBookingMapper;
@@ -35,9 +37,9 @@ public class MeetingAreaBookingServiceImpl{
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-    public Integer approval(String id,String approvalRemark ,Integer approvalStatus){
+    public Integer approval(String id, String approvalRemark, Integer approvalStatus) {
         MeetingAreaBooking booking = meetingAreaBookingMapper.selectById(id);
-        if(booking.getApprovalStatus() != 0){
+        if (booking.getApprovalStatus() != 0) {
             return -1;
         }
         booking.setApprovalRemark(approvalRemark);
@@ -52,14 +54,14 @@ public class MeetingAreaBookingServiceImpl{
         ApprovalAction.setType(2);
         approvalActionServiceImpl.insert(ApprovalAction);
         // 发送模板消息，通知用户
-        MeetingAreaBookingEvent event = new MeetingAreaBookingEvent(this,booking);
+        MeetingAreaBookingEvent event = new MeetingAreaBookingEvent(this, booking);
         applicationEventPublisher.publishEvent(event);
         return integer;
     }
 
     public ResultUtil insert(MeetingAreaBooking object) {
         String meetingAreaId = object.getMeetingAreaId();
-        if(StringUtils.isEmpty(meetingAreaId)){
+        if (StringUtils.isEmpty(meetingAreaId)) {
             return ResultUtil.error("会议场地id不能为空");
         }
         meetingAreaBookingMapper.insert(object);
@@ -67,18 +69,25 @@ public class MeetingAreaBookingServiceImpl{
     }
 
 
-    public Map<String,Object> list(Integer page,Integer size,String meetingName, String bookingStartTime, String bookingEndTime, Integer isStatus) {
-        IPage<MeetingAreaBooking> ipage = new Page<>(page,size);
-        QueryWrapper<MeetingAreaBooking> query = new QueryWrapper<>();
-//        query.eq("booking_time", bookingTime);
-//        query.eq("create_time", createTime);
-        query.eq("is_status", 1);
+    public Map<String, Object> list(Integer page, Integer size, String meetingName, String bookingStartTime, String bookingEndTime, Integer approvalStatus) {
+        LocalDateTime bookingStartDate = null;
+        if (!StringUtils.isEmpty(bookingStartTime)) {
+            bookingStartDate = LocalDateTime.parse(bookingStartTime, DateUtil.dateFormatter3);
 
-        ipage = meetingAreaBookingMapper.selectPage(ipage, query);
+        }
+        LocalDateTime bookingEndDate = null;
+        if (!StringUtils.isEmpty(bookingEndTime)) {
+            bookingEndDate = LocalDateTime.parse(bookingEndTime, DateUtil.dateFormatter3);
+        }
 
-        Map<String,Object> map = new HashMap();
-        map.put("list",ipage.getRecords());
-        map.put("total",ipage.getTotal());
+        List<MeetingAreaBookingDTO> meetingAreaBookingDTOS = meetingAreaBookingMapper.selectPage((page - 1) * size, size, meetingName, bookingStartDate, bookingEndDate, approvalStatus);
+        for (MeetingAreaBookingDTO dto : meetingAreaBookingDTOS) {
+            dto.setApprovalStatusStr(ApprovalStatusEnum.getStr(dto.getApprovalStatus()));
+        }
+
+        Map<String, Object> map = new HashMap();
+        map.put("list", meetingAreaBookingDTOS);
+        map.put("total", meetingAreaBookingMapper.selectCount(meetingName, bookingStartDate, bookingEndDate, approvalStatus));
         return map;
     }
 

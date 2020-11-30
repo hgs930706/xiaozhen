@@ -54,7 +54,7 @@ public class WxLoginApi {
      * @throws IOException
      */
     @GetMapping("/callBack")
-    public String callBack(HttpServletRequest request,
+    public void callBack(HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         String code = request.getParameter("code");
         String json = HttpClientUtil.get(WxBaseConfig.getCode(code));
@@ -73,16 +73,9 @@ public class WxLoginApi {
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_WX");
         String token = JwtTokenUtil.createToken(openId, roles, true);
-        // 这里就可以配置，跳转路径，例如成功获取用户信息之后，我们跳转到我们自己的首页
-//        response.sendRedirect("http://192.168.31.28:3001/#/home/business?token="+ JwtTokenUtil.TOKEN_PREFIX + token);
+//         这里就可以配置，跳转路径，例如成功获取用户信息之后，我们跳转到我们自己的首页
+        response.sendRedirect("http://192.168.31.28:3001/#/home/business?token="+ JwtTokenUtil.TOKEN_PREFIX + token);
         log.info("微信客户端token：{}", token);
-        return "网页授权成功";
-    }
-
-    @GetMapping("/test")
-    public void test(HttpServletRequest request,HttpServletResponse response){
-        System.out.println(request.getAttribute("token"));
-        System.out.println(request.getParameter("token"));
     }
 
     private void saveWxUser(String infoJson) {
@@ -103,6 +96,14 @@ public class WxLoginApi {
             wxUserMapper.insert(user);
             log.info("新增用户成功！");
         }
+    }
+
+
+
+    @GetMapping("/test")
+    public void test(HttpServletRequest request,HttpServletResponse response){
+        System.out.println(request.getAttribute("token"));
+        System.out.println(request.getParameter("token"));
     }
 
 

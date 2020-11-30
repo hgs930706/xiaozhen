@@ -30,4 +30,59 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
+    <select id="selectPage" resultType="com.yishang.xiaozhen.entity.dto.MeetingAreaBookingDTO">
+        select
+        a.meeting_name name,
+        b.id,
+        b.open_id openId,
+        b.booking_unit bookingUnit,
+        b.booking_person bookingPerson,
+        b.mobile,
+        b.join_people joinPeople,
+        b.booking_start_time bookingStartTime,
+        b.booking_end_time bookingEndTime,
+        b.create_time createTime,
+        b.approval_status approvalStatus
+        from ys_meeting_area a
+        INNER JOIN ys_meeting_area_booking b
+        ON a.id = b.meeting_area_id
+        where a.is_status = 1
+        <if test="meetingName != null and meetingName != ''">
+            and a.meeting_name like CONCAT ('%',#{meetingName},'%')
+        </if>
+        <if test="approvalStatus != null and approvalStatus != ''">
+            and b.approval_status = #{approvalStatus}
+        </if>
+        <if test="bookingStartDate != null and bookingEndDate != null">
+            <![CDATA[
+            and #{bookingStartDate} < b.booking_start_time
+            and b.booking_end_time <  #{bookingEndDate}
+            ]]>
+        </if>
+        ORDER BY b.create_time DESC
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select
+        count(1) count
+        from ys_meeting_area a
+        INNER JOIN ys_meeting_area_booking b
+        ON a.id = b.meeting_area_id
+        where a.is_status = 1
+        <if test="meetingName != null and meetingName != ''">
+            and a.meeting_name like CONCAT ('%',#{meetingName},'%')
+        </if>
+        <if test="approvalStatus != null and approvalStatus != ''">
+            and b.approval_status = #{approvalStatus}
+        </if>
+        <if test="bookingStartDate != null and bookingEndDate != null">
+            <![CDATA[
+            and #{bookingStartDate} < b.booking_start_time
+            and b.booking_end_time <  #{bookingEndDate}
+            ]]>
+        </if>
+
+    </select>
+
 </mapper>

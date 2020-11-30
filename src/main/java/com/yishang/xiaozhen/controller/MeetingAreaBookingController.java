@@ -30,18 +30,18 @@ public class MeetingAreaBookingController {
      * @param meetingName 会议场地名称
      * @param bookingStartTime 预约开始时间
      * @param bookingEndTime 预约结束时间
-     * @param isStatus
+     * @param approvalStatus
      * @return
      */
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size,String meetingName, String bookingStartTime, String bookingEndTime, Integer isStatus){
+    public ResultUtil list(Integer page,Integer size,String meetingName, String bookingStartTime, String bookingEndTime, Integer approvalStatus){
         if (null == page || page <= 0) {
             page = 1;
         }
         if (null == size || size <= 0) {
             size = 10;
         }
-        Map<String, Object> list = meetingAreaBookingServiceImpl.list(page,size,meetingName, bookingStartTime, bookingEndTime, isStatus);
+        Map<String, Object> list = meetingAreaBookingServiceImpl.list(page,size,meetingName, bookingStartTime, bookingEndTime, approvalStatus);
         return ResultUtil.success(list);
     }
 
