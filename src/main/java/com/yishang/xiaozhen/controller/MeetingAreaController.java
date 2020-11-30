@@ -33,7 +33,7 @@ public class MeetingAreaController {
      * @return
      */
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size,String meetingName){
+    public ResultUtil list(Integer page,Integer size,String meetingName,Integer isStatus){
         if (null == page || page <= 0) {
             page = 1;
         }
@@ -41,7 +41,7 @@ public class MeetingAreaController {
             size = 10;
         }
 
-        return  meetingAreaServiceImpl.list(page,size,meetingName);
+        return  meetingAreaServiceImpl.list(page,size,meetingName,isStatus);
     }
 
     @GetMapping("/detail")

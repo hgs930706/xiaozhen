@@ -12,6 +12,7 @@ import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,16 +64,30 @@ public class ActivityServiceImpl{
      */
     public ResultUtil list(Integer page,Integer size,String activityName,Integer isStatus
             ,String startTime,String endTime) {
-        // todo 这个返回的数据，要自定义返回了，因为要统计场次，活动多个场次的起始时间
         IPage<Activity> ipage = new Page<>(page, size);
-
         QueryWrapper<Activity> query = new QueryWrapper<>();
-//        query.eq("activity_name", activityName);
-//        query.eq("is_status", 1);
-        query.orderByDesc("is_status");
+        if(!StringUtils.isEmpty(activityName)){
+            query.like("activity_name",activityName);
+        }
+        if(isStatus != null){
+            query.eq("is_status",isStatus);
+        }
+        //activity_name LIKE ? AND start_time >= ? AND end_time <= ?
+        if(!StringUtils.isEmpty(startTime)){
+            query.ge("start_time",startTime);
+        }
+        if(!StringUtils.isEmpty(endTime)){
+            query.le("end_time",endTime);
+        }
+        query.orderByDesc("create_time");
         ipage = activityMapper.selectPage(ipage, query);
+        List<Activity> records = ipage.getRecords();
+        for (Activity record : records) {
+            List<ActivityCount> details = activityCountServiceImpl.details(record.getId());
+            record.setCount(details.size());
+        }
         Map<String,Object> map = new HashMap();
-        map.put("list",ipage.getRecords());
+        map.put("list",records);
         map.put("total",ipage.getTotal());
         return ResultUtil.success(map);
     }
@@ -119,7 +134,6 @@ public class ActivityServiceImpl{
         jsonObject.put("activityRemark",activity.getActivityRemark());
         jsonObject.put("activityAddress",activity.getActivityAddress());
         jsonObject.put("activityDetail",activity.getActivityDetail());
-
 
         return ResultUtil.success(jsonObject);
     }

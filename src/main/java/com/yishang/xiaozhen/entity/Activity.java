@@ -91,6 +91,9 @@ public class Activity extends Model<Activity> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @TableField(exist = false)
+    private Integer count;
+
 
     @Override
     protected Serializable pkVal() {

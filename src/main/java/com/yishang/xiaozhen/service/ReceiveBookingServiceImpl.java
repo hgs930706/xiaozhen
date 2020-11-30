@@ -22,7 +22,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,12 +72,10 @@ public class ReceiveBookingServiceImpl{
         QueryWrapper<ReceiveBooking> query = new QueryWrapper<>();
 
         if(!StringUtils.isEmpty(bookingTime)){
-            LocalDateTime bookingDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-            query.ge("booking_time", bookingDate);
+            query.ge("booking_time", bookingTime);
         }
         if(!StringUtils.isEmpty(createTime)){
-            LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-            query.ge("create_time", createDate);
+            query.ge("create_time", createTime);
         }
         if(approvalStatus != null){
             query.eq("approval_status", approvalStatus);

@@ -45,15 +45,16 @@ public class MeetingAreaServiceImpl{
         return ResultUtil.success();
     }
 
-    public ResultUtil list(Integer page,Integer size,String meetingName) {
+    public ResultUtil list(Integer page,Integer size,String meetingName,Integer isStatus) {
         IPage<MeetingArea> ipage = new Page<>(page, size);
         QueryWrapper<MeetingArea> query = new QueryWrapper<>();
         if(!StringUtils.isEmpty(meetingName)){
-            query.eq("meeting_name", meetingName);
+            query.like("meeting_name", meetingName);
         }
-//        query.eq("is_status", isStatus);
-
-        query.orderByDesc("is_status");
+        if(isStatus != null){
+            query.eq("is_status", isStatus);
+        }
+        query.orderByDesc("order_num");
         ipage = meetingAreaMapper.selectPage(ipage, query);
 
         Map<String,Object> map = new HashMap();
