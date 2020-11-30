@@ -8,9 +8,9 @@ import com.yishang.xiaozhen.mapper.MsgTemplateMapper;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,18 +51,19 @@ public class MsgTemplateServiceImpl {
     public ResultUtil list(Integer page,Integer size,String templateName, String createTime) {
         IPage<MsgTemplate> ipage = new Page<>(page, size);
         QueryWrapper<MsgTemplate> query = new QueryWrapper<>();
-//        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-//        query.like("template_name", templateName);
-//        query.ge("create_time", createDate);
+        if(!StringUtils.isEmpty(templateName)){
+            query.like("template_name", templateName);
+        }
+        if (!StringUtils.isEmpty(createTime)){
+            query.ge("create_time", createTime);
+        }
+
         query.eq("is_status", 1);
         ipage = msgTemplateMapper.selectPage(ipage, query);
 
-        List<MsgTemplate> records = ipage.getRecords();
-        long total = ipage.getTotal();
-
         Map<String,Object> map = new HashMap();
-        map.put("list",records);
-        map.put("total",total);
+        map.put("list",ipage.getRecords());
+        map.put("total",ipage.getTotal());
         return ResultUtil.success(map);
     }
 

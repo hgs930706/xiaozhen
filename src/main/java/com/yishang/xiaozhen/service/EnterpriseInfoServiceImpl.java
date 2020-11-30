@@ -9,6 +9,7 @@ import com.yishang.xiaozhen.util.ImageUploadUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,10 +43,13 @@ public class EnterpriseInfoServiceImpl{
     public ResultUtil list(Integer page,Integer size,String enterpriseName,Integer streetType) {
         IPage<EnterpriseInfo> ipage = new Page<>(page, size);
         QueryWrapper<EnterpriseInfo> query = new QueryWrapper<>();
-//        query.like("enterprise_name", enterpriseName);
-//        query.eq("street_type", streetType);
+        if (!StringUtils.isEmpty(enterpriseName)) {
+            query.like("enterprise_name", enterpriseName);
+        }
+        if (streetType != null) {
+            query.eq("street_type", streetType);
+        }
         query.eq("is_status", 1);
-
         ipage = enterpriseInfoMapper.selectPage(ipage, query);
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());

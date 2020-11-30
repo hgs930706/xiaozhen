@@ -38,14 +38,14 @@ public class AdminUserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size){
+    public ResultUtil list(Integer page,Integer size,String username,String role,Integer isStatus){
         if (null == page || page <= 0) {
             page = 1;
         }
         if (null == size || size <= 0) {
             size = 10;
         }
-        return adminUserServiceImpl.list(page,size);
+        return adminUserServiceImpl.list(page,size,username,role,isStatus);
     }
 
     @GetMapping("/detail")

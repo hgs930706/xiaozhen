@@ -1,10 +1,9 @@
 package com.yishang.xiaozhen.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yishang.xiaozhen.entity.AdminUser;
 import com.yishang.xiaozhen.entity.UserRole;
+import com.yishang.xiaozhen.entity.dto.AdminUserDTO;
 import com.yishang.xiaozhen.mapper.AdminUserMapper;
 import com.yishang.xiaozhen.mapper.UserRoleMapper;
 import com.yishang.xiaozhen.util.ImageUploadUtil;
@@ -17,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,17 +56,13 @@ public class AdminUserServiceImpl {
         return ResultUtil.success();
     }
 
-    public ResultUtil list(Integer page,Integer size) {
-        IPage<AdminUser> ipage = new Page<>(page, size);
+    public ResultUtil list(Integer page,Integer size,String username,String role,Integer isStatus) {
 
-        QueryWrapper<AdminUser> query = new QueryWrapper<>();
-//        query.eq("activity_name", activityName);
-        query.eq("is_status", 1);
-        ipage = adminUserMapper.selectPage(ipage, query);
+        List<AdminUserDTO> adminUserDTOS = adminUserMapper.selectPage((page-1)*size, size, username, role, isStatus);
 
         Map<String,Object> map = new HashMap();
-        map.put("list",ipage.getRecords());
-        map.put("total",ipage.getTotal());
+        map.put("list",adminUserDTOS);
+        map.put("total",adminUserMapper.selectCount(username, role, isStatus));
         return ResultUtil.success(map);
 
     }

@@ -8,6 +8,7 @@ import com.yishang.xiaozhen.mapper.FeedbackMapper;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,11 +35,12 @@ public class FeedbackServiceImpl{
     public ResultUtil list(Integer page, Integer size, String createTime, String nickname) {
         IPage<Feedback> ipage = new Page<>(page, size);
         QueryWrapper<Feedback> query = new QueryWrapper<>();
-//        LocalDateTime createDate = LocalDateTime.parse(createTime, DateUtil.dateFormatter3);
-//        query.ge("create_time", createDate);
-//        query.like("create_by", nickname);
-//        query.eq("is_status", 1);
-
+        if (!StringUtils.isEmpty(createTime)) {
+            query.ge("create_time", createTime);
+        }
+        if (!StringUtils.isEmpty(nickname)) {
+            query.like("create_by", nickname);
+        }
         ipage = feedbackMapper.selectPage(ipage, query);
 
         Map<String,Object> map = new HashMap();

@@ -3,13 +3,10 @@ package com.yishang.xiaozhen.controller;
 
 import com.yishang.xiaozhen.entity.MsgAction;
 import com.yishang.xiaozhen.service.MsgActionServiceImpl;
-import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -27,7 +24,7 @@ public class MsgActionController {
     private MsgActionServiceImpl msgActionServiceImpl;
 
     @GetMapping("/list")
-    public ResultUtil list(Integer page,Integer size,String nickname,Integer sendStatus,String createTime){
+    public ResultUtil list(Integer page,Integer size,String createTime,Integer sendStatus,Integer msgType){
         if (null == page || page <= 0) {
             page = 1;
         }
@@ -35,7 +32,7 @@ public class MsgActionController {
             size = 10;
         }
 
-        return msgActionServiceImpl.list(page,size,nickname, sendStatus,createTime);
+        return msgActionServiceImpl.list(page,size,createTime, sendStatus,msgType);
     }
 
     @GetMapping("/detail")
