@@ -9,7 +9,6 @@ import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -36,7 +35,10 @@ public class EnterpriseInfoApi {
      * @return 返回当前街区类型，所有企业
      */
     @GetMapping("/list")
-    public ResultUtil list(@RequestParam("streetType") Integer streetType){
+    public ResultUtil list(Integer streetType){
+        if(streetType == null){
+            return ResultUtil.error("街区类型不能为空");
+        }
         QueryWrapper<EnterpriseInfo> query = new QueryWrapper<>();
         query.eq("street_type", streetType);
         query.eq("is_status", 1);

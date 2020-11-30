@@ -144,7 +144,7 @@ public class FeedbackApi {
      * @return
      */
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("bookingType") String bookingType,String id){
+    public ResultUtil detail(String bookingType,String id){
         if(StringUtils.isEmpty(id)){
             return ResultUtil.error("id不能为空");
         }

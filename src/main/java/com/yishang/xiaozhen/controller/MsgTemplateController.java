@@ -24,7 +24,7 @@ public class MsgTemplateController {
     private MsgTemplateServiceImpl msgTemplateServiceImpl;
 
     @GetMapping("/list")
-    public ResultUtil list(@RequestParam("page") Integer page,@RequestParam("size")Integer size,String templateName, String createTime){
+    public ResultUtil list(Integer page,Integer size,String templateName, String createTime){
         if (null == page || page <= 0) {
             page = 1;
         }

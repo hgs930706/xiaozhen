@@ -33,7 +33,7 @@ public class ActivityBookingController {
      * @return
      */
     @GetMapping("/list")
-    public ResultUtil list(@RequestParam("page") Integer page,@RequestParam("size")Integer size,String activityName, String createTime, Integer approvalStatus){
+    public ResultUtil list(Integer page,Integer size,String activityName, String createTime, Integer approvalStatus){
         if (null == page || page <= 0) {
             page = 1;
         }
