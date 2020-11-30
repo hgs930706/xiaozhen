@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.yishang.xiaozhen.entity.ActivityBookingImage">
         <id column="id" property="id" />
         <result column="activity_booking_id" property="activityBookingId" />
-        <result column="imge_url" property="imgeUrl" />
+        <result column="imge_url" property="imageUrl" />
         <result column="status" property="status" />
         <result column="org_id" property="orgId" />
         <result column="create_by" property="createBy" />

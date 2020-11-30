@@ -23,6 +23,10 @@ public class ResultUtil<T>{
     }
 
 
+    public static ResultUtil success(Object obj){
+        return new ResultUtil(0,obj,"success");
+    }
+
     public static ResultUtil success(){
         return new ResultUtil(0,"success");
     }
@@ -31,8 +35,8 @@ public class ResultUtil<T>{
         return new ResultUtil(-1,"fail");
     }
 
-    public static ResultUtil success(Object obj){
-        return new ResultUtil(0,obj,"success");
+    public static ResultUtil success(String message){
+        return new ResultUtil(0,message);
     }
 
     public static ResultUtil error(String message){

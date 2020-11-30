@@ -68,8 +68,7 @@ public class MeetingAreaBookingController {
         if(StringUtils.isEmpty(id)){
             return ResultUtil.error("id不能为空");
         }
-        Object detail = meetingAreaBookingServiceImpl.detail(id);
-        return ResultUtil.success(detail);
+        return meetingAreaBookingServiceImpl.detail(id);
     }
 
     /**

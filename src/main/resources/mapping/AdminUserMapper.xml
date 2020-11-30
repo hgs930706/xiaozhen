@@ -20,7 +20,8 @@
 
     <select id="selectPage" resultType="com.yishang.xiaozhen.entity.dto.AdminUserDTO">
         select
-            a.id,a.username,a.real_name realName,a.user_image userImage,a.create_time createTime,a.is_status isStatus,GROUP_CONCAT(r.name) roles
+            a.id,a.username,a.real_name realName,a.user_image userImage,a.create_time createTime,a.is_status isStatus
+        ,CAST(group_concat(r.name) as char) as roles
         from u_admin_user a
         INNER JOIN u_user_role u ON a.id = u.user_id
         INNER JOIN u_role r ON u.role_id = r.id

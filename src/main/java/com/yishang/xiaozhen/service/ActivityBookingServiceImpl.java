@@ -2,15 +2,13 @@ package com.yishang.xiaozhen.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yishang.xiaozhen.entity.Activity;
-import com.yishang.xiaozhen.entity.ActivityBooking;
-import com.yishang.xiaozhen.entity.ActivityBookingImage;
-import com.yishang.xiaozhen.entity.ApprovalAction;
+import com.yishang.xiaozhen.entity.*;
 import com.yishang.xiaozhen.entity.dto.ActivityBookingDTO;
 import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
 import com.yishang.xiaozhen.event.ActivityBookingEvent;
 import com.yishang.xiaozhen.mapper.ActivityBookingImageMapper;
 import com.yishang.xiaozhen.mapper.ActivityBookingMapper;
+import com.yishang.xiaozhen.mapper.ActivityCountMapper;
 import com.yishang.xiaozhen.mapper.ActivityMapper;
 import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ImageUploadUtil;
@@ -58,6 +56,8 @@ public class ActivityBookingServiceImpl {
 
     @Autowired
     private ActivityBookingImageMapper activityBookingImageMapper;
+    @Autowired
+    private ActivityCountMapper activityCountMapper;
 
     @Transactional
     public Integer approval(String id, String approvalRemark, Integer approvalStatus) {
@@ -91,7 +91,7 @@ public class ActivityBookingServiceImpl {
                 String imageUrl = ImageUploadUtil.uploadImage(file,request);
                 ActivityBookingImage activityBookingImage = new ActivityBookingImage();
                 activityBookingImage.setActivityBookingId(object.getId());
-                activityBookingImage.setImgeUrl(imageUrl);
+                activityBookingImage.setImageUrl(imageUrl);
                 activityBookingImageServiceImpl.insert(activityBookingImage);
             }
         }
@@ -127,9 +127,9 @@ public class ActivityBookingServiceImpl {
         QueryWrapper<ActivityBookingImage>  query = new  QueryWrapper<>();
         query.eq("activity_booking_id",id);
         List<ActivityBookingImage> activityBookingImages = activityBookingImageMapper.selectList(query);
-
         //活动名称
         Activity activity = activityMapper.selectById(activityBooking.getActivityId());
+        ActivityCount activityCount = activityCountMapper.selectById(activityBooking.getActivityCountId());
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("activityName",activity.getActivityName());
@@ -141,6 +141,8 @@ public class ActivityBookingServiceImpl {
         jsonObject.put("joinPeople",activityBooking.getJoinPeople());
         jsonObject.put("bookingCount",activityBooking.getBookingCount());
         jsonObject.put("createTime",activityBooking.getCreateTime());
+        jsonObject.put("activityStartTime",activityCount.getActivityCountStartTime());
+        jsonObject.put("activityEndTime",activityCount.getActivityCountEndTime());
 
         return ResultUtil.success(jsonObject);
     }

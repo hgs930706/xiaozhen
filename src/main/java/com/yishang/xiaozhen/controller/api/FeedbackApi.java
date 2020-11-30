@@ -167,7 +167,7 @@ public class FeedbackApi {
             query.eq("activity_booking_id",booking.getId());
             List<ActivityBookingImage> images = activityBookingImageMapper.selectList(query);
             if(images != null && images.size() > 0){
-                dto.setImages(images.get(0).getImgeUrl());
+                dto.setImages(images.get(0).getImageUrl());
             }
             return ResultUtil.success(dto);
 

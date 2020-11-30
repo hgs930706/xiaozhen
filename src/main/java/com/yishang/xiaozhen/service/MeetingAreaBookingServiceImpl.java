@@ -1,11 +1,14 @@
 package com.yishang.xiaozhen.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yishang.xiaozhen.entity.ApprovalAction;
+import com.yishang.xiaozhen.entity.MeetingArea;
 import com.yishang.xiaozhen.entity.MeetingAreaBooking;
 import com.yishang.xiaozhen.entity.dto.MeetingAreaBookingDTO;
 import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
 import com.yishang.xiaozhen.event.MeetingAreaBookingEvent;
 import com.yishang.xiaozhen.mapper.MeetingAreaBookingMapper;
+import com.yishang.xiaozhen.mapper.MeetingAreaMapper;
 import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class MeetingAreaBookingServiceImpl {
 
     @Autowired
     private MeetingAreaBookingMapper meetingAreaBookingMapper;
+    @Autowired
+    private MeetingAreaMapper meetingAreaMapper;
     @Autowired
     private ApprovalActionServiceImpl approvalActionServiceImpl;
 
@@ -92,9 +97,28 @@ public class MeetingAreaBookingServiceImpl {
     }
 
 
-    public Object detail(String id) {
+    public ResultUtil detail(String id) {
         MeetingAreaBooking meetingAreaBooking = meetingAreaBookingMapper.selectById(id);
-        return meetingAreaBooking;
+        MeetingArea meetingArea = meetingAreaMapper.selectById(meetingAreaBooking.getMeetingAreaId());
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("openId",meetingAreaBooking.getOpenId());
+        jsonObject.put("bookingUnit",meetingAreaBooking.getBookingUnit());
+        jsonObject.put("bookingPerson",meetingAreaBooking.getBookingPerson());
+        jsonObject.put("mobile",meetingAreaBooking.getMobile());
+        jsonObject.put("joinPeople",meetingAreaBooking.getJoinPeople());
+        jsonObject.put("bookingStartTime",meetingAreaBooking.getBookingStartTime());
+        jsonObject.put("bookingEndTime",meetingAreaBooking.getBookingEndTime());
+        jsonObject.put("createTime",meetingAreaBooking.getCreateTime());
+        jsonObject.put("meetingTable",meetingAreaBooking.getMeetingTable());
+        jsonObject.put("meetingType",meetingAreaBooking.getMeetingType());
+        jsonObject.put("meetingGoods",meetingAreaBooking.getMeetingGoods());
+        jsonObject.put("remark",meetingAreaBooking.getRemark());
+
+        jsonObject.put("meetingName",meetingArea.getMeetingName());
+        jsonObject.put("meetingAddress",meetingArea.getMeetingAddress());
+
+        return ResultUtil.success(jsonObject);
     }
 
 

@@ -31,7 +31,7 @@ public class ActivityBookingImage extends Model<ActivityBookingImage> {
 
     private String activityBookingId;
 
-    private String imgeUrl;
+    private String imageUrl;
 
     /**
      * 状态（1正常，0停用）
