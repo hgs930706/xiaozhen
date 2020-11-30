@@ -35,9 +35,12 @@ public class MsgTemplateController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
-        msgTemplateServiceImpl.detail(id);
-        return null;
+    public ResultUtil detail(String id){
+        if(com.alibaba.excel.util.StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
+        Object detail = msgTemplateServiceImpl.detail(id);
+        return ResultUtil.success(detail);
     }
 
 

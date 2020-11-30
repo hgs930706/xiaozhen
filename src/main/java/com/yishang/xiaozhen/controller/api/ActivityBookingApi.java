@@ -9,6 +9,7 @@ import com.yishang.xiaozhen.service.ActivityCountServiceImpl;
 import com.yishang.xiaozhen.service.ActivityServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +44,10 @@ public class ActivityBookingApi {
      * @return
      */
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         ResultUtil detail = activityServiceImpl.detail(id);
         return detail;
     }
@@ -54,7 +58,10 @@ public class ActivityBookingApi {
      * @return
      */
     @GetMapping("/selectCount")
-    public ResultUtil selectCount(@RequestParam("id") String id){
+    public ResultUtil selectCount(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         List<ActivityCount> details = activityCountServiceImpl.details(id);
         return ResultUtil.success(details);
     }

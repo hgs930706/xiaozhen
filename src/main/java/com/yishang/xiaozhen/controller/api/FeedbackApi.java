@@ -9,6 +9,7 @@ import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
 import com.yishang.xiaozhen.mapper.*;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -143,8 +144,13 @@ public class FeedbackApi {
      * @return
      */
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("bookingType") String bookingType, @RequestParam("id") String id){
-
+    public ResultUtil detail(@RequestParam("bookingType") String bookingType,String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
+        if(StringUtils.isEmpty(bookingType)){
+            return ResultUtil.error("预约类型不能为空");
+        }
         // 根据不同的预约类型，执行不同的预约查询
         if("activityType".equals(bookingType)){
             ActivityBooking booking = activityBookingMapper.selectById(id);

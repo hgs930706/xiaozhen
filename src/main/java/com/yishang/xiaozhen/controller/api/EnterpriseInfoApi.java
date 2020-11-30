@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.controller.api;
 
 
+import com.alibaba.excel.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yishang.xiaozhen.entity.EnterpriseInfo;
 import com.yishang.xiaozhen.mapper.EnterpriseInfoMapper;
@@ -52,8 +53,10 @@ public class EnterpriseInfoApi {
      * @return
      */
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
-
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(id);
 
         return ResultUtil.success(enterpriseInfo);

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yishang.xiaozhen.service.MeetingAreaBookingServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -63,7 +64,10 @@ public class MeetingAreaBookingController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         Object detail = meetingAreaBookingServiceImpl.detail(id);
         return ResultUtil.success(detail);
     }

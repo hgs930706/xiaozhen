@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.controller.api;
 
 
+import com.alibaba.excel.util.StringUtils;
 import com.yishang.xiaozhen.entity.MeetingAreaBooking;
 import com.yishang.xiaozhen.service.MeetingAreaBookingServiceImpl;
 import com.yishang.xiaozhen.service.MeetingAreaServiceImpl;
@@ -51,7 +52,10 @@ public class MeetingAreaBookingApi {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
+    public ResultUtil detail(String id){
+        if(org.springframework.util.StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         ResultUtil detail = meetingAreaServiceImpl.detail(id);
         return detail;
     }
@@ -62,7 +66,10 @@ public class MeetingAreaBookingApi {
      * @return
      */
     @GetMapping("/select")
-    public ResultUtil select(@RequestParam("id") String id){
+    public ResultUtil select(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         ResultUtil detail = meetingAreaServiceImpl.select(id);
         return detail;
     }

@@ -43,7 +43,7 @@ public class MsgActionApi {
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("id") String id){
+    public String detail(String id){
 
         return null;
     }

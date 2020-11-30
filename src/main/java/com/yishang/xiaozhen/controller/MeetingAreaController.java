@@ -45,9 +45,12 @@ public class MeetingAreaController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
-        meetingAreaServiceImpl.detail(id);
-        return ResultUtil.success();
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
+        ResultUtil detail = meetingAreaServiceImpl.detail(id);
+        return ResultUtil.success(detail);
     }
 
 

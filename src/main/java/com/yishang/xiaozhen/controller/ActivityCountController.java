@@ -3,7 +3,9 @@ package com.yishang.xiaozhen.controller;
 
 import com.yishang.xiaozhen.entity.ActivityCount;
 import com.yishang.xiaozhen.service.ActivityCountServiceImpl;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,9 +36,12 @@ public class ActivityCountController {
      * @return
      */
     @GetMapping("/delete")
-    public String delete(@RequestParam("id") String id){
-        Integer insert = activityCountServiceImpl.delete(id);
-        return null;
+    public ResultUtil delete(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
+        activityCountServiceImpl.delete(id);
+        return ResultUtil.success();
     }
 
 

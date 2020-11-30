@@ -43,7 +43,10 @@ public class ActivityController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         ResultUtil detail = activityServiceImpl.detail2(id);
         return detail;
     }

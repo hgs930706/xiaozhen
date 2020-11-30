@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.controller;
 
 
+import com.alibaba.excel.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.yishang.xiaozhen.service.ReceiveBookingServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
@@ -72,8 +73,10 @@ public class ReceiveBookingController {
     }
 
     @GetMapping("/detail")
-    public ResultUtil detail(@RequestParam("id") String id){
-
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         return receiveBookingServiceImpl.detail(id);
     }
 
