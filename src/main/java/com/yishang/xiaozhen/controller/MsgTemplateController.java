@@ -46,11 +46,18 @@ public class MsgTemplateController {
 
     @PostMapping("/insert")
     public ResultUtil insert(@RequestBody MsgTemplate object){
-        Integer insert = msgTemplateServiceImpl.insert(object);
-        if(insert == -1){
-            return ResultUtil.error("模板名称已存在。");
+        if(StringUtils.isEmpty(object.getId())){
+            Integer insert = msgTemplateServiceImpl.insert(object);
+            if(insert == -1){
+                return ResultUtil.error("模板名称已存在。");
+            }
+        }else{
+            Integer update = msgTemplateServiceImpl.update(object);
+            if(update == -1){
+                return ResultUtil.error("模板名称已存在。");
+            }
         }
-        return ResultUtil.success("新增模板成功。");
+        return ResultUtil.success();
     }
 
     @PostMapping("/update")

@@ -36,7 +36,7 @@ public class FeedbackController {
             page = 1;
         }
         if (null == size || size <= 0) {
-            size = 10;
+            size = 5;
         }
 
         return feedbackServiceImpl.list(page,size,createTime,nickname);

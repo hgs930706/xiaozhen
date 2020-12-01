@@ -59,8 +59,8 @@ public class DictServiceImpl{
         return null;
     }
 
-    public Integer mapUpdate(Dict object) {
+    public ResultUtil mapUpdate(Dict object) {
         dictMapper.updateById(object);
-        return null;
+        return ResultUtil.success();
     }
 }

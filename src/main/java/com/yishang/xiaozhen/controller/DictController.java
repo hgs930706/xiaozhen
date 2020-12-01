@@ -9,10 +9,7 @@ import com.yishang.xiaozhen.service.DictServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -83,13 +80,12 @@ public class DictController {
      * 编辑地图
      * @return
      */
-    @GetMapping("mapUpdate")
+    @PostMapping("mapUpdate")
     public ResultUtil mapUpdate(@RequestBody Dict object){
         if(StringUtils.isEmpty(object.getId())){
             return ResultUtil.error("id不能为空!");
         }
-        dictServiceImpl.mapUpdate(object);
-        return ResultUtil.success();
+        return dictServiceImpl.mapUpdate(object);
     }
 
 
