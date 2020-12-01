@@ -1,10 +1,12 @@
 package com.yishang.xiaozhen.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yishang.xiaozhen.entity.Role;
 import com.yishang.xiaozhen.mapper.RoleMapper;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,13 @@ public class RoleController {
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @GetMapping("/list")
+    public ResultUtil list(){
+        QueryWrapper query = new QueryWrapper();
+        query.eq("is_status",1);
+        return ResultUtil.success(roleMapper.selectList(query));
+    }
 
     @PostMapping("/insert")
     public ResultUtil insert(Role object){

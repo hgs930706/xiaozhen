@@ -28,6 +28,7 @@ public class UserRoleServiceImpl{
             UserRole object = new UserRole();
             object.setUserId(userId);
             object.setRoleId(roleId);
+            userRoleMapper.insert(object);
         }
         return ResultUtil.success();
     }

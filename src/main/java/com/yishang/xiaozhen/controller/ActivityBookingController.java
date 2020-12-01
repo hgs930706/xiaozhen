@@ -55,6 +55,9 @@ public class ActivityBookingController {
         String approvalRemark = jsonObject.getString("approvalRemark");
         Integer approvalStatus = jsonObject.getInteger("approvalStatus");
         String id = jsonObject.getString("id");
+        if(org.springframework.util.StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
         Integer approval = activityBookingServiceImpl.approval(id, approvalRemark, approvalStatus);
         if(approval == -1){
             return ResultUtil.error("已审批");

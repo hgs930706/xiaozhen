@@ -25,7 +25,7 @@ public interface AdminUserMapper extends BaseMapper<AdminUser> {
                                   @Param("roleId") String roleId,
                                   @Param("isStatus") Integer isStatus);
 
-    Integer selectCount(
+    Integer selectCount2(
             @Param("username") String username,
             @Param("roleId") String roleId,
             @Param("isStatus") Integer isStatus);

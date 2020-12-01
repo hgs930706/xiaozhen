@@ -57,18 +57,23 @@ public class AdminUserController {
 
     @PostMapping("/insert")
     public ResultUtil insert(AdminUser object, MultipartFile file, HttpServletRequest request){
-        if(StringUtils.isEmpty(object.getPassword()) || StringUtils.isEmpty(object.getUsername())){
-            return ResultUtil.error("用户名或密码不能为空");
+        if(StringUtils.isEmpty(object.getId())){
+            if(StringUtils.isEmpty(object.getPassword()) || StringUtils.isEmpty(object.getUsername())){
+                return ResultUtil.error("用户名或密码不能为空");
+            }
+            if(!DateUtil.validateMobilePhone(object.getUsername())){
+                return ResultUtil.error("用户名只支持手机号码");
+            }
+            if(7 >= object.getPassword().length() ||  object.getPassword().length() >= 13){
+                return ResultUtil.error("密码长度不符合要求，请重新输入！");
+            }
+            object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
+           return adminUserServiceImpl.insert(object,file,request);
+        }else{
+           //更新
+           return adminUserServiceImpl.update(object, file,request);
         }
-        if(!DateUtil.validateMobilePhone(object.getUsername())){
-            return ResultUtil.error("用户名只支持手机号码");
-        }
-        if(7 >= object.getPassword().length() ||  object.getPassword().length() >= 13){
-            return ResultUtil.error("密码长度不符合要求，请重新输入！");
-        }
-        object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
-        ResultUtil result = adminUserServiceImpl.insert(object,file,request);
-        return result;
+
     }
 
     /**
@@ -84,7 +89,7 @@ public class AdminUserController {
         }
         //重置密码
         object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
-        ResultUtil result = adminUserServiceImpl.update(object, file);
+        ResultUtil result = adminUserServiceImpl.update(object, file,request);
         return result;
     }
 

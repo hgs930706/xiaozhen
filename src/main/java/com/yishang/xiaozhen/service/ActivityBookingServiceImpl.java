@@ -124,14 +124,19 @@ public class ActivityBookingServiceImpl {
     public ResultUtil detail(String id) {
         //预约
         ActivityBooking activityBooking = activityBookingMapper.selectById(id);
-
         //预约图片
         QueryWrapper<ActivityBookingImage>  query = new  QueryWrapper<>();
         query.eq("activity_booking_id",id);
         List<ActivityBookingImage> activityBookingImages = activityBookingImageMapper.selectList(query);
         //活动名称
         Activity activity = activityMapper.selectById(activityBooking.getActivityId());
+        if(activity == null){
+            return ResultUtil.error("该活动已无效");
+        }
         ActivityCount activityCount = activityCountMapper.selectById(activityBooking.getActivityCountId());
+        if(activityCount == null){
+            return ResultUtil.error("该场次活动已无效");
+        }
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("activityName",activity.getActivityName());

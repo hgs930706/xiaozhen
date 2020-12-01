@@ -36,6 +36,8 @@ public class AdminUserDTO {
 
     private String roles;
 
+    private String roleIds;
+
     /**
      * 管理员状态（1正常，0停用）
      */
