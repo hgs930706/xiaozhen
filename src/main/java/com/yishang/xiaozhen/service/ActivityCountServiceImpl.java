@@ -39,6 +39,7 @@ public class ActivityCountServiceImpl{
         QueryWrapper<ActivityCount> query = new QueryWrapper();
         query.eq("activity_id",activityId);
         query.eq("is_status",1);
+        query.orderByAsc("count");
         List<ActivityCount> activityCountList = activityCountMapper.selectList(query);
         return activityCountList;
     }

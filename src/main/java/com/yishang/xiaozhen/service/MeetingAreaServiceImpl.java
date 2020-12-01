@@ -39,7 +39,13 @@ public class MeetingAreaServiceImpl{
     }
 
     public ResultUtil update(MeetingArea object, MultipartFile file, HttpServletRequest request) {
-        String imageUrl = ImageUploadUtil.uploadImage(file, request);
+        String imageUrl = "";
+        if(file == null){
+            MeetingArea obj = meetingAreaMapper.selectById(object.getId());
+            imageUrl = obj.getMeetingImage();
+        }else{
+            imageUrl = ImageUploadUtil.uploadImage(file, request);
+        }
         object.setMeetingImage(imageUrl);
         meetingAreaMapper.updateById(object);
         return ResultUtil.success();

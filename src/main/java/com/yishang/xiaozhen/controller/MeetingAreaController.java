@@ -49,15 +49,17 @@ public class MeetingAreaController {
         if(StringUtils.isEmpty(id)){
             return ResultUtil.error("id不能为空");
         }
-        ResultUtil detail = meetingAreaServiceImpl.detail(id);
-        return ResultUtil.success(detail);
+        return meetingAreaServiceImpl.detail(id);
     }
 
 
     @PostMapping("/insert")
     public ResultUtil insert(MeetingArea meetingArea, MultipartFile file, HttpServletRequest request){
-        ResultUtil result = meetingAreaServiceImpl.insert(meetingArea,file,request);
-        return result;
+        if(StringUtils.isEmpty(meetingArea.getId())){
+            return meetingAreaServiceImpl.insert(meetingArea,file,request);
+        }else{
+            return meetingAreaServiceImpl.update(meetingArea,file,request);
+        }
     }
 
     @PostMapping("/update")

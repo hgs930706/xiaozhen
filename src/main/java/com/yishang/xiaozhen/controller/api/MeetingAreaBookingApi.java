@@ -56,8 +56,7 @@ public class MeetingAreaBookingApi {
         if(org.springframework.util.StringUtils.isEmpty(id)){
             return ResultUtil.error("id不能为空");
         }
-        ResultUtil detail = meetingAreaServiceImpl.detail(id);
-        return detail;
+        return meetingAreaServiceImpl.detail(id);
     }
 
     /**
