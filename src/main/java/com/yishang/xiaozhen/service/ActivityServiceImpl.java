@@ -154,10 +154,16 @@ public class ActivityServiceImpl{
 
 
     public ResultUtil update(Activity object, MultipartFile file, HttpServletRequest request) {
-        String imageUrl = ImageUploadUtil.uploadImage(file, request);
+        String imageUrl = "";
+        if(file == null){
+            Activity activity = activityMapper.selectById(object.getId());
+            imageUrl = activity.getActivityImage();
+        }else{
+            imageUrl = ImageUploadUtil.uploadImage(file, request);
+        }
         object.setActivityImage(imageUrl);
-        int i = activityMapper.updateById(object);
-        return ResultUtil.success(i);
+        activityMapper.updateById(object);
+        return ResultUtil.success();
     }
 
     public Integer delete(String id) {

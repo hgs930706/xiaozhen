@@ -85,6 +85,8 @@ public class ActivityBookingServiceImpl {
 
     @Transactional
     public ResultUtil insert(ActivityBooking object, MultipartFile[] files, HttpServletRequest request) {
+        ActivityCount activityCount = activityCountMapper.selectById(object.getActivityCountId());
+        object.setBookingCount(activityCount.getCount());
         activityBookingMapper.insert(object);
         if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile file : files) {

@@ -13,6 +13,9 @@ public class ImageUploadUtil {
      * 图片文件上传
      */
     public static String uploadImage(MultipartFile file, HttpServletRequest request){
+        if(file == null){
+            return "";
+        }
 
         String basePath = request.getScheme() + "://" + request.getServerName()
                 + ":" + request.getServerPort()+"/mimi/upload/images/";

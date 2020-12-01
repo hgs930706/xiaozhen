@@ -54,9 +54,11 @@ public class ActivityController {
 
     @PostMapping("/insert")
     public ResultUtil insert(Activity object, MultipartFile file, HttpServletRequest request){
-
-        ResultUtil result = activityServiceImpl.insert(object, file,request);
-        return result;
+        if(StringUtils.isEmpty(object.getId())){
+            return activityServiceImpl.insert(object, file,request);
+        }else{
+            return activityServiceImpl.update(object, file,request);
+        }
     }
 
     @PostMapping("/update")
