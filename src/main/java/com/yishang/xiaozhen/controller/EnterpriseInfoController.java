@@ -42,6 +42,12 @@ public class EnterpriseInfoController {
 
         return null;
     }
+    @GetMapping("/delete")
+    public ResultUtil delete(String id){
+
+        return enterpriseInfoServiceImpl.delete(id);
+    }
+
 
 
     /**
@@ -56,9 +62,11 @@ public class EnterpriseInfoController {
         if(object.getStreetType() == null){
             return ResultUtil.error("街道必填项。");
         }
-        ResultUtil result = enterpriseInfoServiceImpl.insert(object, file, fileQr,request);
-
-        return result;
+        if(StringUtils.isEmpty(object.getId())){
+            return enterpriseInfoServiceImpl.insert(object, file, fileQr,request);
+        }else{
+            return enterpriseInfoServiceImpl.update(object, file, fileQr,request);
+        }
     }
 
 

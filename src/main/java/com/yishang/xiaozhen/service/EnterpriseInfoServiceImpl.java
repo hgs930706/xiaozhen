@@ -50,6 +50,7 @@ public class EnterpriseInfoServiceImpl{
             query.eq("street_type", streetType);
         }
         query.eq("is_status", 1);
+        query.orderByDesc("order_num");
         ipage = enterpriseInfoMapper.selectPage(ipage, query);
         Map<String,Object> map = new HashMap();
         map.put("list",ipage.getRecords());
@@ -64,8 +65,20 @@ public class EnterpriseInfoServiceImpl{
 
 
     public ResultUtil update(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr, HttpServletRequest request) {
-        String imageUrl = ImageUploadUtil.uploadImage(file, request);
-        String imageUrlQr = ImageUploadUtil.uploadImage(fileQr, request);
+        String imageUrl ="";
+        if(file == null){
+            EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(object.getId());
+            imageUrl = enterpriseInfo.getEnterpriseLogo();
+        }else{
+            imageUrl = ImageUploadUtil.uploadImage(file, request);
+        }
+        String imageUrlQr = "";
+        if(fileQr == null){
+            EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(object.getId());
+            imageUrlQr = enterpriseInfo.getEnterpriseQr();
+        }else{
+            imageUrlQr =  ImageUploadUtil.uploadImage(fileQr, request);
+        }
         object.setEnterpriseLogo(imageUrl);
         object.setEnterpriseQr(imageUrlQr);
         enterpriseInfoMapper.updateById(object);
@@ -73,8 +86,14 @@ public class EnterpriseInfoServiceImpl{
     }
 
 
-    public Integer delete(String id) {
-        return null;
+    public ResultUtil delete(String id) {
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空");
+        }
+        EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(id);
+        enterpriseInfo.setIsStatus(0);
+        enterpriseInfoMapper.updateById(enterpriseInfo);
+        return ResultUtil.success();
     }
 
 }
