@@ -3,6 +3,7 @@ package com.yishang.xiaozhen.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yishang.xiaozhen.entity.ActivityCount;
 import com.yishang.xiaozhen.mapper.ActivityCountMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,9 @@ public class ActivityCountServiceImpl{
     @Autowired
     private ActivityCountMapper activityCountMapper;
 
-    public Integer insert(ActivityCount object) {
+    public ResultUtil insert(ActivityCount object) {
         activityCountMapper.insert(object);
-        return null;
+        return ResultUtil.success();
     }
 
 
@@ -47,13 +48,13 @@ public class ActivityCountServiceImpl{
         return null;
     }
 
-    public Integer delete(String id) {
+    public ResultUtil delete(String id) {
 //        activityCountMapper.deleteById(id);
         //执行逻辑删除
         ActivityCount activityCount = activityCountMapper.selectById(id);
         activityCount.setIsStatus(0);
         activityCountMapper.updateById(activityCount);
-        return null;
+        return ResultUtil.success();
 
     }
 }

@@ -24,9 +24,8 @@ public class ActivityCountController {
     private ActivityCountServiceImpl activityCountServiceImpl;
 
     @PostMapping("/insert")
-    public String insert(@RequestBody ActivityCount object){
-        Integer insert = activityCountServiceImpl.insert(object);
-        return null;
+    public ResultUtil insert(@RequestBody ActivityCount object){
+        return activityCountServiceImpl.insert(object);
     }
 
 
@@ -40,8 +39,7 @@ public class ActivityCountController {
         if(StringUtils.isEmpty(id)){
             return ResultUtil.error("id不能为空");
         }
-        activityCountServiceImpl.delete(id);
-        return ResultUtil.success();
+        return activityCountServiceImpl.delete(id);
     }
 
 
