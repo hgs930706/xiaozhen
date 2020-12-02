@@ -1,4 +1,4 @@
-package com.yishang.xiaozhen.config;
+package com.yishang.xiaozhen.config.security;
 
 
 import com.yishang.xiaozhen.config.jwt.JWTAuthenticationFilter;
@@ -24,6 +24,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+
+    @Autowired
+    private MyAccessDeniedHandler myAccessDeniedHandler;
 
     // 加密密码的
     @Bean
@@ -88,8 +94,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/receiveBooking/approval").hasAuthority("ROLE_RECEIVE_APPROVAL")
                 .antMatchers("/meetingArea/insert").hasAuthority("ROLE_MEETING_AREA_MANAGER")
                 .antMatchers("/activity/insert").hasAuthority("ROLE_ACTIVITY_MANAGER")
-                .anyRequest().authenticated()//其它接口只需要验证，不需要权限
-//                .and()
+                .anyRequest()
+                .authenticated()//其它接口只需要验证，不需要权限
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(myAuthenticationEntryPoint)
+                .accessDeniedHandler(myAccessDeniedHandler)
 //                .logout().logoutSuccessUrl("/admin/login2")
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
