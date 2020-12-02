@@ -25,7 +25,7 @@ public class ImageUploadUtil {
         String suffixName = fileName.substring(fileName.lastIndexOf("."));//从最后一个.开始截取。截取fileName的后缀名
         String newFileName = UUID.randomUUID() + suffixName; //文件新名称
         //设置文件存储路径，可以存放在你想要指定的路径里面
-        String rootPath="D:/mimi/"+ File.separator+"upload/images/"; //上传图片存放位置
+        String rootPath="f:/mimi/"+ File.separator+"upload/images/"; //上传图片存放位置
 
         String filePath = rootPath+newFileName;
         File newFile = new File(filePath);
@@ -39,10 +39,14 @@ public class ImageUploadUtil {
         try {
             file.transferTo(newFile);
         } catch (IOException e) {
-            log.error("图片上传异常：{}",e);
+            log.error("图片上传异常： {}",e);
         }
         //图片上传保存url
         String imgUrl = basePath + newFileName;
         return imgUrl;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(System.getProperty("user.dir"));
     }
 }

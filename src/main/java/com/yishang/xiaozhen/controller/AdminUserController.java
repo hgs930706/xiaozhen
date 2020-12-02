@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.AdminUser;
@@ -37,6 +38,19 @@ public class AdminUserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @GetMapping("/info")
+    public ResultUtil info(){
+        String username = JwtTokenUtil.currentUserName();
+        QueryWrapper<AdminUser> query = new QueryWrapper<>();
+        query.eq("username", username);
+        query.eq("is_status", 1);//有效用户
+        AdminUser user = adminUserMapper.selectOne(query);
+        if (user == null) {
+            return ResultUtil.error("用户不存在。");
+        }
+        return ResultUtil.success(user);
+    }
+
     @GetMapping("/list")
     public ResultUtil list(Integer page,Integer size,String username,String role,Integer isStatus){
         if (null == page || page <= 0) {
@@ -49,11 +63,12 @@ public class AdminUserController {
     }
 
     @GetMapping("/detail")
-    public String detail(String id){
-
-        return null;
+    public ResultUtil detail(String id){
+        if(StringUtils.isEmpty(id)){
+            return ResultUtil.error("id不能为空!");
+        }
+        return ResultUtil.success(adminUserMapper.selectById(id));
     }
-
 
     @PostMapping("/insert")
     public ResultUtil insert(AdminUser object, MultipartFile file, HttpServletRequest request){
@@ -95,16 +110,17 @@ public class AdminUserController {
 
     /**
      * 重置密码
-     * @param oldPassword
-     * @param newPassword
-     * @param confirmPassword 确认密码
      * @return
      */
     @PostMapping("/reset")
-    public ResultUtil reset(@RequestParam("oldPassword") String oldPassword
-            ,@RequestParam("newPassword")String newPassword
-            ,@RequestParam("confirmPassword") String confirmPassword){
+    public ResultUtil reset(@RequestBody JSONObject object){
 
+        String oldPassword = object.getString("oldPassword");
+        String newPassword = object.getString("newPassword");
+        String confirmPassword = object.getString("confirmPassword");
+        if(StringUtils.isEmpty(oldPassword) || StringUtils.isEmpty(newPassword) || StringUtils.isEmpty(confirmPassword)){
+            return ResultUtil.error("缺少必填项");
+        }
         String username = JwtTokenUtil.currentUserName();
         QueryWrapper<AdminUser> query = new QueryWrapper<>();
         query.eq("username", username);

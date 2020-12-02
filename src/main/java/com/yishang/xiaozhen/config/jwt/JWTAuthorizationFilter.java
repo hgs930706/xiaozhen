@@ -40,6 +40,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         boolean expiration = JwtTokenUtil.isExpiration(token);
         if (expiration) {
             log.error("jwt已过期");
+            chain.doFilter(request, response);
             return;
         }
         String username = JwtTokenUtil.getUsername(token);

@@ -39,10 +39,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		/**
 		 * addResourceHandler 指的是对外暴露的访问路径
-		 * addResourceLocations 指的是文件配置的目录
+		 * addResourceLocations 指的是文件配置的目录：ddResourceLocations("file:f:/mimi/upload/");
 		 */
 		//文件上传路径映射
-		registry.addResourceHandler("/mimi/upload/**").addResourceLocations("file:D:/mimi/upload/");
+		registry.addResourceHandler("/mimi/upload/**").addResourceLocations("file:f:/mimi/upload/");
 
 	}
 
