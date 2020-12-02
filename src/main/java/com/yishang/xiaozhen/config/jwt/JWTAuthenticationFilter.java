@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -48,8 +47,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
-
+                                            Authentication authResult){
         // g查看源代码会发现调用etPrincipal()方法会返回一个实现了`UserDetails`接口的对象
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
         List<String> roles = new ArrayList();
@@ -69,8 +67,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException, ServletException {
-        // 让浏览器能访问到其它响应头
+                                              AuthenticationException failed){
         response.addHeader("Access-Control-Expose-Headers","authorization");
         // 按照jwt的规定，最后请求的格式应该是 `Bearer token`
         response.setHeader("authorization", "fail");

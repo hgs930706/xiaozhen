@@ -29,7 +29,6 @@ public class WxUserApi {
     @GetMapping("/detail")
     public ResultUtil detail(){
         String openId = JwtTokenUtil.currentUserName();
-
         QueryWrapper query = new QueryWrapper();
         query.eq("open_id",openId);
         WxUser wxUser = wxUserMapper.selectOne(query);

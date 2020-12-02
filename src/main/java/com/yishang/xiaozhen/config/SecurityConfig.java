@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -61,7 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //密码处理
                 .passwordEncoder(bCryptPasswordEncoder());
     }
-
+    @Override
+    public void configure(WebSecurity web){
+        //解决静态资源被拦截的问题
+        web.ignoring().antMatchers("/mimi/upload/**");
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 允许跨域访问
@@ -71,11 +76,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 不需要session
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/mimi/upload/**").permitAll()
                 .antMatchers("/api/wx/login").permitAll()
                 .antMatchers("/api/wx/callBack").permitAll()
                 .antMatchers("/api/**").hasAuthority("ROLE_WX")//微信相关接口放心
-//                .antMatchers("/meetingArea/**").authenticated()
+                .antMatchers("/user/verifyCode").permitAll()
+                .antMatchers("/adminUser/insert").hasAuthority("ROLE_USER")
+                .antMatchers("/activityBooking/approval").hasAuthority("ROLE_ACTIVITY_APPROVAL")
+                .antMatchers("/meetingAreaBooking/approval").hasAuthority("ROLE_MEETING_AREA_APPROVAL")
+                .antMatchers("/receiveBooking/approval").hasAuthority("ROLE_RECEIVE_APPROVAL")
+                .antMatchers("/meetingArea/insert").hasAuthority("ROLE_MEETING_AREA_MANAGER")
+                .antMatchers("/activity/insert").hasAuthority("ROLE_ACTIVITY_MANAGER")
                 .anyRequest().authenticated()//其它接口只需要验证，不需要权限
 //                .and()
 //                .logout().logoutSuccessUrl("/admin/login2")

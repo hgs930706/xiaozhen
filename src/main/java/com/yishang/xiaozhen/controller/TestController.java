@@ -1,4 +1,4 @@
-package com.yishang.xiaozhen.controller.test;
+package com.yishang.xiaozhen.controller;
 
 import com.yishang.xiaozhen.util.VerifyCode;
 import com.yishang.xiaozhen.util.VerifyCodeGen;
