@@ -48,7 +48,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         QueryWrapper<UserRole> queryRole = new QueryWrapper<>();
         queryRole.eq("user_id", user.getId());
         List<UserRole> userRoles = userRoleMapper.selectList(queryRole);
-        List<String> roleIds = userRoles.stream().map(UserRole::getId).distinct().collect(Collectors.toList());
+        List<String> roleIds = userRoles.stream().map(UserRole::getRoleId).distinct().collect(Collectors.toList());
         //角色获取权限
         QueryWrapper<RoleAuthority> queryRoleAuthority = new QueryWrapper<>();
         queryRoleAuthority.in("role_id", roleIds);

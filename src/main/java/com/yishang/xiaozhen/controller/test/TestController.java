@@ -17,7 +17,7 @@ import java.io.IOException;
 public class TestController {
 
     @GetMapping("/verifyCode")
-    public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
+    public String verifyCode(HttpServletRequest request, HttpServletResponse response) {
         VerifyCodeGen iVerifyCodeGen = new VerifyCodeGen();
         try {
             //设置长宽
@@ -36,9 +36,11 @@ public class TestController {
             response.setContentType("image/jpeg");
             response.getOutputStream().write(verifyCode.getImgBytes());
             response.getOutputStream().flush();
+            return code;
         } catch (IOException e) {
             log.info("", e);
         }
+        return "111";
     }
 
     @GetMapping("/getverifyCode")

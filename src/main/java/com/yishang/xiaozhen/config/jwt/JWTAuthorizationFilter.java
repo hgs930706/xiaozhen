@@ -29,8 +29,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
 
         String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
-        // 如果请求头中没有Authorization信息则直接放行了
 
+        // 如果请求头中没有Authorization信息则直接放行了,因为有请求是不需要认证的
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;

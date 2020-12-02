@@ -64,9 +64,9 @@ public class AdminUserController {
             if(!DateUtil.validateMobilePhone(object.getUsername())){
                 return ResultUtil.error("用户名只支持手机号码");
             }
-            if(7 >= object.getPassword().length() ||  object.getPassword().length() >= 13){
-                return ResultUtil.error("密码长度不符合要求，请重新输入！");
-            }
+//            if(7 >= object.getPassword().length() ||  object.getPassword().length() >= 13){
+//                return ResultUtil.error("密码长度不符合要求，请重新输入！");
+//            }
             object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
            return adminUserServiceImpl.insert(object,file,request);
         }else{

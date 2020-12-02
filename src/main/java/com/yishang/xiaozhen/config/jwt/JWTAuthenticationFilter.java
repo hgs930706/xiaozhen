@@ -2,6 +2,7 @@ package com.yishang.xiaozhen.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yishang.xiaozhen.entity.wx.LoginUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
@@ -59,17 +60,21 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
         // 根据用户名，角色创建token
         String token = JwtTokenUtil.createToken(jwtUser.getUsername(), roles,false);
-
+        // 让浏览器能访问到其它响应头
+        response.addHeader("Access-Control-Expose-Headers","authorization");
         // 按照jwt的规定，最后请求的格式应该是 `Bearer token`
-        response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
+        response.setHeader("authorization", JwtTokenUtil.TOKEN_PREFIX + token);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        response.getWriter().write("authentication failed, reason: " + failed.getMessage());
+        // 让浏览器能访问到其它响应头
+        response.addHeader("Access-Control-Expose-Headers","authorization");
+        // 按照jwt的规定，最后请求的格式应该是 `Bearer token`
+        response.setHeader("authorization", "fail");
+        log.error("认证失败: {}",failed.getMessage());
     }
-
 
 }
