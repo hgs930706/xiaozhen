@@ -2,11 +2,13 @@ package com.yishang.xiaozhen.controller;
 
 import com.yishang.xiaozhen.entity.AdminUser;
 import com.yishang.xiaozhen.mapper.AdminUserMapper;
+import com.yishang.xiaozhen.util.ResultUtil;
 import com.yishang.xiaozhen.util.VerifyCode;
 import com.yishang.xiaozhen.util.VerifyCodeGen;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +29,7 @@ public class LoginController {
     private AdminUserMapper adminUserMapper;
 
     @GetMapping("/verifyCode")
-    public String verifyCode(HttpServletRequest request, HttpServletResponse response) {
+    public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
         VerifyCodeGen iVerifyCodeGen = new VerifyCodeGen();
         try {
             //设置长宽
@@ -46,12 +48,23 @@ public class LoginController {
             response.setContentType("image/jpeg");
             response.getOutputStream().write(verifyCode.getImgBytes());
             response.getOutputStream().flush();
-            return code;
         } catch (IOException e) {
             log.info("", e);
         }
-        return "111";
     }
+
+    @GetMapping("/getverifyCode")
+    public ResultUtil getverifyCode(String code,HttpServletRequest request) {
+        String verifyCode = (String)request.getSession().getAttribute("VerifyCode");
+        if(!StringUtils.isEmpty(code)){
+            if(code.equalsIgnoreCase(verifyCode)){
+                return ResultUtil.success();
+            }
+        }
+        log.info(code);
+        return ResultUtil.error("验证码不一致");
+    }
+
 
     @GetMapping("/reg")
     public String reg(String username, String password) {

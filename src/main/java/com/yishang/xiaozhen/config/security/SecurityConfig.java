@@ -87,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/api/wx/login").permitAll()
 //                .antMatchers("/api/wx/callBack").permitAll()
 //                .antMatchers("/api/**").hasAuthority("ROLE_WX")//微信相关接口放心
-                .antMatchers("/user/verifyCode").permitAll()
+                .antMatchers("/user/**").permitAll()
                 .antMatchers("/adminUser/insert").hasAuthority("ROLE_USER")
                 .antMatchers("/activityBooking/approval").hasAuthority("ROLE_ACTIVITY_APPROVAL")
                 .antMatchers("/meetingAreaBooking/approval").hasAuthority("ROLE_MEETING_AREA_APPROVAL")
