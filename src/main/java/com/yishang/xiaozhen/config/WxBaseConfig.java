@@ -17,11 +17,11 @@ import java.util.Arrays;
 public class WxBaseConfig {
 
     //测试公众号
-    private static final String APPID = "wx3d9b64b22ab377cf";
-    private static final String APPSECRET = "819f315a68bb826b8337cf6faeb9d80b";
+//    private static final String APPID = "wx3d9b64b22ab377cf";
+//    private static final String APPSECRET = "819f315a68bb826b8337cf6faeb9d80b";
     //正式公众号
-//    private static final String APPID = "wx5f8846d229ab65ea";
-//    private static final String APPSECRET = "e53f76a97f11fed5d6d7b9bc30e18ed7";
+    private static final String APPID = "wx5f8846d229ab65ea";
+    private static final String APPSECRET = "e53f76a97f11fed5d6d7b9bc30e18ed7";
 
 
     //接入微信的签名

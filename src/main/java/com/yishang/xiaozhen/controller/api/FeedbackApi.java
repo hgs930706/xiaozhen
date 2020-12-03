@@ -66,7 +66,6 @@ public class FeedbackApi {
         String openId = JwtTokenUtil.currentUserName();
         feedback.setOpenId(openId);
         feedbackMapper.insert(feedback);
-
         return ResultUtil.success();
     }
 

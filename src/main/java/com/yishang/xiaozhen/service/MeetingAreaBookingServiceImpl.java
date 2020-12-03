@@ -100,7 +100,9 @@ public class MeetingAreaBookingServiceImpl {
     public ResultUtil detail(String id) {
         MeetingAreaBooking meetingAreaBooking = meetingAreaBookingMapper.selectById(id);
         MeetingArea meetingArea = meetingAreaMapper.selectById(meetingAreaBooking.getMeetingAreaId());
-
+        if(meetingArea == null){
+            return ResultUtil.error("该会议场地已无效");
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("openId",meetingAreaBooking.getOpenId());
         jsonObject.put("bookingUnit",meetingAreaBooking.getBookingUnit());

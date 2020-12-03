@@ -41,6 +41,7 @@ public class FeedbackServiceImpl{
         if (!StringUtils.isEmpty(nickname)) {
             query.like("create_by", nickname);
         }
+        query.orderByDesc("create_time");
         ipage = feedbackMapper.selectPage(ipage, query);
 
         Map<String,Object> map = new HashMap();

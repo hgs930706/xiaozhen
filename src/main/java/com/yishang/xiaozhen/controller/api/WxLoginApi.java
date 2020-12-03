@@ -43,7 +43,9 @@ public class WxLoginApi {
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException {
 
-        response.sendRedirect(WxBaseConfig.getWebUrl());
+//        response.sendRedirect(WxBaseConfig.getWebUrl());
+        response.sendRedirect("http://192.168.31.27:3002/#/view/home?authorization=123");
+
     }
 
     /**
