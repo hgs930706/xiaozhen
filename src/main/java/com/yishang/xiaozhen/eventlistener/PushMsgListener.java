@@ -324,6 +324,9 @@ public class PushMsgListener {
         query.eq("open_id", openId);
         query.eq("is_status", 1);
         WxUser wxUser = wxUserMapper.selectOne(query);
+        if(wxUser == null){
+            return "";
+        }
         return wxUser.getNickname();
     }
 

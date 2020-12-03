@@ -1,7 +1,6 @@
 package com.yishang.xiaozhen.controller.api;
 
 
-import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ActivityBooking;
 import com.yishang.xiaozhen.entity.ActivityCount;
 import com.yishang.xiaozhen.service.ActivityBookingServiceImpl;
@@ -10,7 +9,10 @@ import com.yishang.xiaozhen.service.ActivityServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +76,9 @@ public class ActivityBookingApi {
     @PostMapping("/insert")
     public ResultUtil insert(ActivityBooking object, MultipartFile[] files, HttpServletRequest request){
 
-        object.setOpenId(JwtTokenUtil.currentUserName());
+        //object.setOpenId(JwtTokenUtil.currentUserName());
+        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
+
         ResultUtil result = activityBookingServiceImpl.insert(object, files,request);
 
         return result;

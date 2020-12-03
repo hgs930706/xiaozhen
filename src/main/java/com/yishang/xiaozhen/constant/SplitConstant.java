@@ -3,5 +3,5 @@ package com.yishang.xiaozhen.constant;
 
 public class SplitConstant {
 
-    public static final String DON = "、";
+    public static final String DON = ",";
 }

@@ -35,8 +35,9 @@ public class MeetingAreaBookingApi {
      */
     @PostMapping("/insert")
     public ResultUtil insert(@RequestBody MeetingAreaBooking object){
-        ResultUtil insert = meetingAreaBookingServiceImpl.insert(object);
-        return insert;
+        //object.setOpenId(JwtTokenUtil.currentUserName());
+        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
+        return ResultUtil.success(meetingAreaBookingServiceImpl.insert(object));
     }
 
 

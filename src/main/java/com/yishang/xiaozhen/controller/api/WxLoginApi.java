@@ -74,7 +74,7 @@ public class WxLoginApi {
         roles.add("ROLE_WX");
         String token = JwtTokenUtil.createToken(openId, roles, true);
 //         这里就可以配置，跳转路径，例如成功获取用户信息之后，我们跳转到我们自己的首页
-        response.sendRedirect("http://localhost:8080/#/view/home?token="+ JwtTokenUtil.TOKEN_PREFIX + token);
+        response.sendRedirect("http://localhost:8080/#/view/home?authorization="+ JwtTokenUtil.TOKEN_PREFIX + token);
         log.info("微信客户端token：{}", token);
     }
 

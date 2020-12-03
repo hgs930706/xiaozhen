@@ -35,6 +35,8 @@ public class ReceiveBookingApi {
      */
     @PostMapping("/insert")
     public ResultUtil insert(ReceiveBooking object, MultipartFile[] files, HttpServletRequest request){
+        //object.setOpenId(JwtTokenUtil.currentUserName());
+        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
         ResultUtil result = receiveBookingServiceImpl.insert(object, files,request);
         return result;
     }
