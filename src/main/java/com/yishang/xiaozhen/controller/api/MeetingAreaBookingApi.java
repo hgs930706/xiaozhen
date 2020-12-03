@@ -2,6 +2,7 @@ package com.yishang.xiaozhen.controller.api;
 
 
 import com.alibaba.excel.util.StringUtils;
+import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.MeetingAreaBooking;
 import com.yishang.xiaozhen.service.MeetingAreaBookingServiceImpl;
 import com.yishang.xiaozhen.service.MeetingAreaServiceImpl;
@@ -35,8 +36,8 @@ public class MeetingAreaBookingApi {
      */
     @PostMapping("/insert")
     public ResultUtil insert(@RequestBody MeetingAreaBooking object){
-        //object.setOpenId(JwtTokenUtil.currentUserName());
-        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
+        object.setOpenId(JwtTokenUtil.currentUserName());
+//        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
         return ResultUtil.success(meetingAreaBookingServiceImpl.insert(object));
     }
 

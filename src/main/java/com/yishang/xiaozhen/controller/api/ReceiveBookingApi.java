@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.controller.api;
 
 
+import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ReceiveBooking;
 import com.yishang.xiaozhen.service.ReceiveBookingServiceImpl;
 import com.yishang.xiaozhen.util.ResultUtil;
@@ -35,8 +36,8 @@ public class ReceiveBookingApi {
      */
     @PostMapping("/insert")
     public ResultUtil insert(ReceiveBooking object, MultipartFile[] files, HttpServletRequest request){
-        //object.setOpenId(JwtTokenUtil.currentUserName());
-        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
+        object.setOpenId(JwtTokenUtil.currentUserName());
+//        object.setOpenId("oE57p6lNZO0VV-hl3Hee4AnSYNUQ");
         ResultUtil result = receiveBookingServiceImpl.insert(object, files,request);
         return result;
     }

@@ -82,12 +82,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 不需要session
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/mimi/upload/**").permitAll()
+//                .antMatchers("/mimi/upload/**").permitAll()//这里也可以配置静态资源
+                .antMatchers("/api/activityBooking/insert").hasAuthority("ROLE_WX")
+                .antMatchers("/api/meetingAreaBooking/insert").hasAuthority("ROLE_WX")
+                .antMatchers("/api/receiveBooking/insert").hasAuthority("ROLE_WX")
+                .antMatchers("/api/wxUser/detail").hasAuthority("ROLE_WX")
                 .antMatchers("/api/**").permitAll()
-//                .antMatchers("/api/wx/login").permitAll()
-//                .antMatchers("/api/wx/callBack").permitAll()
-//                .antMatchers("/api/**").hasAuthority("ROLE_WX")//微信相关接口放心
-                .antMatchers("/user/**").permitAll()
+                .antMatchers("/user/**").permitAll()//管理端用户登录
                 .antMatchers("/adminUser/insert").hasAuthority("ROLE_USER")
                 .antMatchers("/activityBooking/approval").hasAuthority("ROLE_ACTIVITY_APPROVAL")
                 .antMatchers("/meetingAreaBooking/approval").hasAuthority("ROLE_MEETING_AREA_APPROVAL")

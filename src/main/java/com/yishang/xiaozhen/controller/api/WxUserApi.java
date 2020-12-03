@@ -37,6 +37,4 @@ public class WxUserApi {
         }
         return ResultUtil.success(wxUser);
     }
-
-
 }

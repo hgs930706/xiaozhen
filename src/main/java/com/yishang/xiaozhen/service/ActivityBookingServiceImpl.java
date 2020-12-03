@@ -2,6 +2,7 @@ package com.yishang.xiaozhen.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.*;
 import com.yishang.xiaozhen.entity.dto.ActivityBookingDTO;
 import com.yishang.xiaozhen.enums.ApprovalStatusEnum;
@@ -72,7 +73,7 @@ public class ActivityBookingServiceImpl {
         //记录审批日志
         ApprovalAction ApprovalAction = new ApprovalAction();
         ApprovalAction.setApprovalId(id);
-        ApprovalAction.setApprovalBy("当前登录用户");
+        ApprovalAction.setApprovalBy(JwtTokenUtil.currentUserName());
         ApprovalAction.setApprovalStatus(approvalStatus);
         ApprovalAction.setApprovalRemark(approvalRemark);
         ApprovalAction.setType(2);

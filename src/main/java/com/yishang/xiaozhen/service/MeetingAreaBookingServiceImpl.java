@@ -1,6 +1,7 @@
 package com.yishang.xiaozhen.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yishang.xiaozhen.config.jwt.JwtTokenUtil;
 import com.yishang.xiaozhen.entity.ApprovalAction;
 import com.yishang.xiaozhen.entity.MeetingArea;
 import com.yishang.xiaozhen.entity.MeetingAreaBooking;
@@ -53,7 +54,7 @@ public class MeetingAreaBookingServiceImpl {
         //记录审批日志
         ApprovalAction ApprovalAction = new ApprovalAction();
         ApprovalAction.setApprovalId(id);
-        ApprovalAction.setApprovalBy("当前登录用户");
+        ApprovalAction.setApprovalBy(JwtTokenUtil.currentUserName());
         ApprovalAction.setApprovalStatus(approvalStatus);
         ApprovalAction.setApprovalRemark(approvalRemark);
         ApprovalAction.setType(2);

@@ -55,7 +55,7 @@ public class MsgActionServiceImpl{
     public ResultUtil list(Integer page,Integer size,String openId) {
         IPage<MsgAction> ipage = new Page<>(page,size);
         QueryWrapper<MsgAction> query = new QueryWrapper<>();
-//        query.eq("open_id",openId);
+        query.eq("open_id",openId);
         query.eq("is_status", 1);
         query.orderByDesc("create_time");
         ipage = msgActionMapper.selectPage(ipage, query);

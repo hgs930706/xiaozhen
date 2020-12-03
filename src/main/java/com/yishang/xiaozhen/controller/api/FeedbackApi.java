@@ -80,7 +80,7 @@ public class FeedbackApi {
         List<MyBookingDTO> list = new ArrayList<>();
         // 根据openid获取，三个预约的结果集，返回
         QueryWrapper<ReceiveBooking> query = new QueryWrapper<>();
-//        query.eq("open_id", openId);
+        query.eq("open_id", openId);
         query.eq("is_status", 1);
         query.orderByDesc("create_time");
         List<ReceiveBooking> receiveBookings = receiveBookingMapper.selectList(query);
@@ -97,7 +97,7 @@ public class FeedbackApi {
         }
 
         QueryWrapper<MeetingAreaBooking> query1 = new QueryWrapper<>();
-//        query1.eq("open_id", openId);
+        query1.eq("open_id", openId);
         query1.eq("is_status", 1);
         query1.orderByDesc("create_time");
         List<MeetingAreaBooking> meetingAreaBookings = meetingAreaBookingMapper.selectList(query1);
@@ -115,7 +115,7 @@ public class FeedbackApi {
         }
 
         QueryWrapper<ActivityBooking> query2 = new QueryWrapper<>();
-//        query2.eq("open_id", openId);
+        query2.eq("open_id", openId);
         query2.eq("is_status", 1);
         query2.orderByDesc("create_time");
         List<ActivityBooking> activityBookings = activityBookingMapper.selectList(query2);

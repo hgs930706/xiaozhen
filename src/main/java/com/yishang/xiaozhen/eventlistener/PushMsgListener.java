@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yishang.xiaozhen.constant.MsgSendConstant;
 import com.yishang.xiaozhen.constant.TemplateConstant;
+import com.yishang.xiaozhen.constant.XiaoZhenConstant;
 import com.yishang.xiaozhen.entity.*;
 import com.yishang.xiaozhen.event.ActivityBookingEvent;
 import com.yishang.xiaozhen.event.MeetingAreaBookingEvent;
 import com.yishang.xiaozhen.event.ReceiveBookingEvent;
 import com.yishang.xiaozhen.mapper.*;
 import com.yishang.xiaozhen.service.MsgActionServiceImpl;
+import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.HttpClientUtil;
 import com.yishang.xiaozhen.util.TemplateData;
 import com.yishang.xiaozhen.util.WechatTemplate;
@@ -116,7 +118,7 @@ public class PushMsgListener {
                     booking.getApprovalStatus(), 2,
                     booking.getApprovalRemark(), booking.getBookingName(),
                     booking.getBookingName(), booking.getBookingTime()
-                    , "地址就是小镇地址");
+                    , XiaoZhenConstant.ADDRESS);
         } catch (Exception e) {
             log.error("接待预约审批消息，发生异常：{}", e);
         }
@@ -155,13 +157,14 @@ public class PushMsgListener {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTemplate_id(getTemplateId(TemplateConstant.ACTIVITY_SUCCESS));
         wechatTemplate.setTouser(booking.getOpenId());   // openid来自报名openid字段，当前登录人是审批人
-        wechatTemplate.setUrl("http://news.baidu.com");
+//        wechatTemplate.setUrl("http://news.baidu.com");
         Map<String, TemplateData> m = new HashMap<>();
         m.put("first", new TemplateData(MsgSendConstant.ACTIVITY_SUCCESS_FIRST));
         //名称
         m.put("keyword1", new TemplateData(activity.getActivityName()));
         //时间
-        m.put("keyword2", new TemplateData(activityCount.getActivityCountStartTime() + "-" + activityCount.getActivityCountEndTime()));
+        m.put("keyword2", new TemplateData(DateUtil.getDateTimeAsString(activityCount.getActivityCountStartTime())
+                + "-" + DateUtil.getDateTimeAsString(activityCount.getActivityCountEndTime())));
         //地点
         m.put("keyword3", new TemplateData(activity.getActivityAddress()));
         //预约人
@@ -175,14 +178,15 @@ public class PushMsgListener {
     private String sendActivityBookingFail(ActivityBooking booking, Activity activity, ActivityCount activityCount) {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTemplate_id(getTemplateId(TemplateConstant.ACTIVITY_FAIL));
-        wechatTemplate.setTouser(booking.getOpenId());   // openid来自，当前登录的用户
-        wechatTemplate.setUrl("http://news.baidu.com");
+        wechatTemplate.setTouser(booking.getOpenId());   // openid来自报名openid字段，当前登录人是审批人
+//        wechatTemplate.setUrl("http://news.baidu.com");
         Map<String, TemplateData> m = new HashMap<>();
         m.put("first", new TemplateData(MsgSendConstant.ACTIVITY_FAIL_FIRST));
         //名称
         m.put("keyword1", new TemplateData(activity.getActivityName()));
         //时间
-        m.put("keyword2", new TemplateData(activityCount.getActivityCountStartTime() + "-" + activityCount.getActivityCountEndTime()));
+        m.put("keyword2", new TemplateData(DateUtil.getDateTimeAsString(activityCount.getActivityCountStartTime())
+                + "-" + DateUtil.getDateTimeAsString(activityCount.getActivityCountEndTime())));
         //地点
         m.put("keyword3", new TemplateData(activity.getActivityAddress()));
         //预约人
@@ -197,15 +201,15 @@ public class PushMsgListener {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTemplate_id(getTemplateId(TemplateConstant.BOOKING_SUCCESS));
         wechatTemplate.setTouser(booking.getOpenId());   // openid来自报名openid字段，当前登录人是审批人
-        wechatTemplate.setUrl("http://news.baidu.com");
+//        wechatTemplate.setUrl("http://news.baidu.com");
         Map<String, TemplateData> m = new HashMap<>();
         m.put("first", new TemplateData(MsgSendConstant.RECEIVE_SUCCESS_FIRST));
         //名称
-        m.put("keyword1", new TemplateData("参观预约"));
+        m.put("keyword1", new TemplateData(XiaoZhenConstant.RECEIVE));
         //地点
-        m.put("keyword2", new TemplateData("艺尚小镇"));
+        m.put("keyword2", new TemplateData(XiaoZhenConstant.ADDRESS));
         //时间
-        m.put("keyword3", new TemplateData(booking.getBookingTime() + ""));
+        m.put("keyword3", new TemplateData(DateUtil.getDateTimeAsString(booking.getBookingTime())));
         //预约人
         m.put("keyword4", new TemplateData(booking.getBookingName()));
         //备注
@@ -218,15 +222,15 @@ public class PushMsgListener {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTemplate_id(getTemplateId(TemplateConstant.BOOKING_FAIL));
         wechatTemplate.setTouser(booking.getOpenId());   // openid来自报名openid字段，当前登录人是审批人
-        wechatTemplate.setUrl("http://news.baidu.com");
+//        wechatTemplate.setUrl("http://news.baidu.com");
         Map<String, TemplateData> m = new HashMap<>();
         m.put("first", new TemplateData(MsgSendConstant.RECEIVE_FAIL_FIRST));
         //名称
-        m.put("keyword1", new TemplateData("参观预约"));
+        m.put("keyword1", new TemplateData(XiaoZhenConstant.RECEIVE));
         //时间
-        m.put("keyword2", new TemplateData(booking.getBookingTime() + ""));
+        m.put("keyword2", new TemplateData(DateUtil.getDateTimeAsString(booking.getBookingTime())));
         //地点
-        m.put("keyword3", new TemplateData("艺尚小镇"));
+        m.put("keyword3", new TemplateData(XiaoZhenConstant.ADDRESS));
         //预约人
         m.put("keyword4", new TemplateData(booking.getBookingName()));
         //备注
@@ -239,7 +243,7 @@ public class PushMsgListener {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTemplate_id(getTemplateId(TemplateConstant.BOOKING_SUCCESS));
         wechatTemplate.setTouser(booking.getOpenId());   // openid来自报名openid字段，当前登录人是审批人
-        wechatTemplate.setUrl("http://news.baidu.com");
+//        wechatTemplate.setUrl("http://news.baidu.com");
         Map<String, TemplateData> m = new HashMap<>();
         m.put("first", new TemplateData(MsgSendConstant.MEETING_SUCCESS_FIRST));
         //名称
@@ -247,7 +251,8 @@ public class PushMsgListener {
         //地点
         m.put("keyword2", new TemplateData(meetingArea.getMeetingAddress()));
         //时间
-        m.put("keyword3", new TemplateData(booking.getBookingStartTime() + "-" + booking.getBookingEndTime()));
+        m.put("keyword3", new TemplateData(DateUtil.getDateTimeAsString(booking.getBookingStartTime())
+                + "-" + DateUtil.getDateTimeAsString(booking.getBookingEndTime())));
         //预约人
         m.put("keyword4", new TemplateData(booking.getBookingPerson()));
         //备注
@@ -260,13 +265,14 @@ public class PushMsgListener {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTemplate_id(getTemplateId(TemplateConstant.BOOKING_FAIL));
         wechatTemplate.setTouser(booking.getOpenId());   // openid来自报名openid字段，当前登录人是审批人
-        wechatTemplate.setUrl("http://news.baidu.com");
+//        wechatTemplate.setUrl("http://news.baidu.com");
         Map<String, TemplateData> m = new HashMap<>();
         m.put("first", new TemplateData(MsgSendConstant.MEETING_FAIL_FIRST));
         //名称
         m.put("keyword1", new TemplateData(meetingArea.getMeetingName()));
         //时间
-        m.put("keyword2", new TemplateData(booking.getBookingStartTime() + "-" + booking.getBookingEndTime()));
+        m.put("keyword2", new TemplateData(DateUtil.getDateTimeAsString(booking.getBookingStartTime())
+                + "-" + DateUtil.getDateTimeAsString(booking.getBookingEndTime())));
         //地点
         m.put("keyword3", new TemplateData(meetingArea.getMeetingAddress()));
         //预约人
