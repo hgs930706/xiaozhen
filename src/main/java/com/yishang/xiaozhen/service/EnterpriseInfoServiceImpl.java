@@ -26,13 +26,14 @@ import java.util.Map;
  */
 @Service
 public class EnterpriseInfoServiceImpl{
-
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
     @Autowired
     private EnterpriseInfoMapper enterpriseInfoMapper;
 
     public ResultUtil insert(EnterpriseInfo object, MultipartFile file, MultipartFile fileQr, HttpServletRequest request) {
-        String imageUrl = ImageUploadUtil.uploadImage(file, request);
-        String imageUrlQr = ImageUploadUtil.uploadImage(fileQr, request);
+        String imageUrl = imageUploadUtil.uploadImage(file, request);
+        String imageUrlQr = imageUploadUtil.uploadImage(fileQr, request);
         object.setEnterpriseLogo(imageUrl);
         object.setEnterpriseQr(imageUrlQr);
         enterpriseInfoMapper.insert(object);
@@ -70,14 +71,14 @@ public class EnterpriseInfoServiceImpl{
             EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(object.getId());
             imageUrl = enterpriseInfo.getEnterpriseLogo();
         }else{
-            imageUrl = ImageUploadUtil.uploadImage(file, request);
+            imageUrl = imageUploadUtil.uploadImage(file, request);
         }
         String imageUrlQr = "";
         if(fileQr == null){
             EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectById(object.getId());
             imageUrlQr = enterpriseInfo.getEnterpriseQr();
         }else{
-            imageUrlQr =  ImageUploadUtil.uploadImage(fileQr, request);
+            imageUrlQr =  imageUploadUtil.uploadImage(fileQr, request);
         }
         object.setEnterpriseLogo(imageUrl);
         object.setEnterpriseQr(imageUrlQr);

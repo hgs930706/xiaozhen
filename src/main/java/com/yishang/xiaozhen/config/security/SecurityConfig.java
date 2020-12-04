@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web){
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/mimi/upload/**");
+        web.ignoring().antMatchers("/images/**");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -82,13 +82,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 不需要session
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/mimi/upload/**").permitAll()//这里也可以配置静态资源
+//                .antMatchers("/images/**").permitAll()//这里也可以配置静态资源
                 .antMatchers("/api/activityBooking/insert").hasAuthority("ROLE_WX")
                 .antMatchers("/api/meetingAreaBooking/insert").hasAuthority("ROLE_WX")
                 .antMatchers("/api/receiveBooking/insert").hasAuthority("ROLE_WX")
+                .antMatchers("/api/feedback/insert").hasAuthority("ROLE_WX")
                 .antMatchers("/api/wxUser/detail").hasAuthority("ROLE_WX")
+                .antMatchers("/api/msgAction/msgs").hasAuthority("ROLE_WX")
+                .antMatchers("/api/feedback/bookings").hasAuthority("ROLE_WX")
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/user/**").permitAll()//管理端用户登录
+                .antMatchers("/adminUser/verifyCode").permitAll()
+                .antMatchers("/adminUser/getverifyCode").permitAll()
                 .antMatchers("/adminUser/insert").hasAuthority("ROLE_USER")
                 .antMatchers("/activityBooking/approval").hasAuthority("ROLE_ACTIVITY_APPROVAL")
                 .antMatchers("/meetingAreaBooking/approval").hasAuthority("ROLE_MEETING_AREA_APPROVAL")

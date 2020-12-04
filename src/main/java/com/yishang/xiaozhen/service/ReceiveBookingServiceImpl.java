@@ -36,7 +36,8 @@ import java.util.Map;
  */
 @Service
 public class ReceiveBookingServiceImpl{
-
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
     @Autowired
     private ReceiveBookingMapper receiveBookingMapper;
 
@@ -56,7 +57,7 @@ public class ReceiveBookingServiceImpl{
         receiveBookingMapper.insert(object);
         if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile file : files) {
-                String imageUrl = ImageUploadUtil.uploadImage(file, request);
+                String imageUrl = imageUploadUtil.uploadImage(file, request);
                 ReceiveBookingImage receiveBookingImage = new ReceiveBookingImage();
                 receiveBookingImage.setReceiveBookingId(object.getId());
                 receiveBookingImage.setImageUrl(imageUrl);

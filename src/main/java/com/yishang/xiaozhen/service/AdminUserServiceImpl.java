@@ -32,6 +32,8 @@ import java.util.Map;
 @Slf4j
 public class AdminUserServiceImpl {
 
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
 
     @Autowired
     private AdminUserMapper adminUserMapper;
@@ -53,7 +55,7 @@ public class AdminUserServiceImpl {
         Integer count = adminUserMapper.selectCount(query);
         if (count > 0) {return ResultUtil.error("用户名已存在。");}
 
-        object.setUserImage(ImageUploadUtil.uploadImage(file, request));
+        object.setUserImage(imageUploadUtil.uploadImage(file, request));
         adminUserMapper.insert(object);
         //用户角色
         userRoleServiceImpl.insert(object.getId(),object.getRoles());
@@ -91,7 +93,7 @@ public class AdminUserServiceImpl {
         if(file == null){
             userImage = adminUser.getUserImage();
         }else{
-            userImage = ImageUploadUtil.uploadImage(file,request);
+            userImage = imageUploadUtil.uploadImage(file,request);
         }
         object.setUserImage(userImage);
         adminUserMapper.updateById(object);

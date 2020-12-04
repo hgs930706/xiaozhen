@@ -30,9 +30,10 @@ public class MeetingAreaServiceImpl{
 
     @Autowired
     private MeetingAreaMapper meetingAreaMapper;
-
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
     public ResultUtil insert(MeetingArea object, MultipartFile file, HttpServletRequest request) {
-        String imageUrl = ImageUploadUtil.uploadImage(file, request);
+        String imageUrl = imageUploadUtil.uploadImage(file, request);
         object.setMeetingImage(imageUrl);
         int insert = meetingAreaMapper.insert(object);
         return ResultUtil.success(insert);
@@ -44,7 +45,7 @@ public class MeetingAreaServiceImpl{
             MeetingArea obj = meetingAreaMapper.selectById(object.getId());
             imageUrl = obj.getMeetingImage();
         }else{
-            imageUrl = ImageUploadUtil.uploadImage(file, request);
+            imageUrl = imageUploadUtil.uploadImage(file, request);
         }
         object.setMeetingImage(imageUrl);
         meetingAreaMapper.updateById(object);

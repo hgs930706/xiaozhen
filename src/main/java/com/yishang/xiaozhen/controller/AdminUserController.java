@@ -9,6 +9,9 @@ import com.yishang.xiaozhen.mapper.AdminUserMapper;
 import com.yishang.xiaozhen.service.AdminUserServiceImpl;
 import com.yishang.xiaozhen.util.DateUtil;
 import com.yishang.xiaozhen.util.ResultUtil;
+import com.yishang.xiaozhen.util.VerifyCode;
+import com.yishang.xiaozhen.util.VerifyCodeGen;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -25,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author hujun
  * @since 2020-11-16
  */
+@Slf4j
 @RestController
 @RequestMapping("/adminUser")
 public class AdminUserController {
@@ -146,6 +152,55 @@ public class AdminUserController {
         }else{
             return ResultUtil.error("旧密码错误！");
         }
+    }
+
+
+
+    @GetMapping("/verifyCode")
+    public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
+        VerifyCodeGen iVerifyCodeGen = new VerifyCodeGen();
+        try {
+            //设置长宽
+            VerifyCode verifyCode = iVerifyCodeGen.generate(80, 28);
+            String code = verifyCode.getCode();
+            log.info(code);
+            //将VerifyCode绑定session
+            request.getSession().setAttribute("VerifyCode", code);
+            //设置响应头
+            response.setHeader("Pragma", "no-cache");
+            //设置响应头
+            response.setHeader("Cache-Control", "no-cache");
+            //在代理服务器端防止缓冲
+            response.setDateHeader("Expires", 0);
+            //设置响应内容类型
+            response.setContentType("image/jpeg");
+            response.getOutputStream().write(verifyCode.getImgBytes());
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            log.info("", e);
+        }
+    }
+
+    @GetMapping("/getverifyCode")
+    public ResultUtil getverifyCode(String code,HttpServletRequest request) {
+        String verifyCode = (String)request.getSession().getAttribute("VerifyCode");
+        if(!StringUtils.isEmpty(code)){
+            if(code.equalsIgnoreCase(verifyCode)){
+                return ResultUtil.success();
+            }
+        }
+        log.info(code);
+        return ResultUtil.error("验证码不一致");
+    }
+
+
+    @GetMapping("/reg")
+    public String reg(String username, String password) {
+        AdminUser user = new AdminUser();
+        user.setUsername(username);
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        adminUserMapper.insert(user);
+        return "注册成功。";
     }
 
 }

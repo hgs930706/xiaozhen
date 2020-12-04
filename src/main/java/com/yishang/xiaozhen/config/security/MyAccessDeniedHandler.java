@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 已登录，权限拒接
+ */
 @Slf4j
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {

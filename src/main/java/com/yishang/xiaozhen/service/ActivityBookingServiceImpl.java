@@ -37,7 +37,8 @@ import java.util.Map;
  */
 @Service
 public class ActivityBookingServiceImpl {
-
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
     @Autowired
     private ActivityMapper activityMapper;
     @Autowired
@@ -91,7 +92,7 @@ public class ActivityBookingServiceImpl {
         activityBookingMapper.insert(object);
         if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile file : files) {
-                String imageUrl = ImageUploadUtil.uploadImage(file,request);
+                String imageUrl = imageUploadUtil.uploadImage(file,request);
                 ActivityBookingImage activityBookingImage = new ActivityBookingImage();
                 activityBookingImage.setActivityBookingId(object.getId());
                 activityBookingImage.setImageUrl(imageUrl);

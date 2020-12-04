@@ -10,6 +10,7 @@ import com.yishang.xiaozhen.util.HttpClientUtil;
 import com.yishang.xiaozhen.config.WxBaseConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,9 @@ import java.util.List;
 @RequestMapping("/api/wx")
 public class WxLoginApi {
 
+    @Value("${index.path}")
+    private String h5_index_path;
+
     @Autowired
     private WxUserMapper wxUserMapper;
 
@@ -42,10 +46,8 @@ public class WxLoginApi {
      */
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException {
-
-//        response.sendRedirect(WxBaseConfig.getWebUrl());
-        response.sendRedirect("http://192.168.31.27:3002/#/view/home?authorization=123");
-
+        log.info("第一步：开始调用微信授权啦。。。。。。。。。。。。。。。。");
+        response.sendRedirect(WxBaseConfig.getWebUrl());
     }
 
     /**
@@ -58,15 +60,16 @@ public class WxLoginApi {
     @GetMapping("/callBack")
     public void callBack(HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
+        log.info("第二步：拿到code啦。。。。。。。。。。。。。。。。");
         String code = request.getParameter("code");
         String json = HttpClientUtil.get(WxBaseConfig.getCode(code));
-
+        log.info("第三步：拿到网页授权的accessToken啦。。。。。。。。。。。。。。。。");
         JSONObject obj = JSON.parseObject(json);
         String accessToken = obj.getString("access_token");
         String openId = obj.getString("openid");
 
         String infoJson = HttpClientUtil.get(WxBaseConfig.getBaseUserInfo(accessToken,openId));
-        log.info("从微信获取的用户信息：{}", infoJson);
+        log.info("第四步：从微信获取的用户信息：{}", infoJson);
 
         //保存微信端授权用户
         this.saveWxUser(infoJson);
@@ -76,8 +79,8 @@ public class WxLoginApi {
         roles.add("ROLE_WX");
         String token = JwtTokenUtil.createToken(openId, roles, true);
 //         这里就可以配置，跳转路径，例如成功获取用户信息之后，我们跳转到我们自己的首页
-        response.sendRedirect("http://localhost:8080/#/view/home?authorization="+ JwtTokenUtil.TOKEN_PREFIX + token);
-        log.info("微信客户端token：{}", token);
+        response.sendRedirect(h5_index_path + "?authorization="+ JwtTokenUtil.TOKEN_PREFIX + token);
+        log.info("微信授权成功跳转路径： {}，微信客户端token：{}", h5_index_path, token);
     }
 
     private void saveWxUser(String infoJson) {

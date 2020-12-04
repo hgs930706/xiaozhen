@@ -32,13 +32,14 @@ public class ActivityServiceImpl{
     @Autowired
     private ActivityMapper activityMapper;
 
-
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
     @Autowired
     private ActivityCountServiceImpl activityCountServiceImpl;
 
     @Transactional
     public ResultUtil insert(Activity object,MultipartFile file, HttpServletRequest request) {
-        String imageUrl = ImageUploadUtil.uploadImage(file, request);
+        String imageUrl = imageUploadUtil.uploadImage(file, request);
         //新增活动
         object.setActivityImage(imageUrl);
         activityMapper.insert(object);
@@ -159,7 +160,7 @@ public class ActivityServiceImpl{
             Activity activity = activityMapper.selectById(object.getId());
             imageUrl = activity.getActivityImage();
         }else{
-            imageUrl = ImageUploadUtil.uploadImage(file, request);
+            imageUrl = imageUploadUtil.uploadImage(file, request);
         }
         object.setActivityImage(imageUrl);
         activityMapper.updateById(object);

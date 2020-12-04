@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/yishang?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://47.105.143.238:3306/yishang?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: 123456
+    password: www.isoftstone14159265.com
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       # 池中最大连接数，包括闲置和使用中的连接
@@ -36,7 +36,12 @@ template-id:
   meeting-success-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
   meeting-fail-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
 
+images:
+  path: /images/
+  map-path: /images/
 
+index:
+  path: http://47.105.143.238:3002/#/view/home
 
 
 

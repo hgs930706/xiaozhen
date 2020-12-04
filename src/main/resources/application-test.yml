@@ -36,7 +36,12 @@ template-id:
    meeting-success-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
    meeting-fail-msg: Nvrv9iObApVUwLffPtRv21dbIgZz7LHdy3SXn09rkZQ
 
+images:
+  path: f:/images/
+  map-path: file:f:/images/
 
+index:
+  path: http://news.baidu.com/
 
 
 

@@ -1,5 +1,7 @@
 package com.yishang.xiaozhen.config;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,11 +28,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Administrator
  *
  */
+@Slf4j
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-//	@Value("${file.server.dir}")
-//	private String localFileServerDir;
+	@Value("${images.map-path}")
+	private String imageMapPath;
 
 	/**
 	 * 添加静态资源映射路径，css、js等都放在classpath下的static中
@@ -42,7 +45,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		 * addResourceLocations 指的是文件配置的目录：ddResourceLocations("file:f:/mimi/upload/");
 		 */
 		//文件上传路径映射
-		registry.addResourceHandler("/mimi/upload/**").addResourceLocations("file:f:/mimi/upload/");
+		log.info("映射到图片存放路径： {}",imageMapPath);
+		registry.addResourceHandler("/images/**").addResourceLocations(imageMapPath);
 
 	}
 

@@ -3,7 +3,7 @@ server:
 spring:
   profiles:
     active:
-    - test
+    - prod
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml

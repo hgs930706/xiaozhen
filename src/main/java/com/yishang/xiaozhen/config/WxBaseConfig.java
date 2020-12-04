@@ -17,12 +17,14 @@ import java.util.Arrays;
 public class WxBaseConfig {
 
     //测试公众号
-//    private static final String APPID = "wx3d9b64b22ab377cf";
-//    private static final String APPSECRET = "819f315a68bb826b8337cf6faeb9d80b";
+    private static final String APPID = "wx3d9b64b22ab377cf";
+    private static final String APPSECRET = "819f315a68bb826b8337cf6faeb9d80b";
     //正式公众号
-    private static final String APPID = "wx5f8846d229ab65ea";
-    private static final String APPSECRET = "e53f76a97f11fed5d6d7b9bc30e18ed7";
+//    private static final String APPID = "wx5f8846d229ab65ea";
+//    private static final String APPSECRET = "e53f76a97f11fed5d6d7b9bc30e18ed7";
 
+    //如果用户同意授权，页面将跳转至此地址，这个地址的域名，也需要在微信后台的网页授权配置
+    private static final String BACK_URL = "http://27816r3s27.wicp.vip/api/wx/callBack";
 
     //接入微信的签名
     private static final String TOKEN = "fanren";
@@ -34,7 +36,6 @@ public class WxBaseConfig {
     private static final String TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
 
 
-
     //第一步：用户同意授权，获取code
     private static final String INDEX = "https://open.weixin.qq.com/connect/oauth2/authorize" +
             "?appid=APPID" +
@@ -42,10 +43,7 @@ public class WxBaseConfig {
             "&response_type=code" +
             "&scope=snsapi_userinfo" +
             "&state=STATE#wechat_redirect";
-    //如果用户同意授权，页面将跳转至此地址
-    private static final String BACK_URL = "http://27816r3s27.wicp.vip/api/wx/callBack";
-    // 也可以直接回调到前端,然后前端拿着code，在请求后台
-    // private static final String BACK_URL = "http://27816r3s27.wicp.vip:32056/login";
+
 
     //第二步：通过code换取网页授权access_token
     private static final String INDEX2 = "https://api.weixin.qq.com/sns/oauth2/access_token" +
@@ -108,6 +106,17 @@ public class WxBaseConfig {
 
 
 
+    public static void main(String[] args) {
+        String encode = URLEncoder.encode("http://news.baidu.com/");
+        String url ="https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                "appid=wx3d9b64b22ab377cf" +
+                "&redirect_uri=" +encode+
+                "&response_type=code" +
+                "&scope=snsapi_userinfo" +
+                "&state=STATE#wechat_redirect";
+        String json = HttpClientUtil.get(url);
+        System.out.println(json);
+    }
 
     /**
      * 校验是不是来自微信服务器的请求
